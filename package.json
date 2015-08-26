@@ -1,0 +1,27 @@
+{
+  "name": "appmetrics-dash",
+  "version": "1.0.0",
+  "description": "Monitoring Dashboard for Node Application Metrics",
+  "main": "index.js",
+  "dependencies": {
+    "appmetrics": "*",
+    "express": "*",
+    "socket.io": "*"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "appmetrics",
+    "dashboard",
+    "performance",
+    "monitoring"
+  ],
+  "author": "",
+  "repository" : {
+    "type" : "git",
+    "url" : "git://github.com/RuntimeTools/appmetrics-dash.git"
+  },
+  "license": "Apache-2.0"
+}
