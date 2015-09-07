@@ -1,0 +1,1388 @@
+
+<!doctype html>
+<!-- 
+/*******************************************************************************
+ * Copyright  2015 IBM Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *******************************************************************************/
+-->
+<html ng-app="app" ng-controller="MonitoringController">
+<head>
+    <meta charset="utf-8" />
+	
+    <title >
+        Node.js Instance Monitoring 
+    </title><!-- tag for text inside the browser tab-->
+	
+
+	<style> 
+	button.display_information {
+	position: absolute;
+    left: 880px;
+	top:89px;
+	min-width:200px;
+	 
+	}
+    button.environment_information {
+	position: absolute;
+    left: 880px;
+	top:118px;
+	min-width:175px;
+	 
+	}
+	
+    .pos_right { 
+	position: absolute;
+    left: 225px;
+	min-width:1050px;
+	
+	}
+	</style> <!--  styles for buttons and main title-->
+	
+	<style>
+	h4.options_menu_position_init {
+	position: absolute;
+	left: 50px;
+	top:  80px;
+	}
+	
+	.label_CPU_pair_init {
+	clear: both;
+	float: none;
+	position: absolute;
+	left:205px;
+	top:89px;
+}
+ 
+
+.label_CPU_init {
+	clear: both;
+	float: none;
+	position: absolute;
+	left:240px;
+	top:91px;
+}
+
+
+	.label_memory_pair_init {
+	clear: both;
+	float: none;
+	position: absolute;
+	left:365px;
+	top: 89px;
+}
+ 
+
+.label_memory_init {
+	clear: both;
+	float: none;
+	position: absolute;
+	left:400px;
+	top:91px;
+}
+
+
+
+.label_gc_pair_init {
+	clear: both;
+	float: none;
+	position: absolute;
+	left:535px;
+	top:89px;
+}
+ 
+
+.label_gc_init {
+	clear: both;
+	float: none;
+	position: absolute;
+	left:570px;
+	top:91px;
+   min-width: 150px;
+}
+
+
+
+
+
+</style>
+<style>
+body {
+  font-size: 4px;
+}
+
+.battery {
+	box-shadow: 0 0 0 0.7em black;
+    position: absolute;
+    background-size: 100%;
+	display: inline-block;
+    width: 5.5em;
+    height: 10em;
+
+}
+
+#battery {
+	top:16.5em;
+	left: 5.5em;  
+    
+}
+.battery-top {
+    position: absolute;
+    display: block;
+    background:black;
+    width: 3.5em;
+    height: 1.5em;
+    content : "";
+    border-radius: 1em 1em 0 0;
+}
+
+#battery-top {
+left:6.5em;
+top: 14em;
+}
+
+#second-battery {
+	top:16.5em;
+	left: 17em;
+}
+
+#second-battery-top {
+    left: 18em;
+	top: 14em;
+}
+
+
+.battery_system-process {
+	left:0.1em;
+    display: block;
+    width: 5.25em;
+    height: 0%;
+    content : "";
+	position: absolute;
+	bottom: 0;
+	z-index:0;
+}
+#battery-system {
+	background: orange;
+}
+
+#battery-process {
+    background: green;
+}
+
+ 	
+</style>
+
+<style>
+
+#CPU-Usage {
+position:absolute;
+left:10em;
+top:11em;
+}
+
+#CPU-Key {
+left: 26.5em;
+top:13.5em;
+position: absolute;
+}
+#CPU-Process{
+left: 30em;
+top:18.6em;
+position: relative;
+}
+#CPU-System {
+left: 30em;
+top:14.7em;
+ position: relative;
+}
+#cpu-system {
+left: 35em;
+top:11.85em;
+ position: relative;
+}
+
+#cpu-process {
+left: 35em;
+top:15.85em;
+ position: relative;
+}
+
+.cpu-systemblock {
+    width: 3em;
+    height: 1em;
+	left: 15em;
+    position:relative;
+}
+
+#cpu-system-block {
+    background: orange;
+	top:10.7em;
+	left:26em;
+}
+
+#cpu-process-block{
+    background: green;
+	top:12.3em;
+	left:26em;
+}
+
+#cpu-chart {
+position:absolute;
+top:10em;
+left:43em;
+}
+
+#physical-memory {
+position:absolute;
+top:32em;
+left:0em;
+}
+
+#memory-chart {
+position:absolute;
+top:32em;
+left:47em;
+
+}
+
+
+#gc_size-used {
+position: absolute;
+top:57em;
+left:1em;
+}
+
+
+#gc_speed {
+position: absolute;
+top:57em;
+left:45em;
+}
+
+
+#gcAverageDurationSpeedometer {
+position: absolute;
+top:77em;
+left: 2em;
+}
+
+
+#gcAverageFrequencySpeedometer {
+position: absolute;
+top:77em;
+left: 42em;
+}
+
+
+#speed1 {
+position:absolute;
+top:80.5em;
+left:17em;
+width:130em;
+}
+
+#speed2 {
+position:absolute;
+top:79.5em;
+left:58em;
+width:100em;
+}
+
+
+#canvas{
+position:absolute;
+top:84.5em;
+left:15em;		
+}
+
+
+#canvas1 {
+position:absolute;
+top:84.5em;
+left:55em;
+}
+
+#first-0 {
+position: absolute;
+left:14em;
+top:91em;
+
+}
+
+#second-0 {
+position: absolute;
+left:54em;
+top:91em;
+}
+
+#value-1 {
+position: absolute;
+left:21.2em;
+top:95em;
+width:100em;
+}
+
+#value-2 {
+position: absolute;
+left: 61em;
+top: 95em;
+width: 100em;
+}
+
+#quarter-1   {
+position:absolute;
+left:16.2em;
+top:85em;
+
+}
+
+#quarter-2 {
+position:absolute;
+left:56em;
+top:85em;
+}
+
+#half-1 {
+position:absolute;
+left:22.1em;
+top:83.2em;
+}
+
+#half-2 {
+position:absolute;
+left:62em;
+top:83.2em;
+}
+
+#three-over-four-1 {
+position:absolute;
+left:28em;
+top:85em;
+}
+
+
+#three-over-four-2 {
+position:absolute;
+left:68em;
+top:85em;
+}
+
+#rhs-1 {
+position: absolute;
+left:30.5em;
+top:91em;
+
+}
+
+#rhs-2 {
+position: absolute;
+left:70.5em;
+top:91em;
+}
+
+#wait-1 {
+position: absolute;
+left:19em;
+top:87em;
+
+}
+
+#wait-2 {
+position: absolute;
+left:59em;
+top:87em;
+}
+
+#env_table {
+position: absolute;
+top: 11em;
+}
+
+
+</style>
+			
+</head>
+<body>
+    <h1 class="pos_right">
+        Instance Monitoring for Node.js
+    </h1>
+
+      <table id="test"> <!-- start of defining the objects on the webpage -->
+
+        <div id="CPU-Usage" style="font-weight: bold">Current CPU Usage</div>
+			<!-- CPU Batteries-->
+			<div id="battery" class = "battery" > 
+			<div id= "battery-process" class="battery_system-process"> </div>
+			</div>		
+			<div id="battery-top" class="battery-top"> </div>
+			<div id="second-battery" class = "battery"> 
+			<div id= "battery-system" class="battery_system-process"> </div>
+			</div>
+			<div id="second-battery-top" class="battery-top"> </div>
+
+			<table>
+			
+			 <div id="CPU-Key">Key </div>
+			 <div id="CPU-Process" > Process:   </div>
+			 <div id="CPU-System">  System: </div>		 
+			 <div id="cpu-process"> 0%   </div>
+			 <div id="cpu-system"> 0%   </div>
+			<div class= "cpu-systemblock" id= "cpu-system-block" ></div>
+		    <div class= "cpu-systemblock" id="cpu-process-block"> </div>
+			 	</table>
+				<!-- chart html objects -->
+				    <td width=575 height=300 ><div id="cpu-chart" cpu-chart></div> </td>
+		            <td  width=500 height=250>  <div id="physical-memory" overall-memory></div> </td>
+					<td  width=400 height=250 > <div id="memory-chart" memory-chart></div> </td>
+                   <td width=610 height=250 ><div  id="gc_speed" gcperf-chart></div></td>
+                <td width=580 height=250><div id="gc_size-used" gcheap-chart></div></td>	
+				<tr>
+					<td colspan=1><div  id="env_table" env-table></div> </td>
+				</tr>				
+				
+			<h4 id="options_menu" class="options_menu_position_init">Options Menu: </h4>
+			
+<!-- start of options menu -->			
+<div class="label_CPU_pair_init">
+<input type="checkbox" id="CPU_usage" /></div>
+<div class="label_CPU_init" id="CPU"> <label for="CPU_usage">CPU <br>Usage</br></label> </div>
+
+<div class="label_memory_pair_init">
+<input type="checkbox" id="memory_usage" /></div>
+<div class="label_memory_init" id="Memory"> <label for="memory_usage">Memory <br>Usage</br></label> </div>
+
+<div class="label_gc_pair_init">
+<input type="checkbox" id="gc" /></div>
+<div class="label_gc_init" id="GC"> <label for="gc">Garbage <br>Collection Data</br></label> </div>
+
+
+
+</div>
+                  
+				<button id="display-information" class="display_information " ng-click="displayInformation()">Display Selected Information</button> 
+
+			    <button id="environment-information" class="environment_information" ng-click="displayEnvironment()">{{environmentText}} Environment Information</button>			
+	
+<!-- end of options menu -->	
+				<!-- speed dials-->
+				<div id="speed1" > Average Duration of GC (ms)</div>
+				<div id="speed2"> Time spent in GC <br>per minute (ms)</br></div>
+				<canvas id="gcAverageDurationSpeedometer" height="400" width="570"  > </canvas>
+				<canvas id="gcAverageFrequencySpeedometer" height="400" width="570"  > </canvas>
+				<canvas id="canvas" width="770" height="350" ></canvas>
+				<canvas id="canvas1" width="770" height="350" ></canvas>
+				<div id="first-0">0 </div>
+				<div id="quarter-1">1 </div>
+				<div id ="half-1">2 </div>
+				<div id="three-over-four-1"> 3</div>
+				<div id="rhs-1"> 4  </div>
+				
+				<div id= "second-0">0 </div>
+				<div id="quarter-2">1 </div>
+				<div id="half-2">2 </div>
+				<div id= "three-over-four-2">3 </div>
+				<div id="rhs-2">4   </div>
+				
+				<div id="value-1"> 0 ms </div>
+				<div id="value-2"> 0 ms </div>
+				
+				
+				<div id="wait-1" > Waiting for sufficient <br>amount of GC data</br>  </div>
+				<div id="wait-2"> Waiting for at least <br>1 minute of GC data</br>   </div>
+			 
+	 </table>		 
+    <!-- Load jQuery and AngularJS from the CDN. -->
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script
+        type="text/javascript"
+        src="//code.jquery.com/jquery-1.9.1.min.js">
+    </script>
+    <script
+        type="text/javascript"
+        src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js">
+    </script>
+    <script 
+        type="text/javascript" 
+        src="https://www.google.com/jsapi">
+    </script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+    google.load('visualization', '1.1', {packages:['corechart','table','timeline', 'treemap']});
+    google.setOnLoadCallback(function () {
+        angular.bootstrap(document.html, ['app']);
+    });
+	
+	
+    var app = angular.module( "app", [] );
+	//boolean variables testing whether certain checkboxes are checked 
+	var cpu_test=false;
+	var memory_test=false;
+	var gc_test=false;
+	
+	//arrays to hold gc data for speed dials 
+	var total_gc_data=[];
+	var past_min_gc_data=[];
+	var frequencies= [];
+	
+	
+	//initially tick the check boxes when the client page is loaded up
+	document.getElementById('CPU_usage').checked=true;
+	document.getElementById('memory_usage').checked=true;
+	document.getElementById('gc').checked=true;
+	
+	
+	//draw gc duration speed dial outline
+	var canvas = document.getElementById('gcAverageDurationSpeedometer');
+    var context = canvas.getContext('2d');
+	
+     context.beginPath();
+     context.arc(288, 210, 100, 0, Math.PI, true);
+     context.closePath();
+     context.lineWidth = 2;
+     context.fillStyle = 'white';
+	 context.fill();
+	 context.stroke();
+	
+	 var canvas1 = document.getElementById('gcAverageDurationSpeedometer');
+     var context1 = canvas1.getContext('2d');
+
+     context1.beginPath();
+     context1.arc(288, 210, 100, 0, Math.PI, false);
+     context1.closePath();
+     context1.lineWidth = 2;
+     context1.fillStyle = 'white';
+	 context1.fill();
+	 context1.strokeStyle = '#FFFFFF';
+	 context1.stroke();
+	
+	
+	
+	//draw gc frequency speed dial outline
+	 var canvas2 = document.getElementById('gcAverageFrequencySpeedometer');
+     var context2 = canvas2.getContext('2d');
+
+     context2.beginPath();
+     context2.arc(288, 210, 100, 0, Math.PI, true);
+     context2.closePath();
+     context2.lineWidth = 2;
+     context2.fillStyle = 'white';
+	 context2.fill();
+	// context.strokeStyle = '#550000';
+	 context2.stroke();
+	
+	 var canvas3 = document.getElementById('gcAverageFrequencySpeedometer');
+     var context3 = canvas3.getContext('2d');
+
+     context3.beginPath();
+     context3.arc(288, 210, 100, 0, Math.PI, false);
+     context3.closePath();
+     context3.lineWidth = 2;
+     context3.fillStyle = 'white';
+	 context3.fill();
+	 context3.strokeStyle = '#FFFFFF';
+	 context3.stroke();
+	 
+	 //coordinates for the dials for speedometers 
+     var x1= {x:13,y:102};
+     var y1={x:105,y:107};
+     var z1={x:105,y:97};	 
+	 var x2= {x:13,y:102};
+     var y2={x:105,y:107};
+     var z2={x:105,y:97};	
+	var c=document.getElementById('canvas');
+	
+		 var ctx = c.getContext("2d");
+
+// Draw dial triangle
+// Draw triangle (105, 102) is origin of the speed dial rotation
+ctx.fillStyle="#A2322E";
+
+ctx.beginPath();
+
+ctx.moveTo(x1['x'], x1['y']);
+ctx.lineTo(y1['x'], y1['y']);
+ctx.lineTo(z1['x'], z1['y']);
+
+ctx.closePath();
+ctx.fill();
+
+
+var c1=document.getElementById('canvas1');
+	
+var ctx1 = c1.getContext("2d");
+
+ctx1.fillStyle="#A2322E";
+ctx1.beginPath();
+ctx1.moveTo(x2['x'], x2['y']);
+ctx1.lineTo(y2['x'], y2['y']);
+ctx1.lineTo(z2['x'], z2['y']);
+ctx1.closePath();
+ctx1.fill();
+				//make speed dials disappear at the start as there is no data 
+ 				$("#canvas").hide();
+				$("#canvas1").hide();				
+				$("#gcAverageDurationSpeedometer").hide();
+				$("#gcAverageFrequencySpeedometer").hide();
+				$("#speed1").hide();
+				$("#speed2").hide();
+				$("#value-1").hide();
+				$("#value-2").hide();
+				$("#first-0").hide();
+				$("#second-0").hide();
+				$("#quarter-1").hide();
+				$("#quarter-2").hide();
+				$("#half-1").hide();
+				$("#half-2").hide();
+				$("#three-over-four-1").hide();
+				$("#three-over-four-2").hide();
+				$("#rhs-1").hide();
+				$("#rhs-2").hide();
+				
+				$("#env_table").hide();
+ 
+ 	
+    app.controller("MonitoringController",
+        function( $scope ) {
+	       //reset the charts							      
+			$scope.cpuChart = {};
+			$scope.overallMemory={};
+			$scope.memoryChart={};
+			$scope.memoryC={};
+		
+            $scope.gcheapChart = {};
+			$scope.gcperfChart = {};
+
+			
+			//initial defining of all the google charts
+			
+			$scope.cpuChart.options = {
+                title: 'CPU Usage of application over time',
+                height: 300,
+                width: 575,
+                hAxis: {title: 'Elapsed time (s)'},
+                vAxis: {title: 'CPU Usage (%)'}
+            };
+            $scope.cpuChart.data = [
+                ['Time', 'Process', 'System']
+            ];
+			    cpu_test=true;
+			
+			
+			$scope.overallMemory.options = {
+                title: 'Overall memory on system/in use/available',
+                height: 300,
+                width: 650,
+                hAxis: {title: 'Elapsed time (s)'},
+                vAxis: {title: 'Memory(MB)'}
+            };
+            $scope.overallMemory.data = [
+                ['Time', 'Total RAM on System' , 'RAM in use' , 'RAM available']
+            ];		
+			
+			
+            $scope.memoryChart.options = {
+                title: 'Memory used by application over time',
+                height: 310,
+                width: 575,
+                hAxis: {title: 'Elapsed time (s)'},
+                vAxis: {title: 'Memory Used (Bytes)'}
+            };
+            $scope.memoryChart.data = [
+                ['Time', 'Process', 'Virtual']
+            ];
+			    memory_test=true;
+				
+				
+			$scope.gcheapChart.options = {
+                title: 'Garbage Collection Memory Usage',
+                height: 300,
+                width: 550,
+                hAxis: {title: 'Elapsed time (s)'},
+                vAxis: {title: 'Memory Usage (bytes)'}
+            };
+            $scope.gcheapChart.data = [
+                ['Time', 'Used', 'Size'],
+                [new Date(),0,0]
+            ];
+			
+            $scope.gcperfChart.options = {
+                title: 'Garbage Collection Performance',
+                height: 300,
+                width: 615,
+                hAxis: {title: 'Elapsed time (s)'},
+                vAxis: {title: 'GC Duration (ms)'}
+            };
+            $scope.gcperfChart.data = [
+                ['Time', 'Duration'],
+                [new Date(),0]
+            ];
+				gc_test=true;	
+				
+				
+				
+			$scope.envTable = {};
+			$scope.environmentText = "Show";
+            $scope.envTable.data = new google.visualization.DataTable();
+            $scope.envTable.data.addColumn('string', 'Environment Information'); 
+            $scope.envTable.data.addColumn('string', 'Value');
+	
+				
+								
+			//start of code which handles received monitoring information from node application
+            socket = io.connect();
+            socket.emit('connected');
+            socket.emit('disableprofiling'); //profiling disabled
+			//cpu parsing
+            socket.on('cpu', function (data) {
+				
+                cpu = JSON.parse(data);  //parses the data into a JSON array
+
+				var process= cpu['process'];
+				var system=cpu['system'];
+				
+				//edits heights of blocks inside batteries and the values on the key
+				$("#battery-system").css("height", system * 100 + "%"); 
+				$("#battery-process").css("height", process*100 + "%");
+				$("#cpu-system").text((system * 100).toFixed(2) + "%");
+			    $("#cpu-process").text((process * 100).toFixed(2) + "%");
+
+				//is the cpu chart defined and add data points to it 
+				if ($scope.cpuChart.data!=undefined){
+                
+				if ($scope.cpuChart.data.length > 60) {//if there are more than 60 data points
+                    header = $scope.cpuChart.data[0];
+                    $scope.cpuChart.data.shift();
+                    $scope.cpuChart.data[0] = header;
+                }
+                $scope.cpuChart.data.push([new Date(Number(cpu.time)), cpu.process * 100, cpu.system * 100]);
+                $scope.$digest();
+				}
+            });
+
+			//memory parsing and adding data to the memory charts
+            socket.on('memory', function (data) {
+                memory = JSON.parse(data);
+				if ($scope.overallMemory.data!=undefined){
+				if ($scope.overallMemory.data.length > 60) {//if there are more than 60 data points
+                    var header = $scope.overallMemory.data[0];
+                    $scope.overallMemory.data.shift();
+                    $scope.overallMemory.data[0] = header;
+                }
+				$scope.overallMemory.data.push([new Date(Number(memory.time)), Number(memory.physical_total)/1000000, Number(memory.physical_used)/1000000, Number(memory.physical_free)/1000000]);
+				}
+				if ($scope.memoryChart.data!=undefined){
+                if ($scope.memoryChart.data.length > 60) {//if there are more than 60 data points
+                    var header = $scope.memoryChart.data[0];
+                    $scope.memoryChart.data.shift();
+                    $scope.memoryChart.data[0] = header;
+                }
+				$scope.memoryChart.data.push([new Date(Number(memory.time)), Number(memory.private), Number(memory.virtual)]);
+				}
+
+				$scope.$digest();
+            });
+			
+			//gc data parsing 			
+            socket.on('gc', function (data) {
+                gc = JSON.parse(data);
+				//add data to the gc charts
+                if ($scope.gcheapChart.data.length > 60) { //if there are more than 60 data points
+                    var header = $scope.gcheapChart.data[0];
+                    $scope.gcheapChart.data.shift();
+                    $scope.gcheapChart.data[0] = header;
+                }
+                $scope.gcheapChart.data.push([new Date(Number(gc.time)), Number(gc.used), Number(gc.size)]);
+				if ($scope.gcperfChart.data.length > 60) {//if there are more than 60 data points
+                    var header = $scope.gcperfChart.data[0];
+                    $scope.gcperfChart.data.shift();
+                    $scope.gcperfChart.data[0] = header;
+                }
+				//add to arrays for the speed dials 
+				total_gc_data.push([new Date(Number(gc.time)), Number(gc.duration)]);     
+		    	past_min_gc_data.push([Number(gc.time), Number(gc.duration)]);
+				
+				test=false; 
+				var counter=0;
+				while (test==false) {///determines how many data points need to be removed from the front of the array as they are over the minute
+				if (past_min_gc_data[(past_min_gc_data.length-1)-counter][0]-past_min_gc_data[0][0]>60000){
+				    counter+=1;
+					}
+				else {
+				test=true;
+				}
+				}
+							
+				var frequency=0;//variable for total gc in minute window  
+				if (counter>0){ //only calculate the frequency value after 1 minute has passed 
+				for (i=0 ; i<(past_min_gc_data.length)-counter  ; i++) { //calculates total gc for the minute window
+				
+					frequency+=past_min_gc_data[i][1];
+					}
+					
+				frequencies.push(frequency);
+			
+				for (i=0 ; i<counter ; i++){ //removes "counter" number of points from the front of the "frequency" array
+					past_min_gc_data.shift();
+				}				
+				}
+				
+				if (total_gc_data.length>10 && gc_test==true && $scope.environmentText=="Show" ) { //where the  average duration speedometers is displayed  
+																 //and rotating dial if condition is true
+					$("#canvas").show();					
+				    $("#gcAverageDurationSpeedometer").show();
+					$("#speed1").show();
+					$("#value-1").show();
+					$("#first-0").show();										
+					$("#quarter-1").show();
+					$("#half-1").show();
+					$("#three-over-four-1").show();
+					$("#rhs-1").show();
+					$("#wait-1").hide();
+					
+					var average=0;
+					var max_total= 0;//max value 
+					
+					for (i=0 ; i<total_gc_data.length ; i++){
+						average+= total_gc_data[i][1];
+						if (total_gc_data[i][1]>max_total){
+							max_total=total_gc_data[i][1];
+						}
+					}
+				
+					average=(average+0.0)/(total_gc_data.length+0.0);
+					//adjust the values around the speed dials 
+					$("#quarter-1").text(max_total/4.0);
+					$("#half-1").text(max_total/2.0);
+					$("#three-over-four-1").text(3.0*max_total/4.0);
+					$("#rhs-1").text(max_total);
+					$("#value-1").text(average.toFixed(2) + " ms");		
+						 
+					var c=document.getElementById('canvas');
+	
+					var ctx = c.getContext("2d");
+			    	ctx.clearRect(0, 0, c.width, c.height);
+					// Draw triangle (105, 102) is origin of the speed dial rotation
+
+					ctx.fillStyle="#A2322E";
+
+					ctx.beginPath();
+					x1=rotate_point(13, 102, 105, 102, (average/max_total) *180);
+					y1=rotate_point(105, 107, 105, 102, (average/max_total) *180);
+					z1=rotate_point(105, 97, 105, 102, (average/max_total) *180);
+					ctx.moveTo(x1['x'], x1['y']);
+					ctx.lineTo(y1['x'], y1['y']);
+					ctx.lineTo(z1['x'], z1['y']);
+					ctx.closePath();
+					ctx.fill();
+				}	
+				if (frequencies.length>=5 && gc_test==true && $scope.environmentText=="Show" ) { //frequency per minute speedometer displayed 
+															  //and rotating if condition is true 
+				   $("#canvas1").show();
+				   $("#gcAverageFrequencySpeedometer").show();
+				   $("#speed2").show();
+				   $("#value-2").show();
+				   $("#second-0").show();
+				   $("#quarter-2").show();
+				   $("#half-2").show();
+				   $("#three-over-four-2").show();
+				   $("#rhs-2").show();
+				   $("#wait-2").hide();
+				   
+				    var max_total= 0;		
+					for (i=0 ; i<frequencies.length ; i++){					
+						if (frequencies[i]>max_total){
+							max_total=frequencies[i];
+						}
+					}
+
+					$("#quarter-2").text((max_total+10)/4.0);
+					$("#half-2").text((max_total+10)/2.0);
+					$("#three-over-four-2").text(3.0*(max_total+10)/4.0);
+					$("#rhs-2").text(max_total+10);
+					$("#value-2").text(frequencies[frequencies.length-1].toFixed(2) + " ms");	
+
+					
+					var c1=document.getElementById('canvas1');
+	
+					var ctx1 = c1.getContext("2d");
+			    	ctx1.clearRect(0, 0, c1.width, c1.height);
+					// Draw triangle (105, 102) is origin of the speed dial rotation
+
+					ctx1.fillStyle="#A2322E";
+					ctx1.beginPath();
+					
+					x2=rotate_point(13, 102, 105, 102, (frequencies[frequencies.length-1]/(max_total+10)) *180);
+					y2=rotate_point(105, 107, 105, 102, (frequencies[frequencies.length-1]/(max_total+10)) *180);
+					z2=rotate_point(105, 97, 105, 102, (frequencies[frequencies.length-1]/(max_total+10)) *180);
+
+					ctx1.moveTo(x2['x'], x2['y']);
+					ctx1.lineTo(y2['x'], y2['y']);
+					ctx1.lineTo(z2['x'], z2['y']);
+					ctx1.closePath();
+					ctx1.fill();	
+					
+				}
+				$scope.gcperfChart.data.push([new Date(Number(gc.time)), Number(gc.duration)]);				
+                $scope.$digest();
+		
+            });
+			
+			
+			socket.on('environment', function (data) { ///data for environment table
+                env = JSON.parse(data);
+                for (entry in env) {
+                    $scope.envTable.data.addRow([entry, env[entry]]);
+                }
+                $scope.$digest();
+            });
+			
+			
+			
+
+		$scope.displayInformation=function() {//function which determines what is displayed on the screen according to 
+						                      // what is ticked on the Options Menu
+			if (document.getElementById('CPU_usage').checked) {
+			//show cpu stuff 
+				$("#cpu_tab").show();
+				$(".battery").show();
+				$("#battery-process").show();
+				$(".battery-top").show();
+				$("#battery-system").show();
+				$("#CPU-Key").show();
+				$("#CPU-Process").show();
+				$("#CPU-System").show();
+			    $("#cpu-system").show();
+				$("#cpu-process").show();
+				$("#cpu-system-block").show();
+				$(".cpu-systemblock").show();
+				if (cpu_test==false){ //create chart if not already on the screen
+				$scope.cpuChart.options = {
+                title: 'CPU Usage of application over time',
+                height: 300,
+                width: 575,
+                hAxis: {title: 'Elapsed time (s)'},
+                vAxis: {title: 'CPU Usage (%)'}
+            };
+            $scope.cpuChart.data = [
+                ['Time', 'Process', 'System']
+            ];
+			    cpu_test=true;
+}
+			}
+			
+			else {
+			//remove everything to do with CPU
+			$scope.cpuChart = {};
+				$("#CPU-Usage").hide();
+	            $("#cpu_tab").hide();
+				$("#battery").hide();
+				$("#battery-process").hide();
+				$(".battery-top").hide();
+				$("#second-battery").hide();
+				$("#battery-system").hide();    
+				$("#CPU-Key").hide();
+				$("#CPU-Process").hide();
+				$("#CPU-System").hide();
+			    $("#cpu-system").hide();
+				$("#cpu-process").hide();
+				$(".cpu-systemblock").hide();
+				cpu_test=false;
+				
+			}
+			if (document.getElementById('memory_usage').checked) {//test whether memory usage checkbox is checked  
+					console.log("test");
+					var position='32em';
+					if (document.getElementById('CPU_usage').checked) { //test whether cpu usage is checked to move up memory charts or not
+						position='32em';
+						console.log("test");
+					}
+					else { 
+						position='10em';				
+				}
+				$("#physical-memory").css({'top': position}); 
+				$("#memory-chart").css({'top': position});
+				
+			if (memory_test==false){//create memory charts if not displayed on the screen 
+	        $scope.overallMemory.options = {
+                title: 'Overall memory on system/in use/available',
+                height: 300,
+                width: 650,
+                hAxis: {title: 'Elapsed time (s)'},
+                vAxis: {title: 'Memory(MB)'}
+            };
+            $scope.overallMemory.data = [
+                ['Time', 'Total RAM on System' , 'RAM in use' , 'RAM available']
+            ];		
+			
+			
+            	$scope.memoryChart.options = {
+                title: 'Memory used by application over time',
+                height: 310,
+                width: 575,
+                hAxis: {title: 'Elapsed time (s)'},
+                vAxis: {title: 'Memory Used (Bytes)'}
+            };
+            $scope.memoryChart.data = [
+                ['Time', 'Process', 'Virtual']
+            ];
+            
+			    memory_test=true;
+}
+			}
+			
+			else {//remove memory charts from the screen
+				$scope.overallMemory={};
+				$scope.memoryChart={};
+				$scope.memoryC={};
+				memory_test=false;
+				 	
+			}
+			
+			if (document.getElementById('gc').checked) { //test whether gc checkbox is checked 
+					var position1='59em';//charts
+					var position2= '77em';  //dials
+					var position3= '84.5em';     //canvas
+					var position4= '80.5em';    //titles
+					var position5= '83.2em';//first number
+					var position6= '85em';//upper-numbers
+					var position7= '91em'; //0's
+					var position8= '95em';   //numbers
+					var position9= '87em';    //waiting
+				if (document.getElementById('CPU_usage').checked &&  document.getElementById('memory_usage').checked ) { //test whether cpu usage is checked to move up memory charts or not
+					    position1='59em';//charts
+						position2= '77em';  //dials
+						position3= '84.5em';     //canvas
+						position4= '80.5em';    //titles
+						position5= '83.2em';//first number
+						position6= '85em';//upper-numbers
+						position7= '91em'; //0's
+						position8= '95em';   //numbers
+						position9= '87em';    //waiting
+						console.log("test");
+					}
+				else if (document.getElementById('CPU_usage').checked || document.getElementById('memory_usage').checked ) { 
+					    position1='32em';//charts
+						position2= '50em';  //dials
+						position3= '57.5em';     //canvas
+						position4= '53.5em';    //titles
+						position5= '56.2em';//first number
+						position6= '58em';//upper-numbers
+						position7= '64em'; //0's
+						position8= '68em';   //numbers
+						position9= '60em';    //waiting
+				}
+
+				else {
+						position1='10em';//charts
+						position2= '28em';  //dials
+						position3= '35.5em';     //canvas
+						position4= '31.5em';    //titles
+						position5= '34.2em';//first number
+						position6= '36em';//upper-numbers
+						position7= '42em'; //0's
+						position8= '46em';   //numbers
+						position9= '38em';    //waiting
+		
+				}
+				
+				
+					$("#gc_size-used ").css({'top': position1}); 
+					$("#gc_speed").css({'top': position1});
+					
+					$("#canvas").css({'top': position3});					
+				    $("#gcAverageDurationSpeedometer").css({'top': position2});
+					$("#speed1").css({'top': position4});
+					$("#value-1").css({'top': position8});
+					$("#first-0").css({'top': position7});										
+					$("#quarter-1").css({'top': position6});
+					$("#half-1").css({'top': position5});
+					$("#three-over-four-1").css({'top': position6});
+					$("#rhs-1").css({'top': position7});
+					$("#wait-1").css({'top': position9});
+				
+				   $("#canvas1").css({'top': position3});
+				   $("#gcAverageFrequencySpeedometer").css({'top': position2});
+				   $("#speed2").css({'top': position4});
+				   $("#value-2").css({'top': position8});
+				   $("#second-0").css({'top': position7});
+				   $("#quarter-2").css({'top': position6});
+				   $("#half-2").css({'top': position5});
+				   $("#three-over-four-2").css({'top': position6});
+				   $("#rhs-2").css({'top': position7});
+				   $("#wait-2").css({'top': position9});
+				
+						
+			if (gc_test==false){ //create charts if they are not displayed  
+		
+			$scope.gcheapChart.options = {
+                title: 'Garbage Collection Memory Usage',
+                height: 300,
+                width: 550,
+                hAxis: {title: 'Elapsed time (s)'},
+                vAxis: {title: 'Memory Usage (bytes)'}
+            };
+            $scope.gcheapChart.data = [
+                ['Time', 'Used', 'Size'],
+                [new Date(),0,0]
+            ];
+			
+            $scope.gcperfChart.options = {
+                title: 'Garbage Collection Performance',
+                height: 300,
+                width: 615,
+                hAxis: {title: 'Elapsed time (s)'},
+                vAxis: {title: 'GC Duration (ms)'}
+            };
+            $scope.gcperfChart.data = [
+                ['Time', 'Duration'],
+                [new Date(),0]
+            ];
+			
+				gc_test=true;
+				//reset the gc arrays and display "wait" text
+				$("#wait-1").show();
+				$("#wait-2").show();
+				total_gc_data=[];
+				past_min_gc_data=[];
+				frequencies=[];
+				}
+		}
+				
+			
+			else {
+			//removes everything relevant to gc 
+				$scope.gcheapChart = {};
+				$scope.gcperfChart = {};
+				gc_test=false;
+				$("#canvas").hide();
+				$("#canvas1").hide();				
+				$("#gcAverageDurationSpeedometer").hide();
+				$("#gcAverageFrequencySpeedometer").hide();
+				$("#speed1").hide();
+				$("#speed2").hide();
+				$("#value-1").hide();
+				$("#value-2").hide();
+				$("#first-0").hide();
+				$("#second-0").hide();
+				$("#quarter-1").hide();
+				$("#quarter-2").hide();
+				$("#half-1").hide();
+				$("#half-2").hide();
+				$("#three-over-four-1").hide();
+				$("#three-over-four-2").hide();
+				$("#rhs-1").hide();
+				$("#rhs-2").hide();
+					
+			}
+				if (document.getElementById('Enable_profiling').checked){
+				$scope.toggleProfiling();	
+			}
+				else {
+				    profiling = false;
+					window.alert("Profiling disabled");
+                    socket.emit('disableprofiling');
+				}
+		};
+		
+			$scope.displayEnvironment=function() { //displays/removes the environment information 
+				$("#env_table").show();
+				if ($scope.environmentText=="Show"){
+					$scope.environmentText="Hide";
+					$("#env_table").show();
+					
+					//hide the top of cpu usage and speed dials 
+					$("#canvas").hide();
+					$("#canvas1").hide();				
+					$("#gcAverageDurationSpeedometer").hide();
+					$("#gcAverageFrequencySpeedometer").hide();
+					$("#speed1").hide();
+					$("#speed2").hide();
+					$("#value-1").hide();
+					$("#value-2").hide();
+					$("#first-0").hide();
+					$("#second-0").hide();
+					$("#quarter-1").hide();
+					$("#quarter-2").hide();
+					$("#half-1").hide();
+					$("#half-2").hide();
+					$("#three-over-four-1").hide();
+					$("#three-over-four-2").hide();
+					$("#rhs-1").hide();
+					$("#rhs-2").hide();
+					$("#wait-1").hide();
+					$("#wait-2").hide();
+					
+				}
+				else {
+					$scope.environmentText="Show";
+					$("#env_table").hide();
+					if (total_gc_data.length>10) {
+					  	$("#canvas").show();					
+						$("#gcAverageDurationSpeedometer").show();
+						$("#speed1").show();
+						$("#value-1").show();
+						$("#first-0").show();										
+						$("#quarter-1").show();
+						$("#half-1").show();
+						$("#three-over-four-1").show();
+						$("#rhs-1").show();
+						$("#wait-1").hide();
+					}
+					
+					else {
+						$("#wait-1").show();
+					}
+					
+					if (frequencies.length>5) {
+						$("#canvas1").show();
+						$("#gcAverageFrequencySpeedometer").show();
+						$("#speed2").show();
+						$("#value-2").show();
+						$("#second-0").show();
+						$("#quarter-2").show();
+						$("#half-2").show();
+						$("#three-over-four-2").show();
+						$("#rhs-2").show();
+						$("#wait-2").hide();
+					}
+					
+					else {
+						$("#wait-2").show();
+					}
+				}
+			};
+        }
+	);
+ 
+ 
+//Next set of methods draw the google charts
+ 
+ var cpuGlobalChart;
+ app.directive('cpuChart',function (){
+   return { 
+      restrict: 'A',
+      link: function ($scope, elm, attrs) {
+        $scope.$watch('cpuChart', function () {
+            if (typeof cpuGlobalChart !== 'undefined') cpuGlobalChart.clearChart();
+            cpuGlobalChart = new google.visualization.LineChart(elm[0]);
+            if (typeof $scope.cpuChart.data !== 'undefined' && $scope.cpuChart.data.length > 1) {
+                cpuGlobalChart.draw(google.visualization.arrayToDataTable($scope.cpuChart.data), $scope.cpuChart.options);
+            }
+        },true);
+      }
+   };
+});
+
+
+ var overallMemoryGlobalC;
+ app.directive('overallMemory',function (){
+   return {
+      restrict: 'A',
+      link: function ($scope, elm, attrs) {
+        $scope.$watch('overallMemory', function () {
+            if (typeof overallMemoryGlobalC !== 'undefined') overallMemoryGlobalC.clearChart();
+            overallMemoryGlobalC = new google.visualization.LineChart(elm[0]);
+            if (typeof $scope.overallMemory.data !== 'undefined' && $scope.overallMemory.data.length > 1) {
+                overallMemoryGlobalC.draw(google.visualization.arrayToDataTable($scope.overallMemory.data), $scope.overallMemory.options);
+            }
+        },true);
+      }
+   };
+});
+
+
+
+ var memoryGlobalChart;
+ app.directive('memoryChart',function (){
+   return {
+      restrict: 'A',
+      link: function ($scope, elm, attrs) {
+        $scope.$watch('memoryChart', function () {
+            if (typeof memoryGlobalChart !== 'undefined') memoryGlobalChart.clearChart();
+            memoryGlobalChart = new google.visualization.LineChart(elm[0]);
+            if (typeof $scope.memoryChart.data !== 'undefined' && $scope.memoryChart.data.length > 1) {
+                memoryGlobalChart.draw(google.visualization.arrayToDataTable($scope.memoryChart.data), $scope.memoryChart.options);
+            }
+        },true);
+      }
+   };
+});
+
+
+   
+ var gcheapGlobalChart;
+ app.directive('gcheapChart',function (){
+   return {
+      restrict: 'A',
+      link: function ($scope, elm, attrs) {
+        $scope.$watch('gcheapChart', function () {
+            if (typeof gcheapGlobalChart !== 'undefined') gcheapGlobalChart.clearChart();
+            gcheapGlobalChart = new google.visualization.LineChart(elm[0]);
+            if (typeof $scope.gcheapChart.data !== 'undefined' && $scope.gcheapChart.data.length > 1) {
+                gcheapGlobalChart.draw(google.visualization.arrayToDataTable($scope.gcheapChart.data), $scope.gcheapChart.options);
+            }
+        },true);
+      }
+   };
+});
+
+
+ var gcperfGlobalChart;
+ app.directive('gcperfChart',function (){
+   return {
+      restrict: 'A',
+      link: function ($scope, elm, attrs) {
+        $scope.$watch('gcperfChart', function () {
+            if (typeof gcperfGlobalChart !== 'undefined') gcperfGlobalChart.clearChart();
+            gcperfGlobalChart = new google.visualization.LineChart(elm[0]);
+            if (typeof $scope.gcperfChart.data !== 'undefined' && $scope.gcperfChart.data.length > 1) {
+                gcperfGlobalChart.draw(google.visualization.arrayToDataTable($scope.gcperfChart.data), $scope.gcperfChart.options);
+            }
+        },true);
+      }
+   };
+});
+
+
+ var envGlobalTable;
+ app.directive('envTable',function (){
+   return {
+      restrict: 'A',
+      link: function ($scope, elm, attrs) {
+        $scope.$watch('envTable', function () {
+            if (typeof envGlobalTable !== 'undefined') envGlobalTable.clearChart();
+            envGlobalTable = new google.visualization.Table(elm[0]);
+            if (typeof $scope.envTable.data !== 'undefined'
+                && $scope.envTable.data.getNumberOfColumns() > 0 
+                && $scope.envTable.data.getNumberOfRows() > 0) {
+                envGlobalTable.draw($scope.envTable.data);
+            }
+        },true);
+      }
+   };
+});
+
+
+function rotate_point(pointX, pointY, originX, originY, angle) { //function that rotates the dials in the speedometers
+	angle = angle * Math.PI / 180.0;
+	return {
+		x: Math.cos(angle) * (pointX-originX) - Math.sin(angle) * (pointY-originY) + originX,
+		y: Math.sin(angle) * (pointX-originX) + Math.cos(angle) * (pointY-originY) + originY
+	};
+}
+
+
+    </script>    
+ 
