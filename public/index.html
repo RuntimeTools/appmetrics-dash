@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<link rel="stylesheet" type="text/css" href="css/style.css" title="Dark background">
+<link rel="alternate stylesheet" type="text/css" href="css/style2.css" title="Light background">
+
+<head>
+    <title>Application Metrics Dashboard for Node (Tech Preview)</title>
+</head>
+
+<body>
+    <h1>Application Metrics Dashboard for Node (Tech Preview)</h1>
+    <!-- load the d3.js library -->
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+	// Set the dimensions of the canvas / graph
+        var margin = {top: 120, right: 20, bottom: 30, left: 60},
+            width = 430 - margin.left - margin.right,
+            height = 320 - margin.top - margin.bottom;
+		
+        var myurl = location.host;
+        var socket = io.connect(myurl);
+        var systemMEMLatest = 0;
+        var processMEMLatest = 0;
+        var systemCPULatest = 0;
+        var processCPULatest = 0;
+
+        //socket = io.connect();
+        socket.emit('connected');
+        socket.emit('disableprofiling'); //profiling disabled
+    </script>
+    <script type="text/javascript" src="js/gauge.js"></script>
+
+    <div id="cpuDiv">
+        <script type="text/javascript" src="js/cpuCharts.js"></script>
+        <script type="text/javascript" src="js/cpu-process-gauge.js"></script>
+    </div>
+    <div style="clear: both;"></div>
+    <div id="httpDiv">
+        <script type="text/javascript" src="js/httpCharts.js"></script>
+        <script type="text/javascript" src="js/httpThroughPutChart.js"></script>
+        <script type="text/javascript" src="js/http-top5.js"></script>
+    </div>
+    <div style="clear: both;"></div>
+    <div id="memDiv">
+    	<script type="text/javascript" src="js/updateGaugeDriverData.js"></script>
+		<script type="text/javascript" src="js/memCharts.js"></script>
+	    <script type="text/javascript" src="js/mem-process-gauge.js"></script>
+    </div>
+
+
+</body>
+</html>
+

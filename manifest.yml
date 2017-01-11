@@ -1,0 +1,8 @@
+applications:
+- path: .
+  memory: 256M
+  instances: 1
+  domain: eu-gb.mybluemix.net
+  name: nodemetricsdashboard
+  host: nodemetricsdashboard
+  disk_quota: 1024M

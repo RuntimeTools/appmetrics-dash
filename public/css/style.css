@@ -1,0 +1,116 @@
+    @viewport {
+	width: 320;
+    }
+
+    html {
+        background-color: white;
+    }
+
+    body {
+	font: 12px Arial;
+	fill: black;
+    }
+
+    h1 {
+	font: 24px;
+	font-weight: bold;
+	text-align: 25%;
+	color: black;
+    }
+
+    svg {
+	border:1px solid black;
+	margin: 3px;
+    }
+
+    .cpuChart path,
+    .memChart path,
+    .httpThroughPutChart path,
+    .httpChart path {
+	stroke: steelblue;
+	stroke-width: 2;
+	fill: none;
+    }
+
+    .cpuChart,
+    .guage {
+      float: left;
+    }
+
+    #cpuDiv {
+      width: 100%;
+    }
+
+    .axis path,
+    .axis line {
+	fill: none;
+	stroke: grey;
+	stroke-width: 1;
+	shape-rendering: crispEdges;
+    }
+
+    .axis2 path,
+    .axis2 line {
+	fill: none;
+	stroke: grey;
+	stroke-width: 1;
+	shape-rendering: crispEdges;
+    }
+
+    .legend {
+	font: 12px Arial;
+	font-weight: bold;
+	text-anchor: left;
+    }
+
+    .grid .tick {
+	stroke: lightgrey;
+	stroke-opacity: 0.7;
+	shape-rendering: crispEdges;
+    }
+
+    .grid path {
+	stroke-width: 0;
+    }
+
+    div.tooltip {
+	position: absolute;
+	text-align: center;
+	padding: 3px;
+	font: 12px sans-serif;
+	background: lightsteelblue;
+	border: 0px;
+	border-radius: 8px;
+	pointer-events: none;
+    }
+
+    .container {
+        width: 100%;
+    }
+
+    .chart {
+        margin: 0 auto;
+        display: block;
+        text-align: center;
+    }
+
+
+    g.arc {
+	fill: steelblue;
+    }
+
+    g.pointer {
+	fill: #959f9f;
+	stroke: #000000;
+    }
+
+    g.label text {
+	text-anchor: middle;
+	text-align: center;
+	font-size: 12px;
+    }
+
+    .urlChart rect {
+      fill: steelblue;
+    }
+
