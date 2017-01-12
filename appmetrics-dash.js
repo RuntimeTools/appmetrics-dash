@@ -18,9 +18,6 @@ var http = require('http');
 var cfenv = require('cfenv');
 
 // create a new express server
-
-
-
 var app = require('express')();
 var server = http.Server(app);
 var io = require('socket.io')(server);
@@ -33,8 +30,6 @@ var options = {
     path: '/index.html'
   };
 
-
-
 app.use(express.static(__dirname + '/public'));
 //app.get('/', function (req, res) {
 //  res.sendfile(__dirname + '/index.html');
@@ -43,8 +38,46 @@ app.use(express.static(__dirname + '/public'));
 /*
  * Publish the environment data to clients when they connect
  */
+
+
+
+
 io.on('connection', function(socket) {
-  socket.emit('environment', JSON.stringify(monitoring.getEnvironment()));
+  env = monitoring.getEnvironment();
+  var result = [];
+  for (var entry in env) {
+    switch (entry) {
+      case "command.line":
+          var json = {};
+          json["Parameter"]="Command Line";
+          json["Value"]=env[entry];
+          result.push(json);
+
+          break;
+      case "environment.HOSTNAME":
+        var json = {};
+        json["Parameter"]="Hostname";
+        json["Value"]=env[entry];
+        result.push(json);
+      case "os.arch":
+        var json = {};
+        json["Parameter"]="OS Architecture";
+        json["Value"]=env[entry];
+        result.push(json);
+        break;
+      case "number.of.processors":
+        var json = {};
+        json["Parameter"]="Number of Processors";
+        json["Value"]=env[entry];
+        result.push(json);
+        break;
+      default:
+          break;
+    }
+  }    
+  
+  socket.emit('environment', JSON.stringify(result));
+
   /*
    * Support enabling/diabling profiling data
    */
@@ -55,16 +88,6 @@ io.on('connection', function(socket) {
   socket.on('disableprofiling', function(req) {
     monitoring.disable('profiling');
   });
-  socket.on('cpuRequest', function(req) {
-    socket.emit('environment', JSON.stringify(monitoring.getEnvironment()));
-  });
-  socket.on('httpRequest', function(req) {
-    socket.emit('environment', JSON.stringify(monitoring.getEnvironment()));
-  });
-  socket.on('memRequest', function(req) {
-    socket.emit('environment', JSON.stringify(monitoring.getEnvironment()));
-  });
-
   
 });
 
@@ -76,7 +99,6 @@ monitoring.on('cpu', function (data) {
 });
 
 monitoring.on('memory', function (data) {
-
   io.emit('memory', JSON.stringify(data));
 });
 
@@ -89,7 +111,6 @@ monitoring.on('profiling', function (data) {
 });
 
 monitoring.on('http', function (data) {
-  
   io.emit('http', JSON.stringify(data));
 });
 

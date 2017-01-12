@@ -1,7 +1,7 @@
 var cpuProcessGauge;
 
 function onDocumentReadyCPUProcess() {
-	cpuProcessGauge = gauge('#cpuDiv', {
+	cpuProcessGauge = gauge('#cpuDiv2', {
 		maxValue: 100,
 		title : "Process CPU (%)"
 	});

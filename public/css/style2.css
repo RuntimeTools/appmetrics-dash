@@ -7,20 +7,24 @@
     }
 
     body {
-	font: 12px Arial;
+	font: 14px Arial;
 	fill: #3b4b54;
     }
 
     h1 {
-	font: 24px;
+	font: 26px Arial;
 	font-weight: bold;
-	text-align: 25%;
-	color: black;
+	text-align: center;
+	color: #3b4b54;
     }
 
     svg {
-	border:1px solid black;
-	margin: 3px;
+	margin: 2px;
+    background-color: #f7f7f7;
+    }
+	
+    #envDiv {
+        background-color: #f7f7f7;
     }
 
     .cpuChart path,
@@ -32,15 +36,7 @@
 	fill: none;
     }
 
-    .cpuChart,
-    .guage {
-      float: left;
-    }
-
-    #cpuDiv {
-      width: 100%;
-    }
-
+  
     .axis path,
     .axis line {
 	fill: none;
@@ -112,5 +108,13 @@
 
     .urlChart rect {
       fill: steelblue;
+    }
+
+    table, th, td {
+        background-color: #f7f7f7;
+    }
+    th, td {
+        padding: 5px;
+        border-bottom: 1px solid #ddd;
     }
 

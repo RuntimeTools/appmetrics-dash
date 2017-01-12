@@ -1,24 +1,52 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 
-<link rel="stylesheet" type="text/css" href="css/style.css" title="Dark background">
-<link rel="alternate stylesheet" type="text/css" href="css/style2.css" title="Light background">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/style2.css" title="Light background">
+<link rel="alternate stylesheet" type="text/css" href="css/style.css" title="Dark background">
 
 <head>
-    <title>Application Metrics Dashboard for Node (Tech Preview)</title>
+    <title>Application Metrics Dashboard for Node.js (Tech Preview)</title>
 </head>
 
 <body>
-    <h1>Application Metrics Dashboard for Node (Tech Preview)</h1>
+    <h1>Application Metrics Dashboard for Node.js (Tech Preview)</h1>
     <!-- load the d3.js library -->
     <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-	// Set the dimensions of the canvas / graph
-        var margin = {top: 120, right: 20, bottom: 30, left: 60},
-            width = 430 - margin.left - margin.right,
-            height = 320 - margin.top - margin.bottom;
-		
+    <script src="/socket.io/socket.io.js"></script>    
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/gauge.js"></script>
+
+    <div class="row">
+        <div class="col-md-4" id="cpuDiv1"></div>
+        <div class="col-md-4" id="memDiv1"></div>
+        <div class="col-md-4" id="httpDiv2"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6" id="httpDiv1"></div>
+        <div class="col-md-6" id="httpDiv3"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" id="envDiv"></div>
+    </div>
+        <script>
+            // Set the dimensions of the canvas / graph
+            var margin = {
+                    top: 120,
+                    shortTop: 60,
+                    right: 20,
+                    bottom: 30,
+                    left: 60
+                },
+                width = $("#cpuDiv1").width(),
+                httpWidth = $("#httpDiv1").width(),
+                graphWidth = width - margin.left - margin.right,
+                httpGraphWidth = httpWidth - margin.left - margin.right,
+                height = 300 - margin.top - margin.bottom;
+                tallerHeight = 300 - margin.shortTop - margin.bottom;
+                
         var myurl = location.host;
         var socket = io.connect(myurl);
         var systemMEMLatest = 0;
@@ -30,26 +58,40 @@
         socket.emit('connected');
         socket.emit('disableprofiling'); //profiling disabled
     </script>
+
+
     <script type="text/javascript" src="js/gauge.js"></script>
+    <script type="text/javascript" src="js/envTable.js"></script>
 
-    <div id="cpuDiv">
-        <script type="text/javascript" src="js/cpuCharts.js"></script>
-        <script type="text/javascript" src="js/cpu-process-gauge.js"></script>
-    </div>
-    <div style="clear: both;"></div>
-    <div id="httpDiv">
-        <script type="text/javascript" src="js/httpCharts.js"></script>
-        <script type="text/javascript" src="js/httpThroughPutChart.js"></script>
-        <script type="text/javascript" src="js/http-top5.js"></script>
-    </div>
-    <div style="clear: both;"></div>
-    <div id="memDiv">
-    	<script type="text/javascript" src="js/updateGaugeDriverData.js"></script>
-		<script type="text/javascript" src="js/memCharts.js"></script>
-	    <script type="text/javascript" src="js/mem-process-gauge.js"></script>
-    </div>
+    <script type="text/javascript" src="js/cpuChart.js"></script>
+    
+    <script type="text/javascript" src="js/httpRequestsChart.js"></script>
+    <script type="text/javascript" src="js/httpThroughPutChart.js"></script>
+    <script type="text/javascript" src="js/httpTop5.js"></script>
+	
+	<script type="text/javascript" src="js/memChart.js"></script>
+    
+    <script>
+        window.addEventListener('resize', resize); 
 
+        function resize() {
+            width = $("#cpuDiv1").width(),
+            httpWidth = $("#httpDiv1").width(),
+            graphWidth = width - margin.left - margin.right,
+            httpGraphWidth = httpWidth - margin.left - margin.right;
+            resizeCPUChart();
+            updateCPUData();
+            resizeHttpChart();
+            updateHttpData();
+            resizeMemChart();
+            updateMemData();
+            resizeHttpThroughputChart();
+            updateThroughPutData();
+            resizeHttpTop5Chart();
+        }
+
+    </script>
 
 </body>
-</html>
 
+</html>

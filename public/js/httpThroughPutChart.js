@@ -1,10 +1,10 @@
-var httpTPX = d3.time.scale().range([0, width]);
-var httpTPY = d3.scale.linear().range([height, 0]);
+var httpTPX = d3.time.scale().range([0, graphWidth]);
+var httpTPY = d3.scale.linear().range([tallerHeight, 0]);
 
 var httpRate = [];
 
 var httpTPXAxis = d3.svg.axis().scale(httpTPX)
-    .orient("bottom").ticks(3).tickFormat(d3.time.format("%H:%M:%S"));;
+    .orient("bottom").ticks(3).tickFormat(d3.time.format("%H:%M:%S"));
 
 var httpTPYAxis = d3.svg.axis().scale(httpTPY)
     .orient("left").ticks(5).tickFormat(function(d) {
@@ -21,14 +21,14 @@ var httpThroughPutline = d3.svg.line()
     });
 
 
-var httpThroughPutChart = d3.select("#httpDiv")
+var httpThroughPutChart = d3.select("#httpDiv2")
     .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+    .attr("width", width)
+    .attr("height", tallerHeight + margin.shortTop + margin.bottom)
     .attr("class", "httpThroughPutChart")
     .append("g")
     .attr("transform",
-        "translate(" + margin.left + "," + margin.top + ")");
+        "translate(" + margin.left + "," + margin.shortTop + ")");
 
 // Scale the range of the data
 httpTPX.domain(d3.extent(httpRate, function(d) {
@@ -53,7 +53,7 @@ httpThroughPutChart.append("text")
 // Add the X Axis
 httpThroughPutChart.append("g")
     .attr("class", "x axis")
-    .attr("transform", "translate(0," + height + ")")
+    .attr("transform", "translate(0," + tallerHeight + ")")
     .call(httpTPXAxis);
 
 // Add the Y Axis
@@ -64,23 +64,24 @@ httpThroughPutChart.append("g")
 // Add the title
 httpThroughPutChart.append("text")
     .attr("x", -20)
-    .attr("y", 0 - (margin.top * 6 / 8))    .attr("text-anchor", "left")
+    .attr("y", 0 - (margin.shortTop * 0.5))    .attr("text-anchor", "left")
     .style("font-size", "18px")
     .text("HTTP Throughput");
 
 function updateThroughPutData() {
 
-  socket.on('httpRate', function (httpRate){
-    data = JSON.parse(httpRate);  // parses the data into a JSON array
-	         if (data.length == 0)
-	             return
+  socket.on('httpRate', function (httpRequest){
+    data = JSON.parse(httpRequest);  // parses the data into a JSON array
+     if (data.length == 0)
+         return  
+  
 	
            	httpRate.push(data)
 	
 	         // Only keep 30 minutes of data
 	         var currentTime = Date.now()
 	         var d = httpRate[0]
-	         while (d.time.valueOf() + 1800000 < currentTime) {
+	         while (d.hasOwnProperty('time') && d.time.valueOf() + 1800000 < currentTime) {
 	             httpRate.shift()
 	             d = httpRate[0]
 	         }
@@ -95,21 +96,25 @@ function updateThroughPutData() {
 	         })]);
 
 
-	         var selection = d3.select(".httpThroughPutChart").transition();
+	         var selection = d3.select(".httpThroughPutChart");
 	
 	         selection.select(".line") // change the line
-	             .duration(300)
 	             .attr("d", httpThroughPutline(httpRate));
 	         selection.select(".x.axis") // change the x axis
-	             .duration(300)
 	             .call(httpTPXAxis);
 	         selection.select(".y.axis") // change the y axis
-	             .duration(300)
 	             .call(httpTPYAxis);
-	
 	     });
 }
 
 
-    updateThroughPutData();
 
+function resizeHttpThroughputChart() {
+    var chart = d3.select(".httpThroughPutChart")
+	chart.attr("width", width);
+    httpTPX = d3.time.scale().range([0, graphWidth]);
+    httpTPXAxis = d3.svg.axis().scale(httpTPX)
+        .orient("bottom").ticks(3).tickFormat(d3.time.format("%H:%M:%S"));
+}
+
+setInterval(updateThroughPutData, 2000);

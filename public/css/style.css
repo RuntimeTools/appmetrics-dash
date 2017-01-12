@@ -3,24 +3,34 @@
     }
 
     html {
-        background-color: white;
+    background-color: #3b4b54;
     }
 
     body {
 	font: 12px Arial;
-	fill: black;
+	fill: white;
+    background-color: #3b4b54;
     }
 
     h1 {
-	font: 24px;
+	font: 26px Arial;
 	font-weight: bold;
-	text-align: 25%;
-	color: black;
+	text-align: center;
+	color: white;
+    }
+
+    p {
+	font: 18px;
+	color: white;
     }
 
     svg {
-	border:1px solid black;
 	margin: 3px;
+    background-color: #3f505a;
+    }
+
+    #envDiv {
+        background-color: #3f505a;
     }
 
     .cpuChart path,
@@ -32,15 +42,7 @@
 	fill: none;
     }
 
-    .cpuChart,
-    .guage {
-      float: left;
-    }
-
-    #cpuDiv {
-      width: 100%;
-    }
-
+  
     .axis path,
     .axis line {
 	fill: none;
@@ -112,5 +114,11 @@
 
     .urlChart rect {
       fill: steelblue;
+    }
+
+    th, td {
+        padding: 5px;
+        border-bottom: 1px solid #696969;
+	    color: white;
     }
 

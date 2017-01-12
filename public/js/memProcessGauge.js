@@ -1,7 +1,7 @@
 var memProcessGauge;
 
 function onDocumentReadyMemProcess() {
-	memProcessGauge = gauge('#memDiv', {
+	memProcessGauge = gauge('#memDiv2', {
 		maxValue: 200,
 		title: "App Memory Used (MB)",
 		titleFontSize: "18px"
