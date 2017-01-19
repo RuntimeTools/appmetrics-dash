@@ -28,8 +28,12 @@
         <div class="col-md-6" id="httpDiv1"></div>
         <div class="col-md-6" id="httpDiv3"></div>
     </div>
-    <div class="row">
-        <div class="col-md-12" id="envDiv"></div>
+    <div class="row row-margins">
+        <div class="col-md-10" id="envDiv"></div>
+        <div class="col-md-2" id="nodeReportButtonDiv"></div>
+    </div>
+    <div class="row big-top-margin">
+        <div class="col-md-12" id="nodeReportDiv"></div>
     </div>
         <script>
             // Set the dimensions of the canvas / graph
@@ -57,9 +61,11 @@
         //socket = io.connect();
         socket.emit('connected');
         socket.emit('disableprofiling'); //profiling disabled
+        
     </script>
 
 
+    <script type="text/javascript" src="js/nodeReport.js"></script>
     <script type="text/javascript" src="js/gauge.js"></script>
     <script type="text/javascript" src="js/envTable.js"></script>
 

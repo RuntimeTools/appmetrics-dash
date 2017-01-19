@@ -11,6 +11,7 @@ var monitoring = appmetrics.monitor();
 // for more info, see: http://expressjs.com
 var express = require('express');
 
+var nodereport = require('nodereport');
 
 var http = require('http');
 // cfenv provides access to your Cloud Foundry environment
@@ -87,6 +88,24 @@ io.on('connection', function(socket) {
   
   socket.on('disableprofiling', function(req) {
     monitoring.disable('profiling');
+  });
+
+  socket.on('nodereport', function(req) {
+    // Trigger a Node Report then return it to dash
+    try {
+        var nodeReportFileName = nodereport.triggerReport();
+        var fs = require('fs');
+        fs.readFile(nodeReportFileName, "utf-8", function (error, data) {
+            if(error) {
+                io.emit('nodereport', error);
+            } else {
+                io.emit('nodereport', data);
+            }
+        });
+        } catch (err) {
+        // Catch any errors thrown by triggerReport()
+            io.emit('nodereport', err);
+        }
   });
   
 });

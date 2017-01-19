@@ -22,7 +22,7 @@
 	margin: 2px;
     background-color: #f7f7f7;
     }
-	
+
     #envDiv {
         background-color: #f7f7f7;
     }
@@ -117,4 +117,12 @@
         padding: 5px;
         border-bottom: 1px solid #ddd;
     }
+
+    pre {
+        white-space: pre-wrap;
+    }
+
+    .row-margins { margin-top:2px; margin-bottom:2px}
+    .big-top-margin { margin-top:8px;}
+	
 
