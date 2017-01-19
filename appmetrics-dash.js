@@ -12,6 +12,7 @@ var monitoring = appmetrics.monitor();
 var express = require('express');
 
 var nodereport = require('nodereport');
+var fs = require('fs');
 
 var http = require('http');
 // cfenv provides access to your Cloud Foundry environment
@@ -94,7 +95,6 @@ io.on('connection', function(socket) {
     // Trigger a Node Report then return it to dash
     try {
         var nodeReportFileName = nodereport.triggerReport();
-        var fs = require('fs');
         fs.readFile(nodeReportFileName, "utf-8", function (error, data) {
             if(error) {
                 io.emit('nodereport', error);
