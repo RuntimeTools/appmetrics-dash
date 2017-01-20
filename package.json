@@ -1,0 +1,17 @@
+{
+  "name": "appmetrics-dash",
+  "version": "1.0.0",
+  "description": "The Node.js Starter demonstrates a simple, reusable Node.js web application based on the Express framework.",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git002@gitlab-polyglot.hursley.ibm.com:runtimetools/appmetrics-dash.git"
+  },
+  "author": "",
+  "license": "ISC"
+}
