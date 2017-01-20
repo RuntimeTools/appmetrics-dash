@@ -9,7 +9,7 @@
   },
   "dependencies": {
    "appmetrics": "*",
-   "nodereport": "*",
+   "nodereport": "https://github.com/hhellyer/nodereport.git#stream_output_dev",
     "express": "*",
     "socket.io": "*",
     "cfenv": "1.0.x"
