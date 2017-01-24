@@ -8,12 +8,11 @@ d3.select("#nodeReportButtonDiv")
 	.attr("onClick", "socket.emit('nodereport')");
 
 socket.on('nodereport', function (nodereport){
-    d3.select(".nodeReportText").remove();
-    d3.select("#nodeReportDiv")
-	    .append("pre")
-        .attr("class", "nodeReportText")
-        .style("padding-left", "45px")
-        .style("padding-top", "20px")
-        .text(nodereport);
-    document.getElementById('nodeReportDiv').scrollIntoView(true);    
+    var newWindow = window.open();
+    newWindow.document.open();
+    newWindow.document.write('<html><head><title>NodeReport: '
+        + new Date().toUTCString()
+        + '</title></head><body><pre style="white-space: pre-wrap;">'
+        + nodereport + '</pre></body></h‌​tml>');
+    newWindow.document.close();  
 });
