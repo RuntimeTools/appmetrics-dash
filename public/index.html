@@ -29,7 +29,8 @@
         <div class="col-md-6" id="httpDiv3"></div>
     </div>
     <div class="row">
-        <div class="col-md-12" id="gcDiv"></div>
+        <div class="col-md-6" id="gcDiv"></div>
+        <div class="col-md-6" id="eventLoopDiv"></div>
     </div>
     <div class="row row-margins">
         <div class="col-md-10" id="envDiv"></div>
@@ -80,6 +81,7 @@
 	
 	<script type="text/javascript" src="js/memChart.js"></script>
     <script type="text/javascript" src="js/gcChart.js"></script>
+    <script type="text/javascript" src="js/eventLoopChart.js"></script>
     
     <script>
         window.addEventListener('resize', resize); 
@@ -97,6 +99,8 @@
             updateMemData();
             resizeGCChart();
             updateGCData();
+            resizeEventLoopChart();
+            updateEventLoopData();
             resizeHttpThroughputChart();
             updateThroughPutData();
             resizeHttpTop5Chart();

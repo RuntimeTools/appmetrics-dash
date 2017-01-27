@@ -30,6 +30,7 @@
     .cpuChart path,
     .memChart path,
     .gcChart path,
+    .elChart path,
     .httpThroughPutChart path,
     .httpChart path {
 	stroke: steelblue;
