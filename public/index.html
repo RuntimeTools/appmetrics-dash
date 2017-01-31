@@ -39,36 +39,28 @@
     <div class="row big-top-margin">
         <div class="col-md-12" id="nodeReportDiv"></div>
     </div>
-        <script>
-            // Set the dimensions of the canvas / graph
-            var margin = {
-                    top: 120,
-                    shortTop: 60,
-                    right: 20,
-                    bottom: 30,
-                    left: 60
-                },
-                width = $("#cpuDiv1").width(),
-                httpWidth = $("#httpDiv1").width(),
-                graphWidth = width - margin.left - margin.right,
-                httpGraphWidth = httpWidth - margin.left - margin.right,
-                height = 300 - margin.top - margin.bottom;
-                tallerHeight = 300 - margin.shortTop - margin.bottom;
-                
-        var myurl = location.host;
-        var socket = io.connect(myurl);
-        var systemMEMLatest = 0;
-        var processMEMLatest = 0;
-        var systemCPULatest = 0;
-        var processCPULatest = 0;
-
-        //socket = io.connect();
-        socket.emit('connected');
-        socket.emit('disableprofiling'); //profiling disabled
-        
-    </script>
-
-
+<script>
+    // Initialise graph and canvas dimensions
+    var margin = {
+         top: 120,
+         shortTop: 60,
+         right: 20,
+         bottom: 30,
+         left: 60
+    },
+    canvasWidth = $("#cpuDiv1").width(),
+    httpCanvasWidth = $("#httpDiv1").width(),
+    graphWidth = canvasWidth - margin.left - margin.right,
+    httpGraphWidth = httpCanvasWidth - margin.left - margin.right,
+    canvasHeight = 300,
+    tallerGraphHeight = 300 - margin.shortTop - margin.bottom,
+    graphHeight = canvasHeight - margin.top - margin.bottom;
+     
+    var myurl = location.host;
+    var socket = io.connect(myurl);
+    socket.emit('connected');
+    socket.emit('disableprofiling'); //profiling disabled
+</script>
     <script type="text/javascript" src="js/nodeReport.js"></script>
     <script type="text/javascript" src="js/gauge.js"></script>
     <script type="text/javascript" src="js/envTable.js"></script>
@@ -87,10 +79,10 @@
         window.addEventListener('resize', resize); 
 
         function resize() {
-            width = $("#cpuDiv1").width(),
-            httpWidth = $("#httpDiv1").width(),
-            graphWidth = width - margin.left - margin.right,
-            httpGraphWidth = httpWidth - margin.left - margin.right;
+         canvasWidth = $("#cpuDiv1").width(),
+        httpCanvasWidth = $("#httpDiv1").width(),
+        graphWidth = canvasWidth - margin.left - margin.right,
+        httpGraphWidth = httpCanvasWidth - margin.left - margin.right;
             resizeCPUChart();
             updateCPUData();
             resizeHttpChart();

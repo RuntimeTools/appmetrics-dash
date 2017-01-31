@@ -1,5 +1,5 @@
     @viewport {
-	width: 320;
+    width: 320;
     }
 
     html {
@@ -7,79 +7,73 @@
     }
 
     body {
-	font: 14px Arial;
-	fill: #3b4b54;
+    font: 14px Arial;
+    fill: #3b4b54;
     }
 
     h1 {
-	font: 26px Arial;
-	font-weight: bold;
-	text-align: center;
-	color: #3b4b54;
+    font: 26px Arial;
+    font-weight: bold;
+    text-align: center;
+    color: #3b4b54;
     }
 
     svg {
-	margin: 2px;
+    margin: 2px;
     background-color: #f7f7f7;
     }
-
+    
     #envDiv {
         background-color: #f7f7f7;
     }
 
     .cpuChart path,
     .memChart path,
-    .gcChart path,
-    .elChart path,
     .httpThroughPutChart path,
     .httpChart path {
-	stroke: steelblue;
-	stroke-width: 2;
-	fill: none;
+    stroke: #6eedd8;
+    stroke-width: 2;
+    fill: none;
     }
 
   
-    .axis path,
-    .axis line {
-	fill: none;
-	stroke: grey;
-	stroke-width: 1;
-	shape-rendering: crispEdges;
+    .xAxis path,
+    .xAxis line,
+    .yAxis path,
+    .yAxis line {
+    fill: none;
+    stroke: gray;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
     }
+
+
 
     .axis2 path,
     .axis2 line {
-	fill: none;
-	stroke: grey;
-	stroke-width: 1;
-	shape-rendering: crispEdges;
+    fill: none;
+    stroke: gray;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
     }
 
-    .legend {
-	font: 12px Arial;
-	font-weight: bold;
-	text-anchor: left;
+    .lineLabel,
+    .processlatestlabel {
+    font: 12px Arial;
+    font-weight: bold;
+    text-anchor: left;
     }
 
-    .grid .tick {
-	stroke: lightgrey;
-	stroke-opacity: 0.7;
-	shape-rendering: crispEdges;
-    }
-
-    .grid path {
-	stroke-width: 0;
-    }
 
     div.tooltip {
-	position: absolute;
-	text-align: center;
-	padding: 3px;
-	font: 12px sans-serif;
-	background: lightsteelblue;
-	border: 0px;
-	border-radius: 8px;
-	pointer-events: none;
+    position: absolute;
+    text-align: center;
+    padding: 3px;
+    font: 12px sans-serif;
+    background: #b0f4e8;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
     }
 
     .container {
@@ -94,22 +88,22 @@
 
 
     g.arc {
-	fill: steelblue;
+    fill: #6decd7;
     }
 
     g.pointer {
-	fill: #959f9f;
-	stroke: #000000;
+    fill: #959f9f;
+    stroke: #000000;
     }
 
     g.label text {
-	text-anchor: middle;
-	text-align: center;
-	font-size: 12px;
+    text-anchor: middle;
+    text-align: center;
+    font-size: 12px;
     }
 
-    .urlChart rect {
-      fill: steelblue;
+    .httpTop5Chart rect {
+      fill: #5aaafa;
     }
 
     table, th, td {
@@ -119,12 +113,4 @@
         padding: 5px;
         border-bottom: 1px solid #ddd;
     }
-
-    pre {
-        white-space: pre-wrap;
-    }
-
-    .row-margins { margin-top:2px; margin-bottom:2px}
-    .big-top-margin { margin-top:8px;}
-	
 
