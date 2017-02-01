@@ -29,6 +29,8 @@
 
     .cpuChart path,
     .memChart path,
+    .gcChart path,
+    .elChart path,
     .httpThroughPutChart path,
     .httpChart path {
     stroke: #6eedd8;
