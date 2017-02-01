@@ -1,68 +1,89 @@
-var x2 = d3.time.scale().range([0, httpGraphWidth]);
-var y2 = d3.scale.linear().range([tallerHeight, 0]);
+/*******************************************************************************
+ * Copyright 2017 IBM Corp.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ ******************************************************************************/
 
-var httpData = [],
-httpMax = 0;
+// Line chart for displaying http requests with time and duration
 
-var xAxis2 = d3.svg.axis().scale(x2)
-.orient("bottom").ticks(3).tickFormat(d3.time.format("%H:%M:%S"));;
+var http_xScale = d3.time.scale().range([0, httpGraphWidth]);
+var http_yScale = d3.scale.linear().range([tallerGraphHeight, 0]);
 
-var yAxis2 = d3.svg.axis().scale(y2)
-.orient("left").ticks(5).tickFormat(function(d) {
-  return d + "ms";
-});
+var httpData = [];
+
+var http_xAxis = d3.svg.axis()
+    .scale(http_xScale)
+    .orient("bottom")
+    .ticks(3)
+    .tickFormat(d3.time.format("%H:%M:%S"));;
+
+var http_yAxis = d3.svg.axis()
+    .scale(http_yScale)
+    .orient("left")
+    .ticks(5)
+    .tickFormat(function(d) {
+        return d + "ms";
+    });
 
 var mouseOverHttpGraph = false;
 
-//Define the HTTP request time line
+// Define the HTTP request time line
 var httpline = d3.svg.line()
-.x(function(d) {
-  return x2(d.date);
-})
-.y(function(d) {
-  return y2(d.duration);
-});
+    .x(function(d) {
+        return http_xScale(d.date);
+    })
+    .y(function(d) {
+        return http_yScale(d.duration);
+    });
 
 var httpChart = d3.select("#httpDiv1")
-.append("svg")
-.attr("width", httpWidth)
-.attr("height", tallerHeight + margin.shortTop + margin.bottom)
-.attr("class", "httpChart")
-.append("g")
-.attr("transform",
-    "translate(" + margin.left + "," + margin.shortTop + ")");
+    .append("svg")
+    .attr("width", httpCanvasWidth)
+    .attr("height", canvasHeight)
+    .attr("class", "httpChart").on("mouseover", function() {
+        mouseOverHttpGraph = true;
+     })
+    .on("mouseout", function() {
+        mouseOverHttpGraph = false;
+    })
+    .append("g")
+    .attr("transform",
+        "translate(" + margin.left + "," + margin.shortTop + ")");
 
-//Scale the range of the data
-x2.domain(d3.extent(httpData, function(d) {
-  return d.date;
-}));
-y2.domain([0, httpMax]);
-
-//Add the systemline path.
+// Create the line
 httpChart.append("path")
-.attr("class", "line")
-.attr("d", httpline(httpData));
+    .attr("class", "httpline")
+    .style("stroke", "#7cc7ff")
+    .attr("d", httpline(httpData));
 
-//Add the X Axis
+// Define the axes
 httpChart.append("g")
-.attr("class", "x axis")
-.attr("transform", "translate(0," + tallerHeight + ")")
-.call(xAxis2);
+    .attr("class", "xAxis")
+    .attr("transform", "translate(0," + tallerGraphHeight + ")")
+    .call(http_xAxis);
 
-//Add the Y Axis
 httpChart.append("g")
-.attr("class", "y axis")
-.call(yAxis2);
+    .attr("class", "yAxis")
+    .call(http_yAxis);
 
-//Add the title
+// Add the title
 httpChart.append("text")
-.attr("x", -20)
-.attr("y", 0 - (margin.shortTop * 0.5))
-.attr("text-anchor", "left")
-.attr("dominant-baseline", "central")
-.style("font-size", "18px")
-.text("HTTP Response Time");
-
+    .attr("x", -20)
+    .attr("y", 0 - (margin.shortTop * 0.5))
+    .attr("text-anchor", "left")
+    .attr("dominant-baseline", "central")
+    .style("font-size", "18px")
+    .text("HTTP Response Time");
 
 
 function updateHttpData() {
@@ -71,48 +92,88 @@ function updateHttpData() {
     if (data.length == 0)
       return
 
-      var d = data;
+    var d = data;
     if (d != null && d.hasOwnProperty('time')) {
-      d.date = new Date(+d.time);
-      d.responseTime = Math.round(+d.duration)
-      if (d.responseTime > httpMax)
-        httpMax = d.responseTime;
-      httpData.push(d)
+        d.date = new Date(+d.time);
+        d.responseTime = Math.round(+d.duration)
+        httpData.push(d)
     }
 
-
-    // Only keep 30 minutes of data
+    // Only keep 30 minutes or 2000 items of data
     var currentTime = Date.now()
     var d = httpData[0]
-    while (d.hasOwnProperty('date') && d.date.valueOf() + 1800000 < currentTime) {
-      httpData.shift()
-      d = httpData[0]
-    }
+   	while (httpData.length > 2000 || (d.hasOwnProperty('date') && d.date.valueOf() + 1800000 < currentTime)) {
+        httpData.shift()
+       	d = httpData[0]
+   	}
 
-    // Scale the range of the data
-    x2.domain(d3.extent(httpData, function(d) {
-      return d.date;
+    // Set the input domain for x and y axes
+    http_xScale.domain(d3.extent(httpData, function(d) {
+        return d.date;
     }));
-    y2.domain([0, httpMax]);
+    http_yScale.domain([0, d3.max(httpData, function(d) {
+        return d.responseTime;
+    })]);
 
     var selection = d3.select(".httpChart");
+    selection.selectAll("circle").remove();
 
-    selection.select(".line") // change the line
-    .attr("d", httpline(httpData));
-    selection.select(".x.axis") // change the x axis
-    .call(xAxis2);
-    selection.select(".y.axis") // change the y axis
-    .call(yAxis2);
+    selection.select(".httpline")
+        .attr("d", httpline(httpData));
+    selection.select(".xAxis")
+        .call(http_xAxis);
+    selection.select(".yAxis")
+        .call(http_yAxis);
+    // Add the points
+    selection.selectAll("point")
+        .data(httpData)
+        .enter().append("circle")
+        .attr("r", 4)
+        .style("fill", "#5aaafa")
+        .style("stroke", "white")
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.shortTop + ")")
+        .attr("cx", function(d) { return http_xScale(d.date); })
+        .attr("cy", function(d) { return http_yScale(d.duration); })
+        .append("svg:title").text(function(d) { return d.url; }); // tooltip
 
   });
 }
 
 function resizeHttpChart() {
-  var chart = d3.select(".httpChart")
-  chart.attr("width", httpWidth);  
-  x2 = d3.time.scale().range([0, httpGraphWidth]);
-  xAxis2 = d3.svg.axis().scale(x2)
-  .orient("bottom").ticks(3).tickFormat(d3.time.format("%H:%M:%S"));
+    var chart = d3.select(".httpChart")
+	chart.attr("width", httpCanvasWidth);
+    http_xScale = d3.time.scale()
+        .range([0, httpGraphWidth]);
+    http_xAxis = d3.svg.axis()
+        .scale(http_xScale)
+        .orient("bottom")
+        .ticks(3)
+        .tickFormat(d3.time.format("%H:%M:%S"));
+
+    http_xScale.domain(d3.extent(httpData, function(d) {
+        return d.date;
+    }));
+    
+    chart.selectAll("circle").remove();
+
+    chart.select(".httpline")
+        .attr("d", httpline(httpData));
+    chart.select(".xAxis")
+        .call(http_xAxis);
+    chart.select(".yAxis")
+        .call(http_yAxis);
+    chart.selectAll("point")
+        .data(httpData)
+        .enter().append("circle")
+        .attr("r", 4)
+        .style("fill", "#5aaafa")
+        .style("stroke", "white")
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.shortTop + ")")
+        .attr("cx", function(d) { return http_xScale(d.date); })
+        .attr("cy", function(d) { return http_yScale(d.duration); })
+        .append("svg:title").text(function(d) { return d.url; });
 }
 
 updateHttpData()
