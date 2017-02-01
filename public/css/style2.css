@@ -28,26 +28,32 @@
     }
 
     .cpuChart path,
-    .memChart path,
-    .httpThroughPutChart path,
-    .httpChart path {
-    stroke: #6eedd8;
-    stroke-width: 2;
-    fill: none;
+    .memChart path {
+        stroke: #6eedd8;
+        stroke-width: 2;
+        fill: none;
     }
 
+    .httpChart path,
+    .httpThroughPutChart path {
+        stroke: #7cc7ff;
+        stroke-width: 2;
+        fill: none;
+    }
   
-    .xAxis path,
-    .xAxis line,
-    .yAxis path,
-    .yAxis line {
+    g.xAxis path,
+    g.xAxis line,
+    g.yAxis path,
+    g.yAxis line {
     fill: none;
-    stroke: gray;
+    stroke: #42535c;
     stroke-width: 1;
     shape-rendering: crispEdges;
     }
 
-
+    g.tick line {
+        stroke: #8c9ba5;
+    }
 
     .axis2 path,
     .axis2 line {
@@ -64,18 +70,6 @@
     text-anchor: left;
     }
 
-
-    div.tooltip {
-    position: absolute;
-    text-align: center;
-    padding: 3px;
-    font: 12px sans-serif;
-    background: #b0f4e8;
-    border: 0px;
-    border-radius: 8px;
-    pointer-events: none;
-    }
-
     .container {
         width: 100%;
     }
@@ -85,7 +79,6 @@
         display: block;
         text-align: center;
     }
-
 
     g.arc {
     fill: #6decd7;
