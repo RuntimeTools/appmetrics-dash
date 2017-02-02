@@ -22,7 +22,7 @@ var mem_xScale = d3.time.scale().range([0, graphWidth]);
 var mem_yScale = d3.scale.linear().range([graphHeight, 0]);
 
 var mem_xAxis = d3.svg.axis().scale(mem_xScale)
-			.orient("bottom").ticks(3).tickFormat(d3.time.format("%H:%M:%S"));
+			.orient("bottom").ticks(3).tickFormat(getTimeFormat());
 
 var mem_yAxis = d3.svg.axis().scale(mem_yScale)
 			.orient("left").ticks(8).tickFormat(function(d) {
@@ -98,7 +98,7 @@ memChart.append("g")
 // Add the title
 memChart.append("text")
 		.attr("x", -20)
-		.attr("y", 0 - (margin.top * 0.75))
+		.attr("y", 0 - margin.top + (margin.shortTop * 0.5))
 		.style("font-size", "18px")
 		.text("Memory Usage");
 
@@ -116,7 +116,7 @@ memChart.append("text")
 		.attr("y", 0 - (margin.top / 8))
 		.style("fill", "#8cd211")
 		.attr("class", "processlatestlabel")
-		.text("PROCESS");
+		.text("NODE PROCESS");
 
 // Add the text element for systemLatest
 memChart.append("text")
@@ -137,7 +137,7 @@ function resizeMemChart() {
 	chart.attr("width", canvasWidth);
     mem_xScale = d3.time.scale().range([0, graphWidth]);
     mem_xAxis = d3.svg.axis().scale(mem_xScale)
-			.orient("bottom").ticks(3).tickFormat(d3.time.format("%H:%M:%S"));
+			.orient("bottom").ticks(3).tickFormat(getTimeFormat());
     chart.select(".processLatest").attr("x", graphWidth / 2)
     chart.select(".processlatestlabel").attr("x", graphWidth / 2)
     
@@ -186,13 +186,15 @@ function updateMemData() {
 		d = memData[0]
 	}
 
-	// Scale the range of the data again
+	// Set the input domain for the x axis
 	mem_xScale.domain(d3.extent(memData, function(d) {
 		return d.date;
 	}));
 	mem_yScale.domain([0, Math.ceil(d3.extent(memData, function(d) {
 		return d.system;
 	})[1] / 100) * 100]);
+
+    mem_xAxis.tickFormat(getTimeFormat());
 
 	// Select the section we want to apply our changes to
 	var selection = d3.select(".memChart");
@@ -206,10 +208,10 @@ function updateMemData() {
 		.call(mem_xAxis);
 	selection.select(".yAxis") // change the y axis
 		.call(mem_yAxis);
-	selection.select(".processLatest") // change the text
-		.text(memProcessLatest + "MB");
-	selection.select(".systemLatest") // change the text
-		.text(memSystemLatest + "MB");
+	//selection.select(".processLatest") // change the text
+	//	.text(memProcessLatest + "MB");
+	//selection.select(".systemLatest") // change the text
+	//	.text(memSystemLatest + "MB");
 	});
 }
 

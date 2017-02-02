@@ -7,7 +7,7 @@ var elData = [];
 
 // set up X axis for time in HH:MM:SS
 var el_xAxis = d3.svg.axis().scale(el_xScale)
-    .orient("bottom").ticks(3).tickFormat(d3.time.format("%H:%M:%S"));
+    .orient("bottom").ticks(3).tickFormat(getTimeFormat());
 
 // set up Y axis for time in ms
 var el_yAxis = d3.svg.axis().scale(el_yScale)
@@ -91,7 +91,7 @@ elChart.append("g")
 // Draw the title
 elChart.append("text")
     .attr("x", -20)
-    .attr("y", 0 - (margin.top * 6 / 8))
+    .attr("y", 0 - margin.top + (margin.shortTop * 0.5)) // All titles need to be in the same place
     .style("font-size", "18px")
     .text("Event Loop Latency");
 
@@ -149,8 +149,11 @@ function resizeEventLoopChart() {
     chart.attr("width", httpCanvasWidth);
     //resize the scale and axes
     el_xScale = d3.time.scale().range([0, httpGraphWidth]);
-    el_xAxis = d3.svg.axis().scale(el_xScale)
-        .orient("bottom").ticks(3).tickFormat(d3.time.format("%H:%M:%S"));
+    el_xAxis = d3.svg.axis()
+        .scale(el_xScale)
+        .orient("bottom")
+        .ticks(3)
+        .tickFormat(getTimeFormat());
     //reposition the Latest Min and Avg data & labels
     chart.select(".minlatest").attr("x", httpGraphWidth / 3) // 1/3 across
     chart.select(".minlatestlabel").attr("x", httpGraphWidth / 3) // 1/3 across
@@ -208,6 +211,8 @@ function updateEventLoopData() {
             return d.latency.max;
         })[1] * 1000) / 1000]);
 
+        el_xAxis.tickFormat(getTimeFormat());
+
         var selection = d3.select(".elChart");
         // update the data lines
         selection.select(".line1")
@@ -222,12 +227,12 @@ function updateEventLoopData() {
         selection.select(".yAxis")
             .call(el_yAxis);
         // update the latest displays
-        selection.select(".maxlatest")
-            .text(maxLatest + "ms");
-        selection.select(".minlatest")
-            .text(minLatest + "ms");
-        selection.select(".avglatest")
-            .text(avgLatest + "ms");
+        //selection.select(".maxlatest")
+            //.text(maxLatest + "ms");
+        //selection.select(".minlatest")
+            //.text(minLatest + "ms");
+        //selection.select(".avglatest")
+            //.text(avgLatest + "ms");
 	});
 }
 

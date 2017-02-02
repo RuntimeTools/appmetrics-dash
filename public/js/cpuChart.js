@@ -25,16 +25,17 @@ var cpu_yScale = d3.scale.linear().range([graphHeight, 0]);
 var cpu_yTicks = [0, 25, 50, 75, 100];
 
 var cpu_xAxis = d3.svg.axis().scale(cpu_xScale)
-    .orient("bottom").ticks(4).tickFormat(d3.time.format("%H:%M:%S"));
+    .orient("bottom").ticks(3).tickFormat(getTimeFormat());
 
-var cpu_yAxis = d3.svg.axis().scale(cpu_yScale)
-    .orient("left").tickValues(cpu_yTicks).tickSize(-graphWidth, 0, 0).tickFormat(function(d) {
-        return d + "%";
-    });
+var cpu_yAxis = d3.svg.axis()
+    .scale(cpu_yScale)
+    .orient("left")
+    .tickValues(cpu_yTicks)
+    .tickSize(-graphWidth, 0, 0)
+    .tickFormat(function(d) { return d + "%"; });
 
 
 // CPU Data storage
-
 var cpuData = [];
 var cpuProcessLatest = 0;
 var cpuSystemLatest = 0;
@@ -69,11 +70,7 @@ var cpuChart = d3.select("#cpuDiv1")
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
 
-// Scale the range of the data
-cpu_xScale.domain(d3.extent(cpuData, function(d) {
-    return d.date;
-}));
-
+// Set the input domain for the y axis (fixed)
 cpu_yScale.domain([0, 100]);
 
 // Add the systemline path.
@@ -101,7 +98,7 @@ cpuChart.append("g")
 // Add the title
 cpuChart.append("text")
         .attr("x", -20)
-        .attr("y", 0 - (margin.top * 0.75))
+        .attr("y", 0 - margin.top + (margin.shortTop * 0.5))
         .attr("text-anchor", "left")
         .style("font-size", "18px")
         .text("CPU Usage");
@@ -120,7 +117,7 @@ cpuChart.append("text")
         .attr("y", 0 - (margin.top / 8))
         .style("fill", "#8cd211")
         .attr("class", "processlatestlabel")
-        .text("SWIFT PROCESS");
+        .text("NODE PROCESS");
 
 // Add the text element for systemlatest
 cpuChart.append("text")
@@ -145,7 +142,7 @@ function resizeCPUChart() {
         .scale(cpu_xScale)
         .orient("bottom")
         .ticks(3)
-        .tickFormat(d3.time.format("%H:%M:%S"));
+        .tickFormat(getTimeFormat());
     cpu_yAxis.tickSize(-graphWidth, 0, 0);
     chart.select(".processlatest").attr("x", graphWidth / 2) 
     chart.select(".processlatestlabel").attr("x", graphWidth / 2)
@@ -165,72 +162,59 @@ function resizeCPUChart() {
 }
 
 function updateCPUData() {
-socket.on('cpu', function (cpuRequest){
-cpuRequestData = JSON.parse(cpuRequest);  // parses the data into a JSON array
-  if (!cpuRequestData)
-    return
-
-      var totalApplicationUse = 0;
-      var totalSystemUse = 0;
-      var time = 0;
-
-        totalApplicationUse += cpuRequestData.process;
-        totalSystemUse += cpuRequestData.percentUsedBySystem;
-        time = cpuRequestData.timeOfSample;
-
-      cpuLine = [{
-        "time":time,
-        "process":totalApplicationUse,
-        "system":totalSystemUse}];
-
+    socket.on('cpu', function (cpuRequest) {
+        cpuRequestData = JSON.parse(cpuRequest);  // parses the data into a JSON array
+        if (!cpuRequestData)
+            return
+       
+        var d = cpuRequestData;
+        if(d != null && d.hasOwnProperty('time')) {
+          d.date = new Date(+d.time);
+          d.system = +d.system * 100;
+          d.process = +d.process * 100;
+          var _processLatest = Math.round(d.process);
+          if(typeof(updateCpuProcessGauge) === 'function' && _processLatest != cpuProcessLatest) {
+            updateCpuProcessGauge(cpuProcessLatest);
+           }
+            cpuProcessLatest = _processLatest;
+            cpuSystemLatest = Math.round(d.system);
+          }
+          cpuData.push(d);
       
-    var d = cpuRequestData;
-    if(d != null && d.hasOwnProperty('time')) {
-      d.date = new Date(+d.time);
-      d.system = +d.system * 100;
-      d.process = +d.process * 100;
-      var _processLatest = Math.round(d.process);
-      if(typeof(updateCpuProcessGauge) === 'function' && _processLatest != cpuProcessLatest) {
-        updateCpuProcessGauge(cpuProcessLatest);
-       }
-        cpuProcessLatest = _processLatest;
-        cpuSystemLatest = Math.round(d.system);
-      }
-      cpuData.push(d);
-  
 
-  // Only keep 30 minutes of data
-  var currentTime = Date.now();
-  var d = cpuData[0];
-  if (d === null)
-    return
+        // Only keep 30 minutes of data
+        var currentTime = Date.now();
+        var d = cpuData[0];
+        if (d === null)
+            return
 
-  while (d.hasOwnProperty('date') && d.date.valueOf() + 1800000 < currentTime) {
-    cpuData.shift();
-    d = cpuData[0];
-  }
-  // Scale the range of the data again
-  cpu_xScale.domain(d3.extent(cpuData, function(d) {
-    return d.date;
-  }));
+        while (d.hasOwnProperty('date') && d.date.valueOf() + 1800000 < currentTime) {
+            cpuData.shift();
+            d = cpuData[0];
+        }
+        // Set the input domain for the x axis
+            cpu_xScale.domain(d3.extent(cpuData, function(d) {
+            return d.date;
+        }));
 
-  // Select the section we want to apply our changes to
-  var selection = d3.select(".cpuChart");
+        cpu_xAxis.tickFormat(getTimeFormat());
 
-              // Make the changes
-  selection.select(".systemLine") // change the line
-    .attr("d", systemline(cpuData));
-  selection.select(".processLine") // change the line
-    .attr("d", processline(cpuData));
-  selection.select(".x.axis") // change the x axis
-    .call(cpu_xAxis);
-  selection.select(".y.axis") // change the y axis
-    .call(cpu_yAxis);
-  selection.select(".processlatest") // change the text
-    .text(cpuProcessLatest + "%");
-  selection.select(".systemlatest") // change the text
-    .text(cpuSystemLatest + "%");
-});
+        // Select the CPU chart svg element to apply changes
+        var selection = d3.select(".cpuChart");
+
+        selection.select(".systemLine")
+            .attr("d", systemline(cpuData));
+        selection.select(".processLine")
+            .attr("d", processline(cpuData));
+        selection.select(".xAxis")
+            .call(cpu_xAxis);
+        selection.select(".yAxis")
+            .call(cpu_yAxis);
+        //selection.select(".processlatest")
+        //    .text(cpuProcessLatest + "%");
+        //selection.select(".systemlatest")
+        //    .text(cpuSystemLatest + "%");
+    });
 }
 
 updateCPUData();

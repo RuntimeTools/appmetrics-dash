@@ -25,7 +25,7 @@ var http_xAxis = d3.svg.axis()
     .scale(http_xScale)
     .orient("bottom")
     .ticks(3)
-    .tickFormat(d3.time.format("%H:%M:%S"));;
+    .tickFormat(getTimeFormat());;
 
 var http_yAxis = d3.svg.axis()
     .scale(http_yScale)
@@ -117,6 +117,8 @@ function updateHttpData() {
             return d.duration;
         })]);
 
+        http_xAxis.tickFormat(getTimeFormat());
+
         var selection = d3.select(".httpChart");
         selection.selectAll("circle").remove();
 
@@ -151,7 +153,7 @@ function resizeHttpChart() {
         .scale(http_xScale)
         .orient("bottom")
         .ticks(3)
-        .tickFormat(d3.time.format("%H:%M:%S"));
+        .tickFormat(getTimeFormat());
 
     http_xScale.domain(d3.extent(httpData, function(d) {
         return d.date;

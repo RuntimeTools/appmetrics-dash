@@ -25,7 +25,7 @@ var httpOB_xAxis = d3.svg.axis()
     .scale(httpOB_xScale)
     .orient("bottom")
     .ticks(3)
-    .tickFormat(d3.time.format("%H:%M:%S"));;
+    .tickFormat(getTimeFormat());
 
 var httpOB_yAxis = d3.svg.axis()
     .scale(httpOB_yScale)
@@ -86,59 +86,61 @@ httpOBChart.append("text")
 
 
 function updateHttpOBData() {
-  socket.on('http-outbound', function (httpRequest){
-    data = JSON.parse(httpRequest);  // parses the data into a JSON array
-    if (data.length == 0)
-      return
+    socket.on('http-outbound', function (httpRequest) {
+        data = JSON.parse(httpRequest);  // parses the data into a JSON array
+        if (data.length == 0)
+          return
 
-    var d = data;
-    if (d != null && d.hasOwnProperty('time')) {
-        d.date = new Date(+d.time);
-        httpOBData.push(d)
-    }
+        var d = data;
+        if (d != null && d.hasOwnProperty('time')) {
+            d.date = new Date(+d.time);
+            httpOBData.push(d)
+        }
 
-    // Only keep 30 minutes or 2000 items of data
-    var currentTime = Date.now()
-    var d = httpOBData[0]
-   	while (httpOBData.length > 2000 || (d.hasOwnProperty('date') && d.date.valueOf() + 1800000 < currentTime)) {
-        httpOBData.shift()
-       	d = httpOBData[0]
-   	}
+        // Only keep 30 minutes or 2000 items of data
+        var currentTime = Date.now()
+        var d = httpOBData[0]
+       	while (httpOBData.length > 2000 || (d.hasOwnProperty('date') && d.date.valueOf() + 1800000 < currentTime)) {
+            httpOBData.shift()
+           	d = httpOBData[0]
+       	}
 
-    // Don't update if mouse over graph
-    if(!mouseOverHttpOBGraph) {
+        // Don't update if mouse over graph
+        if(!mouseOverHttpOBGraph) {
 
-        // Set the input domain for x and y axes
-        httpOB_xScale.domain(d3.extent(httpOBData, function(d) {
-            return d.date;
-        }));
-        httpOB_yScale.domain([0, d3.max(httpOBData, function(d) {
-            return d.duration;
-        })]);
+            // Set the input domain for x and y axes
+            httpOB_xScale.domain(d3.extent(httpOBData, function(d) {
+                return d.date;
+            }));
+            httpOB_yScale.domain([0, d3.max(httpOBData, function(d) {
+                return d.duration;
+            })]);
 
-        var selection = d3.select(".httpOBChart");
-        selection.selectAll("circle").remove();
+            httpOB_xAxis.tickFormat(getTimeFormat());
 
-        selection.select(".httpline")
-            .attr("d", httpOBline(httpOBData));
-        selection.select(".xAxis")
-            .call(httpOB_xAxis);
-        selection.select(".yAxis")
-            .call(httpOB_yAxis);
-        // Add the points
-        selection.selectAll("point")
-            .data(httpOBData)
-            .enter().append("circle")
-            .attr("r", 4)
-            .style("fill", "#5aaafa")
-            .style("stroke", "white")
-            .attr("transform",
-                "translate(" + margin.left + "," + margin.shortTop + ")")
-            .attr("cx", function(d) { return httpOB_xScale(d.date); })
-            .attr("cy", function(d) { return httpOB_yScale(d.duration); })
-            .append("svg:title").text(function(d) { return d.url; }); // tooltip
+            var selection = d3.select(".httpOBChart");
+            selection.selectAll("circle").remove();
 
-      }
+            selection.select(".httpline")
+                .attr("d", httpOBline(httpOBData));
+            selection.select(".xAxis")
+                .call(httpOB_xAxis);
+            selection.select(".yAxis")
+                .call(httpOB_yAxis);
+            // Add the points
+            selection.selectAll("point")
+                .data(httpOBData)
+                .enter().append("circle")
+                .attr("r", 4)
+                .style("fill", "#5aaafa")
+                .style("stroke", "white")
+                .attr("transform",
+                    "translate(" + margin.left + "," + margin.shortTop + ")")
+                .attr("cx", function(d) { return httpOB_xScale(d.date); })
+                .attr("cy", function(d) { return httpOB_yScale(d.duration); })
+                .append("svg:title").text(function(d) { return d.url; }); // tooltip
+
+        }
     });
 }
 
@@ -151,7 +153,7 @@ function resizeHttpOBChart() {
         .scale(httpOB_xScale)
         .orient("bottom")
         .ticks(3)
-        .tickFormat(d3.time.format("%H:%M:%S"));
+        .tickFormat(getTimeFormat());
 
     httpOB_xScale.domain(d3.extent(httpOBData, function(d) {
         return d.date;

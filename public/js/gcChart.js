@@ -7,7 +7,7 @@ var gcData = [];
 
 // set up X axis for time as HH:MM:SS
 var gc_xAxis = d3.svg.axis().scale(gc_xScale)
-    .orient("bottom").ticks(3).tickFormat(d3.time.format("%H:%M:%S"));
+    .orient("bottom").ticks(3).tickFormat(getTimeFormat());
 
 // set up Y axis for memory in MB
 var gc_yAxis = d3.svg.axis().scale(gc_yScale)
@@ -67,7 +67,7 @@ gcChart.append("g")
 // Draw the title
 gcChart.append("text")
     .attr("x", -20)
-    .attr("y", 0 - (margin.top * 0.75))
+    .attr("y", 0 - margin.top + (margin.shortTop * 0.5))
     .style("font-size", "18px")
     .text("Heap Usage");
 
@@ -115,7 +115,7 @@ function resizeGCChart() {
         .scale(gc_xScale)
         .orient("bottom")
         .ticks(3)
-        .tickFormat(d3.time.format("%H:%M:%S"));
+        .tickFormat(getTimeFormat());
     // reposition the USED HEAP text & label
     chart.select(".usedlatest").attr("x", graphWidth / 2) // 1/2 along
     chart.select(".usedlatestlabel").attr("x", graphWidth / 2) // 1/2 along
@@ -166,6 +166,8 @@ function updateGCData() {
             return d.size;
         })[1])]);
 
+        gc_xAxis.tickFormat(getTimeFormat());
+
         var selection = d3.select(".gcChart");
         // Update the data lines
         selection.select(".line1")
@@ -178,10 +180,10 @@ function updateGCData() {
         selection.select(".yAxis")
             .call(gc_yAxis);
         // Update the latest texts
-        selection.select(".sizelatest")
-            .text(sizeLatest + "MB");
-        selection.select(".usedlatest")
-            .text(usedLatest + "MB");
+        //selection.select(".sizelatest")
+        //    .text(sizeLatest + "MB");
+        //selection.select(".usedlatest")
+        //    .text(usedLatest + "MB");
     });
 }
 

@@ -36,9 +36,10 @@
         <div class="col-md-2" id="nodeReportButtonDiv"></div>
     </div>
 <script>
+    var monitoringStartTime = new Date();
     // Initialise graph and canvas dimensions
     var margin = {
-         top: 120,
+         top: 80,
          shortTop: 60,
          right: 20,
          bottom: 30,
@@ -48,14 +49,26 @@
     httpCanvasWidth = $("#httpDiv1").width(),
     graphWidth = canvasWidth - margin.left - margin.right,
     httpGraphWidth = httpCanvasWidth - margin.left - margin.right,
-    canvasHeight = 300,
-    tallerGraphHeight = 300 - margin.shortTop - margin.bottom,
+    canvasHeight = 250,
+    tallerGraphHeight = canvasHeight - margin.shortTop - margin.bottom,
     graphHeight = canvasHeight - margin.top - margin.bottom;
      
     var myurl = location.host;
     var socket = io.connect(myurl);
     socket.emit('connected');
     socket.emit('disableprofiling'); //profiling disabled
+
+    function getTimeFormat() {
+        var currentTime = new Date()
+        console.log("currentTime: " + currentTime);
+        console.log("monitoringStartTime: " + monitoringStartTime);
+        if(currentTime.getMinutes() - monitoringStartTime.getMinutes() >= 3
+            || currentTime.getHours() > monitoringStartTime.getHours()) {
+            return d3.time.format("%H:%M");
+        } else {
+            return d3.time.format("%H:%M:%S");
+        }
+    }
 </script>
     <script type="text/javascript" src="js/nodeReport.js"></script>
     <script type="text/javascript" src="js/gauge.js"></script>
