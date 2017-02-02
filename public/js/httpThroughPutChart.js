@@ -111,7 +111,7 @@ function updateThroughPutData() {
 
 function resizeHttpThroughputChart() {
     var chart = d3.select(".httpThroughPutChart")
-	chart.attr("width", width);
+	chart.attr("width", canvasWidth);
     httpTPX = d3.time.scale().range([0, graphWidth]);
     httpTPXAxis = d3.svg.axis().scale(httpTPX)
         .orient("bottom").ticks(3).tickFormat(d3.time.format("%H:%M:%S"));
