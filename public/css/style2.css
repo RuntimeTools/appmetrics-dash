@@ -28,10 +28,14 @@
     }
 
     .cpuChart path,
-    .memChart path {
-        stroke: #6eedd8;
-        stroke-width: 2;
-        fill: none;
+    .memChart path,
+    .gcChart path,
+    .elChart path,
+    .httpThroughPutChart path,
+    .httpChart path {
+    stroke: #6eedd8;
+    stroke-width: 2;
+    fill: none;
     }
 
     .httpChart path,
@@ -106,4 +110,3 @@
         padding: 5px;
         border-bottom: 1px solid #ddd;
     }
-
