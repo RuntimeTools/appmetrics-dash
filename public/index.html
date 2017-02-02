@@ -19,25 +19,21 @@
     <script type="text/javascript" src="js/gauge.js"></script>
 
     <div class="row">
-        <div class="col-md-4" id="cpuDiv1"></div>
-        <div class="col-md-4" id="memDiv1"></div>
-        <div class="col-md-4" id="httpDiv2"></div>
+        <div class="col-md-3" id="cpuDiv1"></div>
+        <div class="col-md-3" id="memDiv1"></div>
+        <div class="col-md-3" id="gcDiv"></div>
+        <div class="col-md-3" id="envDiv"></div>
     </div>
 
     <div class="row">
-        <div class="col-md-6" id="httpDiv1"></div>
-        <div class="col-md-6" id="httpDiv3"></div>
+        <div class="col-md-5" id="httpDiv1"></div>
+        <div class="col-md-5" id="httpDiv3"></div>
+        <div class="col-md-2" id="httpDiv2"></div>
     </div>
     <div class="row">
-        <div class="col-md-6" id="gcDiv"></div>
-        <div class="col-md-6" id="eventLoopDiv"></div>
-    </div>
-    <div class="row row-margins">
-        <div class="col-md-10" id="envDiv"></div>
+        <div class="col-md-5" id="httpOBDiv"></div>
+        <div class="col-md-5" id="eventLoopDiv"></div>
         <div class="col-md-2" id="nodeReportButtonDiv"></div>
-    </div>
-    <div class="row big-top-margin">
-        <div class="col-md-12" id="nodeReportDiv"></div>
     </div>
 <script>
     // Initialise graph and canvas dimensions
@@ -70,6 +66,7 @@
     <script type="text/javascript" src="js/httpRequestsChart.js"></script>
     <script type="text/javascript" src="js/httpThroughPutChart.js"></script>
     <script type="text/javascript" src="js/httpTop5.js"></script>
+    <script type="text/javascript" src="js/httpOutboundRequestsChart.js"></script>
 	
 	<script type="text/javascript" src="js/memChart.js"></script>
     <script type="text/javascript" src="js/gcChart.js"></script>
@@ -79,23 +76,18 @@
         window.addEventListener('resize', resize); 
 
         function resize() {
-         canvasWidth = $("#cpuDiv1").width(),
-        httpCanvasWidth = $("#httpDiv1").width(),
-        graphWidth = canvasWidth - margin.left - margin.right,
-        httpGraphWidth = httpCanvasWidth - margin.left - margin.right;
+            canvasWidth = $("#cpuDiv1").width(),
+            httpCanvasWidth = $("#httpDiv1").width(),
+            graphWidth = canvasWidth - margin.left - margin.right,
+            httpGraphWidth = httpCanvasWidth - margin.left - margin.right;
             resizeCPUChart();
-            updateCPUData();
             resizeHttpChart();
-            updateHttpData();
-            resizeMemChart();
-            updateMemData();
+            resizeHttpOBChart();
             resizeGCChart();
-            updateGCData();
             resizeEventLoopChart();
-            updateEventLoopData();
             resizeHttpThroughputChart();
-            updateThroughPutData();
             resizeHttpTop5Chart();
+            resizeMemChart();
         }
 
     </script>

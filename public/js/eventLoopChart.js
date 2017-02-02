@@ -70,13 +70,11 @@ elChart.append("path")
 // Draw the min line path.
 elChart.append("path")
     .attr("class", "line2")
-    .style("stroke", "yellowgreen")
     .attr("d", el_min_line(elData));
 
 // Draw the avg line path.
 elChart.append("path")
     .attr("class", "line3")
-    .style("stroke", "black")
     .attr("d", el_avg_line(elData));
 
 // Draw the X Axis
@@ -102,15 +100,12 @@ elChart.append("text")
     .attr("x", 0)
     .attr("y", 0 - (margin.top / 8))
     .attr("class", "lineLabel")
-    .style("fill", "steelblue")
     .text("MAXIMUM");
 
 // Draw the MINIMUM line label
 elChart.append("text")
     .attr("x", httpGraphWidth / 3) // 1/3 across
     .attr("y", 0 - (margin.top / 8))
-    .attr("class", "lineLabel")
-    .style("fill", "yellowgreen")
     .attr("class", "minlatestlabel")
     .text("MINIMUM");
 
@@ -118,8 +113,6 @@ elChart.append("text")
 elChart.append("text")
     .attr("x", (httpGraphWidth / 3) * 2) // 2/3 across
     .attr("y", 0 - (margin.top / 8))
-    .attr("class", "lineLabel")
-    .style("fill", "black")
     .attr("class", "avglatestlabel")
     .text("AVERAGE");
 
@@ -153,7 +146,7 @@ function resizeEventLoopChart() {
     // just doing horizontal resizes for now
     //resize the canvas
     var chart = d3.select(".elChart")
-    chart.attr("width", canvasWidth);
+    chart.attr("width", httpCanvasWidth);
     //resize the scale and axes
     el_xScale = d3.time.scale().range([0, httpGraphWidth]);
     el_xAxis = d3.svg.axis().scale(el_xScale)
@@ -163,6 +156,22 @@ function resizeEventLoopChart() {
     chart.select(".minlatestlabel").attr("x", httpGraphWidth / 3) // 1/3 across
     chart.select(".avglatest").attr("x", (httpGraphWidth / 3) * 2) // 2/3 across
     chart.select(".avglatestlabel").attr("x", (httpGraphWidth / 3) * 2) // 2/3 across
+
+    el_xScale.domain(d3.extent(elData, function(d) {
+        return d.time;
+    }));
+    // update the data lines
+    chart.select(".line1")
+        .attr("d", el_max_line(elData));
+    chart.select(".line2")
+        .attr("d", el_min_line(elData));
+    chart.select(".line3")
+        .attr("d", el_avg_line(elData));
+    // update the axes
+    chart.select(".xAxis")
+        .call(el_xAxis);
+    chart.select(".yAxis")
+        .call(el_yAxis);
 }
 
 function updateEventLoopData() {

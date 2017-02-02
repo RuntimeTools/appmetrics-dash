@@ -139,13 +139,29 @@ cpuChart.append("text")
 
 function resizeCPUChart() {
     var chart = d3.select(".cpuChart");
-    chart.attr("width", width);
+    chart.attr("width", canvasWidth);
     cpu_xScale= d3.time.scale().range([0, graphWidth]);
-    cpu_xAxis = d3.svg.axis().scale(cpu_xScale)
-        .orient("bottom").ticks(4).tickFormat(d3.time.format("%H:%M:%S"));
-    chart.select(".processlatest").attr("x", graphWidth / 2) ;
-    chart.select(".processlatestlabel").attr("x", graphWidth / 2) ;
-    // TODO resize grid
+    cpu_xAxis = d3.svg.axis()
+        .scale(cpu_xScale)
+        .orient("bottom")
+        .ticks(3)
+        .tickFormat(d3.time.format("%H:%M:%S"));
+    cpu_yAxis.tickSize(-graphWidth, 0, 0);
+    chart.select(".processlatest").attr("x", graphWidth / 2) 
+    chart.select(".processlatestlabel").attr("x", graphWidth / 2)
+
+    // Redraw lines and axes
+    cpu_xScale.domain(d3.extent(cpuData, function(d) {
+        return d.date;
+    }));
+    chart.select(".systemLine") 
+        .attr("d", systemline(cpuData));
+    chart.select(".processLine") 
+        .attr("d", processline(cpuData));
+    chart.select(".xAxis") 
+        .call(cpu_xAxis);
+    chart.select(".yAxis") 
+        .call(cpu_yAxis);
 }
 
 function updateCPUData() {

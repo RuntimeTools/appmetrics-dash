@@ -30,15 +30,31 @@
     .cpuChart path,
     .memChart path,
     .gcChart path,
-    .elChart path,
-    .httpThroughPutChart path,
-    .httpChart path {
-    stroke: #6eedd8;
-    stroke-width: 2;
-    fill: none;
+    .elChart path {
+        stroke: #6eedd8;
+        stroke-width: 2;
+        fill: none;
     }
 
-    .httpChart path,
+    path.line1 {
+        stroke: #6eedd8;
+        stroke-width: 2;
+        fill: none;
+    }
+
+    path.line2 {
+        stroke: #8cd211;
+        stroke-width: 2;
+        fill: none;
+    }
+
+    path.line3 {
+        stroke: #5aaafa;
+        stroke-width: 2;
+        fill: none;
+    }
+
+    path.httpline,
     .httpThroughPutChart path {
         stroke: #7cc7ff;
         stroke-width: 2;
@@ -67,11 +83,27 @@
     shape-rendering: crispEdges;
     }
 
-    .lineLabel,
-    .processlatestlabel {
-    font: 12px Arial;
-    font-weight: bold;
-    text-anchor: left;
+    .lineLabel {
+        font: 12px Arial;
+        font-weight: bold;
+        text-anchor: left;
+        fill: #6eedd8;
+    }
+
+    .processlatestlabel,
+    .usedlatestlabel,
+    .minlatestlabel {
+        font: 12px Arial;
+        font-weight: bold;
+        text-anchor: left;
+        fill: #8cd211;
+    }
+
+    .avglatestlabel {
+        font: 12px Arial;
+        font-weight: bold;
+        text-anchor: left;
+        fill: #5aaafa;
     }
 
     .container {

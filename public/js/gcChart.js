@@ -1,5 +1,5 @@
 //set up axes scales to the dimensions of the graph
-var gc_xScale = d3.time.scale().range([0, httpGraphWidth]);
+var gc_xScale = d3.time.scale().range([0, graphWidth]);
 var gc_yScale = d3.scale.linear().range([graphHeight, 0]);
 
 // GC data storage
@@ -36,22 +36,12 @@ var gc_used_line = d3.svg.line()
 // create the chart canvas
 var gcChart = d3.select("#gcDiv")
     .append("svg")
-    .attr("width", httpCanvasWidth)
+    .attr("width", canvasWidth)
     .attr("height", canvasHeight)
     .attr("class", "gcChart")
     .append("g")
     .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");
-
-// Scale the X range to the data time interval
-gc_xScale.domain(d3.extent(gcData, function(d) {
-    return d.time;
-}));
-
-// Scake the Y range to the maximum heap size
-gc_yScale.domain([0, Math.ceil(d3.extent(gcData, function(d) {
-    return d.size;
-})[1])]);
 
 // Draw the heap size path.
 gcChart.append("path")
@@ -61,7 +51,6 @@ gcChart.append("path")
 // Draw the used heap path.
 gcChart.append("path")
     .attr("class", "line2")
-    .style("stroke", "yellowgreen")
     .attr("d", gc_used_line(gcData));
 
 // Draw the X Axis
@@ -78,7 +67,7 @@ gcChart.append("g")
 // Draw the title
 gcChart.append("text")
     .attr("x", -20)
-    .attr("y", 0 - (margin.top * 6 / 8))
+    .attr("y", 0 - (margin.top * 0.75))
     .style("font-size", "18px")
     .text("Heap Usage");
 
@@ -87,15 +76,12 @@ gcChart.append("text")
     .attr("x", 0)
     .attr("y", 0 - (margin.top / 8))
     .attr("class", "lineLabel")
-    .style("fill", "steelblue")
     .text("HEAP SIZE");
 
 // Draw the USED HEAP line label
 gcChart.append("text")
-    .attr("x", httpGraphWidth / 2) // 1/2 along
+    .attr("x", graphWidth / 2) // 1/2 along
     .attr("y", 0 - (margin.top / 8))
-    .attr("class", "lineLabel")
-    .style("fill", "yellowgreen")
     .attr("class", "usedlatestlabel")
     .text("USED HEAP");
 
@@ -108,7 +94,7 @@ gcChart.append("text")
 
 // Draw the Latest USED HEAP Data
 gcChart.append("text")
-    .attr("x", httpGraphWidth / 2) // 1/2 along
+    .attr("x", graphWidth / 2) // 1/2 along
     .attr("y", 0 - (margin.top * 3 / 8))
     .attr("class", "usedlatest")
     .style("font-size", "32px");
@@ -121,15 +107,31 @@ function resizeGCChart() {
     // only doing horizontal resize at the moment
     // resize the canvas
     var chart = d3.select(".gcChart")
-    chart.attr("width", httpCanvasWidth);
+    chart.attr("width", canvasWidth);
     // resize the scale's drawing range
-    gc_xScale = d3.time.scale().range([0, httpGraphWidth]);
+    gc_xScale = d3.time.scale().range([0, graphWidth]);
     // resize the X axis
-    gc_xAxis = d3.svg.axis().scale(gc_xScale)
-        .orient("bottom").ticks(3).tickFormat(d3.time.format("%H:%M:%S"));
+    gc_xAxis = d3.svg.axis()
+        .scale(gc_xScale)
+        .orient("bottom")
+        .ticks(3)
+        .tickFormat(d3.time.format("%H:%M:%S"));
     // reposition the USED HEAP text & label
-    chart.select(".usedlatest").attr("x", httpGraphWidth / 2) // 1/2 along
-    chart.select(".usedlatestlabel").attr("x", httpGraphWidth / 2) // 1/2 along
+    chart.select(".usedlatest").attr("x", graphWidth / 2) // 1/2 along
+    chart.select(".usedlatestlabel").attr("x", graphWidth / 2) // 1/2 along
+
+    // Redraw lines and axes
+    gc_xScale.domain(d3.extent(gcData, function(d) {
+        return d.time;
+    }));
+    chart.select(".line1")
+            .attr("d", gc_size_line(gcData));
+    chart.select(".line2")
+            .attr("d", gc_used_line(gcData));
+    chart.select(".xAxis") 
+        .call(gc_xAxis);
+    chart.select(".yAxis") 
+        .call(gc_yAxis);
 }
 
 function updateGCData() {
@@ -155,11 +157,11 @@ function updateGCData() {
             d = gcData[0]
         }
 
-        // Re-scale the X range to the new data time interval
+        // Scale the X range to the new data time interval
         gc_xScale.domain(d3.extent(gcData, function(d) {
             return d.time;
         }));
-        // Re-scale the Y range to the new maximum heap size
+        // Scale the Y range to the new maximum heap size
         gc_yScale.domain([0, Math.ceil(d3.extent(gcData, function(d) {
             return d.size;
         })[1])]);
