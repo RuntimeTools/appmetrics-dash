@@ -1,0 +1,6 @@
+{
+  "extends": "strongloop",
+  "rules": {
+    "spaced-comment": ["error", "always", { "exceptions": ["*"] }]
+  }
+}
