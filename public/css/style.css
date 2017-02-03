@@ -39,7 +39,7 @@
     .elChart path,
     .httpThroughPutChart path,
     .httpChart path {
-	stroke: steelblue;
+	stroke: #6decd7;
 	stroke-width: 2;
 	fill: none;
     }
@@ -82,7 +82,7 @@
 	text-align: center;
 	padding: 3px;
 	font: 12px sans-serif;
-	background: lightsteelblue;
+	background: #b0f4e8;
 	border: 0px;
 	border-radius: 8px;
 	pointer-events: none;
@@ -100,7 +100,7 @@
 
 
     g.arc {
-	fill: steelblue;
+	fill: #6decd7;
     }
 
     g.pointer {
@@ -115,7 +115,7 @@
     }
 
     .urlChart rect {
-      fill: steelblue;
+      fill: #6decd7;
     }
 
     th, td {
