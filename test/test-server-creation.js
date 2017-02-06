@@ -5,7 +5,6 @@ const request = require('request');
 const tap = require('tap');
 const util = require('util');
 
-// Setup appmetrics and start app somewhat as a supervisor would.
 const appmetrics = require('appmetrics');
 appmetrics.start();
 
@@ -28,6 +27,9 @@ tap.test('runs dashboard on ephemeral port', function(t) {
     appmetrics: appmetrics,
     port: 0,
     host: '127.0.0.1',
+    console: {
+      log: function() { /* ignore */ },
+    },
   });
 
   server.on('listening', function() {

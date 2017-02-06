@@ -7,7 +7,6 @@ const util = require('util');
 
 // Setup appmetrics and start app somewhat as a supervisor would.
 const appmetrics = require('appmetrics');
-// FIXME: start should return `this`
 appmetrics.start();
 require('../').attach({appmetrics: appmetrics});
 
