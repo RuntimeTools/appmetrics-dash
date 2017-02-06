@@ -20,12 +20,12 @@ var request = "http://" + myurl + "/envRequest";
 
 d3.select('#envDiv').append('p')
     .style("font-size", "18px")
-    .style("padding-left", "45px")
-    .style("padding-top", "20px")
+    .style("padding-left", "15px")
+    .style("padding-top", "15px")
     .style("padding-bottom", "5px")
     .text("Environment");
 var paragraph = d3.select('#envDiv').append('p')
-    .style("padding-left", "40px")
+    .style("padding-left", "15px")
 var table = paragraph.append('table')
     .style("font-size", "14px");
 var thead = table.append('thead')

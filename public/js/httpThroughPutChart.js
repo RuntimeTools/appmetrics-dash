@@ -19,8 +19,11 @@
 // data storage
 var httpRate = [];
 
+var httpDiv2CanvasWidth = $("#httpDiv2").width() - 8; // minus 8 for margin and border
+var httpDiv2GraphWidth = httpDiv2CanvasWidth - margin.left - margin.right;
+
 //set the scale dimensions to the size of the graph
-var httpTP_xScale = d3.time.scale().range([0, graphWidth]);
+var httpTP_xScale = d3.time.scale().range([0, httpDiv2GraphWidth]);
 var httpTP_yScale = d3.scale.linear().range([tallerGraphHeight, 0]);
 
 // x axis format
@@ -45,12 +48,12 @@ var httpThroughPutline = d3.svg.line()
 // create the chart canvas
 var httpThroughPutChart = d3.select("#httpDiv2")
     .append("svg")
-    .attr("width", canvasWidth)
+    .attr("width", httpDiv2CanvasWidth)
     .attr("height", canvasHeight)
     .attr("class", "httpThroughPutChart")
     .append("g")
     .attr("transform",
-        "translate(" + margin.left + "," + margin.shortTop + ")");
+        "translate(" + margin.left + "," + margin.top + ")");
 
 // Scale the X range to the time period we have data for
 httpTP_xScale.domain(d3.extent(httpRate, function(d) {
@@ -80,9 +83,9 @@ httpThroughPutChart.append("g")
 
 // Chart title
 httpThroughPutChart.append("text")
-    .attr("x", -20)
-    .attr("y", 0 - (margin.shortTop * 0.5))    
-    .attr("text-anchor", "left")
+    .attr("x", 15 - margin.left)
+    .attr("y", 15 - margin.top)
+    .attr("dominant-baseline", "hanging")
     .style("font-size", "18px")
     .text("HTTP Throughput");
 
@@ -136,10 +139,13 @@ function updateThroughPutData() {
 }
 
 function resizeHttpThroughputChart() {
+    httpDiv2CanvasWidth = $("#httpDiv2").width() - 8;
+    httpDiv2GraphWidth = httpDiv2CanvasWidth - margin.left - margin.right;
+
     //only altering the horizontal for the moment
     var chart = d3.select(".httpThroughPutChart")
-    chart.attr("width", canvasWidth);
-    httpTP_xScale = d3.time.scale().range([0, graphWidth]);
+    chart.attr("width", httpDiv2CanvasWidth);
+    httpTP_xScale = d3.time.scale().range([0, httpDiv2GraphWidth]);
     httpTP_xAxis = d3.svg.axis().scale(httpTP_xScale)
         .orient("bottom").ticks(3).tickFormat(d3.time.format("%H:%M:%S"));
 

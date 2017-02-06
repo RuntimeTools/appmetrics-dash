@@ -62,12 +62,19 @@ var mem_systemLine = d3.svg.line()
 				return mem_yScale(d.system);
 			});
 
+var memSVG = d3.select("#memDiv1")
+    .append("svg")
+    .attr("width", canvasWidth)
+    .attr("height", canvasHeight)
+    .attr("class", "memChart")
+
+var memTitleBox = memSVG.append("rect")
+    .attr("width", canvasWidth)
+    .attr("height", 30)
+    .attr("class", "titlebox")
+
 // Define the memChart
-var memChart = d3.select("#memDiv1")
-			.append("svg")
-			.attr("width", canvasWidth)
-			.attr("height", canvasHeight)
-			.attr("class", "memChart")
+var memChart = memSVG
 			.append("g")
 			.attr("class", "memGroup")
 			.attr("transform",
@@ -97,40 +104,42 @@ memChart.append("g")
 
 // Add the title
 memChart.append("text")
-		.attr("x", -20)
-		.attr("y", 0 - margin.top + (margin.shortTop * 0.5))
-		.style("font-size", "18px")
-		.text("Memory Usage");
+    .attr("x", 7 - margin.left)
+    .attr("y", 15 - margin.top)
+    .attr("dominant-baseline", "central")
+	.style("font-size", "18px")
+	.text("Memory");
+
+// Add the system colour box
+memChart.append("rect")
+    .attr("x", 0) 
+    .attr("y", graphHeight + margin.bottom - 15)
+    .attr("class", "colourbox1")
+    .attr("width", 10)
+    .attr("height", 10)
 
 // Add the SYSTEM label
-memChart.append("text")
-		.attr("x", 0) 
-		.attr("y", 0 - (margin.top / 8))
-		.attr("class", "lineLabel") 
-		.style("fill", "#6eedd8")
-		.text("SYSTEM");
+var memSystemLabel = memChart.append("text")
+    .attr("x", 15) 
+    .attr("y", graphHeight + margin.bottom - 5)
+    .attr("text-anchor", "start")
+    .attr("class", "lineLabel")
+    .text("System");
+
+// Add the process colour box
+memChart.append("rect")
+    .attr("x", memSystemLabel.node().getBBox().width + 45) 
+    .attr("y", graphHeight + margin.bottom - 15)
+    .attr("width", 10)
+    .attr("height", 10)
+    .attr("class", "colourbox2")
 
 // Add the PROCESS label
 memChart.append("text")
-		.attr("x", graphWidth / 2)
-		.attr("y", 0 - (margin.top / 8))
-		.style("fill", "#8cd211")
-		.attr("class", "processlatestlabel")
-		.text("NODE PROCESS");
-
-// Add the text element for systemLatest
-memChart.append("text")
-		.attr("x", 0)
-		.attr("y", 0 - (margin.top * 3 / 8))
-		.attr("class", "systemLatest")
-		.style("font-size", "32px");
-
-// Add the text element for processLatest
-memChart.append("text")
-		.attr("x", graphWidth / 2) // spacing
-		.attr("y", 0 - (margin.top * 3 / 8))
-		.attr("class", "processLatest")
-		.style("font-size", "32px");
+    .attr("x", memSystemLabel.node().getBBox().width + 60) 
+    .attr("y", graphHeight + margin.bottom - 5)
+    .attr("class", "lineLabel2")
+    .text("Node Process");
 
 function resizeMemChart() {
     var chart = d3.select(".memChart")
@@ -138,9 +147,9 @@ function resizeMemChart() {
     mem_xScale = d3.time.scale().range([0, graphWidth]);
     mem_xAxis = d3.svg.axis().scale(mem_xScale)
 			.orient("bottom").ticks(3).tickFormat(getTimeFormat());
-    chart.select(".processLatest").attr("x", graphWidth / 2)
-    chart.select(".processlatestlabel").attr("x", graphWidth / 2)
     
+    memTitleBox.attr("width", canvasWidth)
+
     // Redraw lines and axes
     mem_xScale.domain(d3.extent(memData, function(d) {
         return d.date;

@@ -60,12 +60,19 @@ var el_avg_line = d3.svg.line()
         return el_yScale(d.latency.avg);
     });
 
-// define the chart canvas
-var elChart = d3.select("#eventLoopDiv")
+var elSVG = d3.select("#eventLoopDiv")
     .append("svg")
     .attr("width", httpCanvasWidth)
     .attr("height", canvasHeight)
     .attr("class", "elChart")
+
+var elTitleBox = elSVG.append("rect")
+    .attr("width", httpCanvasWidth)
+    .attr("height", 30)
+    .attr("class", "titlebox")
+
+// define the chart canvas
+var elChart = elSVG
     .append("g")
     .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");
@@ -108,31 +115,57 @@ elChart.append("g")
 
 // Draw the title
 elChart.append("text")
-    .attr("x", -20)
-    .attr("y", 0 - margin.top + (margin.shortTop * 0.5)) // All titles need to be in the same place
+    .attr("x", 7 - margin.left)
+    .attr("y", 15 - margin.top)
+    .attr("dominant-baseline", "central")
     .style("font-size", "18px")
     .text("Event Loop Latency");
 
-// Draw the MAXIMUM line label
-elChart.append("text")
-    .attr("x", 0)
-    .attr("y", 0 - (margin.top / 8))
+// Add the MAXIMUM colour box
+elChart.append("rect")
+    .attr("x", 0) 
+    .attr("y", graphHeight + margin.bottom - 15)
+    .attr("class", "colourbox1")
+    .attr("width", 10)
+    .attr("height", 10)
+
+// Add the MAXIMUM line label
+var elMaxLabel = elChart.append("text")
+    .attr("x", 15) 
+    .attr("y", graphHeight + margin.bottom - 5)
+    .attr("text-anchor", "start")
     .attr("class", "lineLabel")
-    .text("MAXIMUM");
+    .text("Maximum");
 
-// Draw the MINIMUM line label
-elChart.append("text")
-    .attr("x", httpGraphWidth / 3) // 1/3 across
-    .attr("y", 0 - (margin.top / 8))
-    .attr("class", "minlatestlabel")
-    .text("MINIMUM");
+// Add the MINIMUM colour box
+elChart.append("rect")
+    .attr("x", elMaxLabel.node().getBBox().width + 45) 
+    .attr("y", graphHeight + margin.bottom - 15)
+    .attr("width", 10)
+    .attr("height", 10)
+    .attr("class", "colourbox2")
 
-// Draw the AVERAGE line label
+// Add the MINIMUM line label
+var elMinLabel = elChart.append("text")
+    .attr("x", elMaxLabel.node().getBBox().width + 60) 
+    .attr("y", graphHeight + margin.bottom - 5)
+    .attr("class", "lineLabel")
+    .text("Minimum");
+
+// Add the AVERAGE colour box
+elChart.append("rect")
+    .attr("x", elMaxLabel.node().getBBox().width + elMinLabel.node().getBBox().width + 105) 
+    .attr("y", graphHeight + margin.bottom - 15)
+    .attr("width", 10)
+    .attr("height", 10)
+    .attr("class", "colourbox3")
+
+// Add the AVERAGE line label
 elChart.append("text")
-    .attr("x", (httpGraphWidth / 3) * 2) // 2/3 across
-    .attr("y", 0 - (margin.top / 8))
-    .attr("class", "avglatestlabel")
-    .text("AVERAGE");
+    .attr("x", elMaxLabel.node().getBBox().width + elMinLabel.node().getBBox().width + 120) 
+    .attr("y", graphHeight + margin.bottom - 5)
+    .attr("class", "lineLabel")
+    .text("Average");
 
 // Draw the Latest MAX Data
 elChart.append("text")
@@ -172,11 +205,8 @@ function resizeEventLoopChart() {
         .orient("bottom")
         .ticks(3)
         .tickFormat(getTimeFormat());
-    //reposition the Latest Min and Avg data & labels
-    chart.select(".minlatest").attr("x", httpGraphWidth / 3) // 1/3 across
-    chart.select(".minlatestlabel").attr("x", httpGraphWidth / 3) // 1/3 across
-    chart.select(".avglatest").attr("x", (httpGraphWidth / 3) * 2) // 2/3 across
-    chart.select(".avglatestlabel").attr("x", (httpGraphWidth / 3) * 2) // 2/3 across
+
+    elTitleBox.attr("width", httpCanvasWidth)
 
     el_xScale.domain(d3.extent(elData, function(d) {
         return d.time;

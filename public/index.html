@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <h1>Application Metrics Dashboard for Node.js (Tech Preview)</h1>
+    <!--<h1>Application Metrics Dashboard for Node.js (Tech Preview)</h1>-->
     <!-- load the d3.js library -->
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>    
@@ -38,18 +38,18 @@
     var monitoringStartTime = new Date();
     // Initialise graph and canvas dimensions
     var margin = {
-         top: 80,
-         shortTop: 60,
+         top: 50,
          right: 20,
-         bottom: 30,
+         bottom: 50,
+         shortBottom: 30,
          left: 60
     },
-    canvasWidth = $("#cpuDiv1").width(),
-    httpCanvasWidth = $("#httpDiv1").width(),
+    canvasWidth = $("#cpuDiv1").width() - 8, // -8 for margins and borders
+    httpCanvasWidth = $("#httpDiv1").width() - 8,
     graphWidth = canvasWidth - margin.left - margin.right,
     httpGraphWidth = httpCanvasWidth - margin.left - margin.right,
     canvasHeight = 250,
-    tallerGraphHeight = canvasHeight - margin.shortTop - margin.bottom,
+    tallerGraphHeight = canvasHeight - margin.top - margin.shortBottom,
     graphHeight = canvasHeight - margin.top - margin.bottom;
      
     var myurl = location.host;
@@ -59,8 +59,6 @@
 
     function getTimeFormat() {
         var currentTime = new Date()
-        console.log("currentTime: " + currentTime);
-        console.log("monitoringStartTime: " + monitoringStartTime);
         if(currentTime.getMinutes() - monitoringStartTime.getMinutes() >= 3
             || currentTime.getHours() > monitoringStartTime.getHours()) {
             return d3.time.format("%H:%M");
@@ -88,8 +86,8 @@
         window.addEventListener('resize', resize); 
 
         function resize() {
-            canvasWidth = $("#cpuDiv1").width(),
-            httpCanvasWidth = $("#httpDiv1").width(),
+            canvasWidth = $("#cpuDiv1").width() - 8,
+            httpCanvasWidth = $("#httpDiv1").width() - 8,
             graphWidth = canvasWidth - margin.left - margin.right,
             httpGraphWidth = httpCanvasWidth - margin.left - margin.right;
             resizeCPUChart();

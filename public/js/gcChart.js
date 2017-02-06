@@ -51,12 +51,19 @@ var gc_used_line = d3.svg.line()
         return gc_yScale(d.used);
     });
 
-// create the chart canvas
-var gcChart = d3.select("#gcDiv")
+var gcSVG = d3.select("#gcDiv")
     .append("svg")
     .attr("width", canvasWidth)
     .attr("height", canvasHeight)
     .attr("class", "gcChart")
+
+var gcTitleBox = gcSVG.append("rect")
+    .attr("width", canvasWidth)
+    .attr("height", 30)
+    .attr("class", "titlebox")
+
+// create the chart canvas
+var gcChart = gcSVG
     .append("g")
     .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");
@@ -84,24 +91,42 @@ gcChart.append("g")
 
 // Draw the title
 gcChart.append("text")
-    .attr("x", -20)
-    .attr("y", 0 - margin.top + (margin.shortTop * 0.5))
+    .attr("x", 7 - margin.left)
+    .attr("y", 15 - margin.top)
+    .attr("dominant-baseline", "central")
     .style("font-size", "18px")
-    .text("Heap Usage");
+    .text("Heap");
 
-// Draw the HEAP SIZE line label
-gcChart.append("text")
-    .attr("x", 0)
-    .attr("y", 0 - (margin.top / 8))
+// Add the heap size colour box
+gcChart.append("rect")
+    .attr("x", 0) 
+    .attr("y", graphHeight + margin.bottom - 15)
+    .attr("class", "colourbox1")
+    .attr("width", 10)
+    .attr("height", 10)
+
+// Add the heap size label
+var gcHeapSizeLabel = gcChart.append("text")
+    .attr("x", 15) 
+    .attr("y", graphHeight + margin.bottom - 5)
+    .attr("text-anchor", "start")
     .attr("class", "lineLabel")
-    .text("HEAP SIZE");
+    .text("Heap Size");
 
-// Draw the USED HEAP line label
+// Add the used heap colour box
+gcChart.append("rect")
+    .attr("x", gcHeapSizeLabel.node().getBBox().width + 45) 
+    .attr("y", graphHeight + margin.bottom - 15)
+    .attr("width", 10)
+    .attr("height", 10)
+    .attr("class", "colourbox2")
+
+// Add the used heap label
 gcChart.append("text")
-    .attr("x", graphWidth / 2) // 1/2 along
-    .attr("y", 0 - (margin.top / 8))
-    .attr("class", "usedlatestlabel")
-    .text("USED HEAP");
+    .attr("x", gcHeapSizeLabel.node().getBBox().width + 60) 
+    .attr("y", graphHeight + margin.bottom - 5)
+    .attr("class", "lineLabel2")
+    .text("Used Heap");
 
 // Draw the Latest HEAP SIZE Data
 gcChart.append("text")
@@ -134,9 +159,8 @@ function resizeGCChart() {
         .orient("bottom")
         .ticks(3)
         .tickFormat(getTimeFormat());
-    // reposition the USED HEAP text & label
-    chart.select(".usedlatest").attr("x", graphWidth / 2) // 1/2 along
-    chart.select(".usedlatestlabel").attr("x", graphWidth / 2) // 1/2 along
+    
+    gcTitleBox.attr("width", canvasWidth)
 
     // Redraw lines and axes
     gc_xScale.domain(d3.extent(gcData, function(d) {

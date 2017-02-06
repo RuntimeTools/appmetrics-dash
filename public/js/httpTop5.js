@@ -21,7 +21,7 @@ var httpTop5Data = [];
 
 var httpTop5_barHeight = tallerGraphHeight / 5;
 
-var httpDiv3CanvasWidth = $("#httpDiv3").width();
+var httpDiv3CanvasWidth = $("#httpDiv3").width() - 8; // -8 for margin and border
 var httpDiv3GraphWidth = httpDiv3CanvasWidth - margin.left - margin.right;
 
 var httpTop5_xScale = d3.scale.linear().range([0, httpDiv3GraphWidth]);
@@ -33,13 +33,13 @@ var httpTop5Chart = d3.select("#httpDiv3")
     .attr("class", "httpTop5Chart")
     .append("g")
     .attr("transform", 
-        "translate(" + margin.left + "," + margin.shortTop + ")");
+        "translate(" + margin.left + "," + margin.top + ")");
 
 // Add the title
 httpTop5Chart.append("text")
-    .attr("x", -20)
-    .attr("y", 0 - (margin.shortTop * 0.5))
-    .attr("text-anchor", "left")
+    .attr("x", 15 - margin.left)
+    .attr("y", 15 - margin.top)
+    .attr("dominant-baseline", "hanging")
     .style("font-size", "18px")
     .text("Average Response Times (top 5)");
 
@@ -63,7 +63,7 @@ function updateChart() {
         .data(httpTop5Data)
         .enter().append("g").attr("class", "bar")
         .attr("transform", function(d, i) { 
-            return "translate(50," + (margin.shortTop + i * httpTop5_barHeight) + ")";
+            return "translate(50," + (margin.top + i * httpTop5_barHeight) + ")";
         });
 
     // Background
@@ -148,7 +148,7 @@ function updateURLData() {
 }
 
 function resizeHttpTop5Chart() {
-    httpDiv3CanvasWidth = $("#httpDiv3").width();
+    httpDiv3CanvasWidth = $("#httpDiv3").width() - 8;
     httpDiv3GraphWidth = httpDiv3CanvasWidth - margin.left - margin.right;
     httpTop5_xScale = d3.scale.linear().range([0, httpDiv3GraphWidth]);
     var chart = d3.select(".httpTop5Chart")

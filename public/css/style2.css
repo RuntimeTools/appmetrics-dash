@@ -7,25 +7,29 @@
     }
 
     body {
-    font: 14px Arial;
-    fill: #3b4b54;
+        font: 12px Arial;
+        fill: #3b4b54;
     }
 
     h1 {
-    font: 26px Arial;
-    font-weight: bold;
-    text-align: center;
-    color: #3b4b54;
+        font: 26px Arial;
+        font-weight: bold;
+        text-align: center;
+        color: #3b4b54;
     }
 
     svg {
-    margin: 2px;
-    background-color: #f7f7f7;
+        margin: 3px;
+        border: 1px solid #dfe6eb;
     }
     
-    #envDiv {
-        background-color: #f7f7f7;
-    }
+    .row { margin-left:1px; }
+
+    .col-md-2,
+    .col-md-3,
+    .col-md-4,
+    .col-md-5,
+    .col-md-6 { padding-right: 1px;padding-left: 1px; padding-top: 0px; padding-bottom: 0px}
 
     .cpuChart path,
     .memChart path,
@@ -65,10 +69,10 @@
     g.xAxis line,
     g.yAxis path,
     g.yAxis line {
-    fill: none;
-    stroke: #42535c;
-    stroke-width: 1;
-    shape-rendering: crispEdges;
+        fill: none;
+        stroke: #42535c;
+        stroke-width: 1;
+        shape-rendering: crispEdges;
     }
 
     g.tick line {
@@ -83,27 +87,36 @@
     shape-rendering: crispEdges;
     }
 
-    .lineLabel {
-        font: 12px Arial;
-        font-weight: bold;
-        text-anchor: left;
-        fill: #6eedd8;
-    }
-
-    .processlatestlabel,
-    .usedlatestlabel,
+    .lineLabel,
+    .lineLabel2,
+    .avglatestlabel,
     .minlatestlabel {
-        font: 12px Arial;
-        font-weight: bold;
+        font: 14px Arial;
         text-anchor: left;
-        fill: #8cd211;
     }
 
-    .avglatestlabel {
-        font: 12px Arial;
-        font-weight: bold;
-        text-anchor: left;
+    .colourbox1 {
+        fill: #6eedd8;
+        stroke: #dbe6e9;
+        stroke-width: 1px;
+    }
+
+    .colourbox2 {
+        fill: #8cd211;
+        stroke: #dbe6e9;
+        stroke-width: 1px;
+    }
+
+    .colourbox3 {
         fill: #5aaafa;
+        stroke: #dbe6e9;
+        stroke-width: 1px;
+    }
+
+    .titlebox {
+        fill: #eff3f5;
+        stroke: #dbe6e9;
+        stroke-width: 1px;
     }
 
     .container {
@@ -117,22 +130,22 @@
     }
 
     g.arc {
-    fill: #6decd7;
+        fill: #6decd7;
     }
 
     g.pointer {
-    fill: #959f9f;
-    stroke: #000000;
+        fill: #959f9f;
+        stroke: #000000;
     }
 
     g.label text {
-    text-anchor: middle;
-    text-align: center;
-    font-size: 12px;
+        text-anchor: middle;
+        text-align: center;
+        font-size: 12px;
     }
 
     .httpTop5Chart rect {
-      fill: #5aaafa;
+        fill: #5aaafa;
     }
 
     table, th, td {

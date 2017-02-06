@@ -58,7 +58,7 @@ var httpChart = d3.select("#httpDiv1")
     })
     .append("g")
     .attr("transform",
-        "translate(" + margin.left + "," + margin.shortTop + ")");
+        "translate(" + margin.left + "," + margin.top + ")");
 
 // Create the line
 httpChart.append("path")
@@ -78,12 +78,11 @@ httpChart.append("g")
 
 // Add the title
 httpChart.append("text")
-    .attr("x", -20)
-    .attr("y", 0 - (margin.shortTop * 0.5))
-    .attr("text-anchor", "left")
-    .attr("dominant-baseline", "central")
+    .attr("x", 15 - margin.left)
+    .attr("y", 15 - (margin.top))
+    .attr("dominant-baseline", "hanging")
     .style("font-size", "18px")
-    .text("HTTP Response Time");
+    .text("HTTP Incoming Requests");
 
 
 function updateHttpData() {
@@ -136,7 +135,7 @@ function updateHttpData() {
             .style("fill", "#5aaafa")
             .style("stroke", "white")
             .attr("transform",
-                "translate(" + margin.left + "," + margin.shortTop + ")")
+                "translate(" + margin.left + "," + margin.top + ")")
             .attr("cx", function(d) { return http_xScale(d.date); })
             .attr("cy", function(d) { return http_yScale(d.duration); })
             .append("svg:title").text(function(d) { return d.url; }); // tooltip
@@ -174,7 +173,7 @@ function resizeHttpChart() {
         .style("fill", "#5aaafa")
         .style("stroke", "white")
         .attr("transform",
-            "translate(" + margin.left + "," + margin.shortTop + ")")
+            "translate(" + margin.left + "," + margin.top + ")")
         .attr("cx", function(d) { return http_xScale(d.date); })
         .attr("cy", function(d) { return http_yScale(d.duration); })
         .append("svg:title").text(function(d) { return d.url; });

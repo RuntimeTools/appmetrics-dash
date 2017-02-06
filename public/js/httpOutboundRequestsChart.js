@@ -58,7 +58,7 @@ var httpOBChart = d3.select("#httpOBDiv")
     })
     .append("g")
     .attr("transform",
-        "translate(" + margin.left + "," + margin.shortTop + ")");
+        "translate(" + margin.left + "," + margin.top + ")");
 
 // Create the line
 httpOBChart.append("path")
@@ -77,10 +77,9 @@ httpOBChart.append("g")
 
 // Add the title
 httpOBChart.append("text")
-    .attr("x", -20)
-    .attr("y", 0 - (margin.shortTop * 0.5))
-    .attr("text-anchor", "left")
-    .attr("dominant-baseline", "central")
+    .attr("x", 15 - margin.left)
+    .attr("y", 15 - margin.top)
+    .attr("dominant-baseline", "hanging")
     .style("font-size", "18px")
     .text("HTTP Outbound Requests");
 
@@ -135,7 +134,7 @@ function updateHttpOBData() {
                 .style("fill", "#5aaafa")
                 .style("stroke", "white")
                 .attr("transform",
-                    "translate(" + margin.left + "," + margin.shortTop + ")")
+                    "translate(" + margin.left + "," + margin.top + ")")
                 .attr("cx", function(d) { return httpOB_xScale(d.date); })
                 .attr("cy", function(d) { return httpOB_yScale(d.duration); })
                 .append("svg:title").text(function(d) { return d.url; }); // tooltip
@@ -174,7 +173,7 @@ function resizeHttpOBChart() {
         .style("fill", "#5aaafa")
         .style("stroke", "white")
         .attr("transform",
-            "translate(" + margin.left + "," + margin.shortTop + ")")
+            "translate(" + margin.left + "," + margin.top + ")")
         .attr("cx", function(d) { return httpOB_xScale(d.date); })
         .attr("cy", function(d) { return httpOB_yScale(d.duration); })
         .append("svg:title").text(function(d) { return d.url; });
