@@ -4,8 +4,6 @@
   "description": "The Node.js Starter demonstrates a simple, reusable Node.js web application based on the Express framework.",
   "main": "index.js",
   "dependencies": {
-    "appmetrics": "*",
-    "cfenv": "1.0.x",
     "debug": "^2.6.0",
     "express": "^4.14.1",
     "socket.io": "^1.7.2"
@@ -16,6 +14,7 @@
   "devDependencies": {
     "compression": "^1.6.2",
     "cors": "^2.8.1",
+    "appmetrics": "^1.2.0",
     "eslint": "^3.14.1",
     "eslint-config-strongloop": "^2.1.0",
     "helmet": "^3.4.0",
