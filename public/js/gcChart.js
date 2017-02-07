@@ -30,25 +30,25 @@ var gc_xAxis = d3.svg.axis().scale(gc_xScale)
 // set up Y axis for memory in MB
 var gc_yAxis = d3.svg.axis().scale(gc_yScale)
 .orient("left").ticks(8).tickFormat(function(d) {
-	return d + "MB";
+    return d + "MB";
 });
 
 // line function for heap size
 var gc_size_line = d3.svg.line()
 .x(function(d) {
-	return  gc_xScale(d.time);
+    return  gc_xScale(d.time);
 })
 .y(function(d) {
-	return gc_yScale(d.size);
+    return gc_yScale(d.size);
 });
 
 // line function for used heap size
 var gc_used_line = d3.svg.line()
 .x(function(d) {
-	return gc_xScale(d.time);
+    return gc_xScale(d.time);
 })
 .y(function(d) {
-	return gc_yScale(d.used);
+    return gc_yScale(d.used);
 });
 
 var gcSVG = d3.select("#gcDiv")
@@ -66,7 +66,7 @@ var gcTitleBox = gcSVG.append("rect")
 var gcChart = gcSVG
 .append("g")
 .attr("transform",
-		"translate(" + margin.left + "," + margin.top + ")");
+        "translate(" + margin.left + "," + margin.top + ")");
 
 // Draw the heap size path.
 gcChart.append("path")
@@ -147,89 +147,89 @@ var sizeLatest = 0;
 var usedLatest = 0;
 
 function resizeGCChart() {
-	// only doing horizontal resize at the moment
-	// resize the canvas
-	var chart = d3.select(".gcChart")
-	chart.attr("width", canvasWidth);
-	// resize the scale's drawing range
-	gc_xScale = d3.time.scale().range([0, graphWidth]);
-	// resize the X axis
-	gc_xAxis = d3.svg.axis()
-	.scale(gc_xScale)
-	.orient("bottom")
-	.ticks(3)
-	.tickFormat(getTimeFormat());
+    // only doing horizontal resize at the moment
+    // resize the canvas
+    var chart = d3.select(".gcChart")
+    chart.attr("width", canvasWidth);
+    // resize the scale's drawing range
+    gc_xScale = d3.time.scale().range([0, graphWidth]);
+    // resize the X axis
+    gc_xAxis = d3.svg.axis()
+    .scale(gc_xScale)
+    .orient("bottom")
+    .ticks(3)
+    .tickFormat(getTimeFormat());
 
-	gcTitleBox.attr("width", canvasWidth)
+    gcTitleBox.attr("width", canvasWidth)
 
-	// Redraw lines and axes
-	gc_xScale.domain(d3.extent(gcData, function(d) {
-		return d.time;
-	}));
-	chart.select(".line1")
-	.attr("d", gc_size_line(gcData));
-	chart.select(".line2")
-	.attr("d", gc_used_line(gcData));
-	chart.select(".xAxis") 
-	.call(gc_xAxis);
-	chart.select(".yAxis") 
-	.call(gc_yAxis);
+    // Redraw lines and axes
+    gc_xScale.domain(d3.extent(gcData, function(d) {
+        return d.time;
+    }));
+    chart.select(".line1")
+    .attr("d", gc_size_line(gcData));
+    chart.select(".line2")
+    .attr("d", gc_used_line(gcData));
+    chart.select(".xAxis") 
+    .call(gc_xAxis);
+    chart.select(".yAxis") 
+    .call(gc_yAxis);
 }
 
 function updateGCData() {
 
-	socket.on('gc', function (gcRequest){
-		data = JSON.parse(gcRequest);  // parses the data into a JSON array
-		if (!data) return;
-		for (var i = 0, len = data.length; i < len; i++) {
-			var d = data[i];
+    socket.on('gc', function (gcRequest){
+        data = JSON.parse(gcRequest);  // parses the data into a JSON array
+        if (!data) return;
+        for (var i = 0, len = data.length; i < len; i++) {
+            var d = data[i];
 
-			d.time = new Date(+d.time);
-			// store data in MB from B
-			d.used  = +d.used  / (1024 * 1024);
-			d.size  = +d.size  / (1024 * 1024);
-			// round latest data to nearest whole MB
-			sizeLatest = Math.round(d.size);
-			usedLatest = Math.round(d.used);
-			gcData.push(d)
-		}
+            d.time = new Date(+d.time);
+            // store data in MB from B
+            d.used  = +d.used  / (1024 * 1024);
+            d.size  = +d.size  / (1024 * 1024);
+            // round latest data to nearest whole MB
+            sizeLatest = Math.round(d.size);
+            usedLatest = Math.round(d.used);
+            gcData.push(d)
+        }
 
-		// Only keep 30 minutes of data
-		var currentTime = Date.now()
-		var d = gcData[0]
-		while (d.hasOwnProperty('time') && d.time.valueOf() + 1800000 < currentTime) {
-			gcData.shift()
-			d = gcData[0]
-		}
+        // Only keep 30 minutes of data
+        var currentTime = Date.now()
+        var d = gcData[0]
+        while (d.hasOwnProperty('time') && d.time.valueOf() + 1800000 < currentTime) {
+            gcData.shift()
+            d = gcData[0]
+        }
 
-		// Scale the X range to the new data time interval
-		gc_xScale.domain(d3.extent(gcData, function(d) {
-			return d.time;
-		}));
-		// Scale the Y range to the new maximum heap size
-		gc_yScale.domain([0, Math.ceil(d3.extent(gcData, function(d) {
-			return d.size;
-		})[1])]);
+        // Scale the X range to the new data time interval
+        gc_xScale.domain(d3.extent(gcData, function(d) {
+            return d.time;
+        }));
+        // Scale the Y range to the new maximum heap size
+        gc_yScale.domain([0, Math.ceil(d3.extent(gcData, function(d) {
+            return d.size;
+        })[1])]);
 
-		gc_xAxis.tickFormat(getTimeFormat());
+        gc_xAxis.tickFormat(getTimeFormat());
 
-		var selection = d3.select(".gcChart");
-		// Update the data lines
-		selection.select(".line1")
-		.attr("d", gc_size_line(gcData));
-		selection.select(".line2")
-		.attr("d", gc_used_line(gcData));
-		// Update the axes
-		selection.select(".xAxis")
-		.call(gc_xAxis);
-		selection.select(".yAxis")
-		.call(gc_yAxis);
-		// Update the latest texts
-		// selection.select(".sizelatest")
-		// .text(sizeLatest + "MB");
-		// selection.select(".usedlatest")
-		// .text(usedLatest + "MB");
-	});
+        var selection = d3.select(".gcChart");
+        // Update the data lines
+        selection.select(".line1")
+        .attr("d", gc_size_line(gcData));
+        selection.select(".line2")
+        .attr("d", gc_used_line(gcData));
+        // Update the axes
+        selection.select(".xAxis")
+        .call(gc_xAxis);
+        selection.select(".yAxis")
+        .call(gc_yAxis);
+        // Update the latest texts
+        // selection.select(".sizelatest")
+        // .text(sizeLatest + "MB");
+        // selection.select(".usedlatest")
+        // .text(usedLatest + "MB");
+    });
 }
 
 updateGCData()
