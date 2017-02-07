@@ -29,6 +29,7 @@ tap.test('runs dashboard on ephemeral port', function(t) {
     host: '127.0.0.1',
     console: {
       log: function() { /* ignore */ },
+      error: function() { /* ignore */ },
     },
   });
 
