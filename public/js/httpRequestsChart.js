@@ -46,16 +46,24 @@ var httpline = d3.svg.line()
         return http_yScale(d.duration);
     });
 
-var httpChart = d3.select("#httpDiv1")
+var httpSVG = d3.select("#httpDiv1")
     .append("svg")
     .attr("width", httpCanvasWidth)
     .attr("height", canvasHeight)
-    .attr("class", "httpChart").on("mouseover", function() {
+    .attr("class", "httpChart")
+    .on("mouseover", function() {
         mouseOverHttpGraph = true;
      })
     .on("mouseout", function() {
         mouseOverHttpGraph = false;
     })
+
+var httpTitleBox = httpSVG.append("rect")
+    .attr("width", httpCanvasWidth)
+    .attr("height", 30)
+    .attr("class", "titlebox")
+
+var httpChart = httpSVG
     .append("g")
     .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");
@@ -78,9 +86,9 @@ httpChart.append("g")
 
 // Add the title
 httpChart.append("text")
-    .attr("x", 15 - margin.left)
-    .attr("y", 15 - (margin.top))
-    .attr("dominant-baseline", "hanging")
+    .attr("x", 7 - margin.left)
+    .attr("y", 15 - margin.top)
+    .attr("dominant-baseline", "central")
     .style("font-size", "18px")
     .text("HTTP Incoming Requests");
 
@@ -153,6 +161,8 @@ function resizeHttpChart() {
         .orient("bottom")
         .ticks(3)
         .tickFormat(getTimeFormat());
+
+    httpTitleBox.attr("width", httpCanvasWidth)
 
     http_xScale.domain(d3.extent(httpData, function(d) {
         return d.date;

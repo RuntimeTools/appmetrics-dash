@@ -31,15 +31,18 @@ var httpTop5Chart = d3.select("#httpDiv3")
     .attr("width", httpDiv3CanvasWidth)
     .attr("height", canvasHeight)
     .attr("class", "httpTop5Chart")
-    .append("g")
-    .attr("transform", 
-        "translate(" + margin.left + "," + margin.top + ")");
+
+var httpTop5TitleBox = httpTop5Chart.append("rect")
+    .attr("width", httpDiv3CanvasWidth)
+    .attr("height", 30)
+    .attr("class", "titlebox")
+    .style("fill", "#eff3f5")
 
 // Add the title
 httpTop5Chart.append("text")
-    .attr("x", 15 - margin.left)
-    .attr("y", 15 - margin.top)
-    .attr("dominant-baseline", "hanging")
+    .attr("x", 7)
+    .attr("y", 15)
+    .attr("dominant-baseline", "central")
     .style("font-size", "18px")
     .text("Average Response Times (top 5)");
 
@@ -153,6 +156,7 @@ function resizeHttpTop5Chart() {
     httpTop5_xScale = d3.scale.linear().range([0, httpDiv3GraphWidth]);
     var chart = d3.select(".httpTop5Chart")
     chart.attr("width", httpDiv3CanvasWidth);
+    httpTop5TitleBox.attr("width", httpDiv3CanvasWidth)
     updateChart();
 }
 

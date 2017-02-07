@@ -46,16 +46,24 @@ var httpOBline = d3.svg.line()
         return httpOB_yScale(d.duration);
     });
 
-var httpOBChart = d3.select("#httpOBDiv")
+var httpOBSVG = d3.select("#httpOBDiv")
     .append("svg")
     .attr("width", httpCanvasWidth)
     .attr("height", canvasHeight)
-    .attr("class", "httpOBChart").on("mouseover", function() {
+    .attr("class", "httpOBChart")
+    .on("mouseover", function() {
         mouseOverHttpOBGraph = true;
      })
     .on("mouseout", function() {
         mouseOverHttpOBGraph = false;
     })
+
+var httpOBTitleBox = httpOBSVG.append("rect")
+    .attr("width", httpCanvasWidth)
+    .attr("height", 30)
+    .attr("class", "titlebox")
+
+var httpOBChart = httpOBSVG
     .append("g")
     .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");
@@ -77,9 +85,9 @@ httpOBChart.append("g")
 
 // Add the title
 httpOBChart.append("text")
-    .attr("x", 15 - margin.left)
+    .attr("x", 7 - margin.left)
     .attr("y", 15 - margin.top)
-    .attr("dominant-baseline", "hanging")
+    .attr("dominant-baseline", "central")
     .style("font-size", "18px")
     .text("HTTP Outbound Requests");
 
@@ -157,6 +165,8 @@ function resizeHttpOBChart() {
     httpOB_xScale.domain(d3.extent(httpOBData, function(d) {
         return d.date;
     }));
+
+    httpOBTitleBox.attr("width", httpCanvasWidth)
     
     chart.selectAll("circle").remove();
 

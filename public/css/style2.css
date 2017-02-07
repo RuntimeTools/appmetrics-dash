@@ -22,8 +22,6 @@
         margin: 3px;
         border: 1px solid #dfe6eb;
     }
-    
-    .row { margin-left:1px; }
 
     .col-md-2,
     .col-md-3,
@@ -113,12 +111,6 @@
         stroke-width: 1px;
     }
 
-    .titlebox {
-        fill: #eff3f5;
-        stroke: #dbe6e9;
-        stroke-width: 1px;
-    }
-
     .container {
         width: 100%;
     }
@@ -148,10 +140,8 @@
         fill: #5aaafa;
     }
 
-    table, th, td {
-        background-color: #f7f7f7;
-    }
-    th, td {
-        padding: 5px;
-        border-bottom: 1px solid #ddd;
+    .titlebox {
+        fill: #eff3f5;
+        stroke: #dbe6e9;
+        stroke-width: 1px;
     }

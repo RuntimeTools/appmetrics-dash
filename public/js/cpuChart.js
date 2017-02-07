@@ -140,21 +140,6 @@ cpuChart.append("text")
     .attr("class", "lineLabel2")
     .text("Node Process");
 
-// Add the text element for systemlatest
-cpuChart.append("text")
-    .attr("x", 0) 
-    .attr("y", 0 - (margin.top * 3 / 8))
-    .attr("class", "systemlatest")
-    .style("font-size", "32px");
-
-// Add the text element for processlatest
-cpuChart.append("text")
-    .attr("x", graphWidth / 2) 
-    .attr("y", 0 - (margin.top * 3 / 8))
-    .attr("class", "processlatest")
-    .style("font-size", "32px");
-
-
 function resizeCPUChart() {
     var chart = d3.select(".cpuChart");
     chart.attr("width", canvasWidth);
@@ -165,8 +150,6 @@ function resizeCPUChart() {
         .ticks(3)
         .tickFormat(getTimeFormat());
     cpu_yAxis.tickSize(-graphWidth, 0, 0);
-    //chart.select(".processlatest").attr("x", graphWidth / 2) 
-    //chart.select(".processlatestlabel").attr("x", graphWidth / 2)
 
     cpuTitleBox.attr("width", canvasWidth)
 
@@ -233,10 +216,6 @@ function updateCPUData() {
             .call(cpu_xAxis);
         selection.select(".yAxis")
             .call(cpu_yAxis);
-        //selection.select(".processlatest")
-        //    .text(cpuProcessLatest + "%");
-        //selection.select(".systemlatest")
-        //    .text(cpuSystemLatest + "%");
     });
 }
 

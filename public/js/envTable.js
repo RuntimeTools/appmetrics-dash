@@ -18,18 +18,33 @@
 
 var request = "http://" + myurl + "/envRequest";
 
-d3.select('#envDiv').append('p')
+
+var tableRowHeight = 30;
+var tableRowWidth = 170;
+
+// Define the cpuChart
+var envSVG = d3.select("#envDiv")
+    .append("svg")
+    .attr("width", canvasWidth)
+    .attr("height", canvasHeight)
+    .attr("class", "envData")
+
+var envTitleBox = envSVG.append("rect")
+    .attr("width", canvasWidth)
+    .attr("height", 30)
+    .attr("class", "titlebox")
+
+envSVG.append("text")
+    .attr("x", 7)
+    .attr("y", 15)
+    .attr("dominant-baseline", "central")
     .style("font-size", "18px")
-    .style("padding-left", "15px")
-    .style("padding-top", "15px")
-    .style("padding-bottom", "5px")
     .text("Environment");
-var paragraph = d3.select('#envDiv').append('p')
-    .style("padding-left", "15px")
-var table = paragraph.append('table')
-    .style("font-size", "14px");
-var thead = table.append('thead')
-var tbody = table.append('tbody');
+
+var paragraph = envSVG.append("g")
+    .attr("class", "envGroup")
+    .attr("transform",
+        "translate(" + 20 + "," + (margin.top + 10) + ")");
 
 function populateEnvTable() {
     socket.on('environment', function (envRequest){
@@ -37,29 +52,40 @@ function populateEnvTable() {
         if (data == null) return
         function tabulate(data) {
             // create a row for each object in the data
-            var rows = tbody.selectAll('tr')
+            var rows = paragraph.selectAll('text')
                 .data(data)
                 .enter()
-                .append('tr');
+                .append('text')
+                .style('font-size', '14px')
+                .attr("transform", function(d, i) {
+                    return "translate(0," + (i * tableRowHeight) + ")";
+                });
+
 
             // create a cell in each row for each column
-            var cells = rows.selectAll('td')
+            var cells = rows.selectAll('tspan')
                 .data(function (row) {
                     return ['Parameter', 'Value'].map(function (column) {
                         return {column: column, value: row[column]};
                     });
                 })
                 .enter()
-                .append('td')
+                .append('tspan')
+                .attr("x", function(d, i) {
+                    return i * tableRowWidth; // indent second element for each row
+                })
                 .text(function (d) { return d.value; });
-	
-            return table;
         }
 	
         // render the table(s)
         tabulate(data); // 2 column table
 
     });
+}
+
+function resizeEnvTable() {
+    envSVG.attr("width", canvasWidth);
+    envTitleBox.attr("width", canvasWidth)
 }
 
 populateEnvTable()

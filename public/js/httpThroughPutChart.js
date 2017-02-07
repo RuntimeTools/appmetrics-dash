@@ -45,13 +45,19 @@ var httpThroughPutline = d3.svg.line()
         return httpTP_yScale(d.httpRate);
     });
 
-// create the chart canvas
-var httpThroughPutChart = d3.select("#httpDiv2")
+// Define the cpuChart
+var httpThroughPutSVG = d3.select("#httpDiv2")
     .append("svg")
     .attr("width", httpDiv2CanvasWidth)
     .attr("height", canvasHeight)
     .attr("class", "httpThroughPutChart")
-    .append("g")
+
+var httpThroughPutTitleBox = httpThroughPutSVG.append("rect")
+    .attr("width", canvasWidth)
+    .attr("height", 30)
+    .attr("class", "titlebox")
+
+var httpThroughPutChart = httpThroughPutSVG.append("g")
     .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");
 
@@ -83,9 +89,9 @@ httpThroughPutChart.append("g")
 
 // Chart title
 httpThroughPutChart.append("text")
-    .attr("x", 15 - margin.left)
+    .attr("x", 7 - margin.left)
     .attr("y", 15 - margin.top)
-    .attr("dominant-baseline", "hanging")
+    .attr("dominant-baseline", "central")
     .style("font-size", "18px")
     .text("HTTP Throughput");
 
@@ -148,6 +154,9 @@ function resizeHttpThroughputChart() {
     httpTP_xScale = d3.time.scale().range([0, httpDiv2GraphWidth]);
     httpTP_xAxis = d3.svg.axis().scale(httpTP_xScale)
         .orient("bottom").ticks(3).tickFormat(d3.time.format("%H:%M:%S"));
+
+    
+    httpThroughPutTitleBox.attr("width", httpDiv2CanvasWidth)
 
     // Re-scale the x range to the new time interval
     httpTP_xScale.domain(d3.extent(httpRate, function(d) {
