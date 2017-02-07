@@ -10,65 +10,65 @@
 </head>
 
 <body>
-    <h1>Application Metrics Dashboard for Node.js (Tech Preview)</h1>
+    <!--<h1>Application Metrics Dashboard for Node.js (Tech Preview)</h1>-->
     <!-- load the d3.js library -->
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>    
     <script src="http://code.jquery.com/jquery.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/gauge.js"></script>
 
-    <div class="row">
-        <div class="col-md-4" id="cpuDiv1"></div>
-        <div class="col-md-4" id="memDiv1"></div>
-        <div class="col-md-4" id="httpDiv2"></div>
-    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3" id="cpuDiv1"></div>
+            <div class="col-md-3" id="memDiv1"></div>
+            <div class="col-md-3" id="gcDiv"></div>
+            <div class="col-md-3" id="envDiv"></div>
+        </div>
 
-    <div class="row">
-        <div class="col-md-6" id="httpDiv1"></div>
-        <div class="col-md-6" id="httpDiv3"></div>
+        <div class="row">
+            <div class="col-md-5" id="httpDiv1"></div>
+            <div class="col-md-5" id="httpDiv3"></div>
+            <div class="col-md-2" id="httpDiv2"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-5" id="httpOBDiv"></div>
+            <div class="col-md-5" id="eventLoopDiv"></div>
+            <div class="col-md-2" id="nodeReportButtonDiv"></div>
+        </div>
     </div>
-    <div class="row">
-        <div class="col-md-6" id="gcDiv"></div>
-        <div class="col-md-6" id="eventLoopDiv"></div>
-    </div>
-    <div class="row row-margins">
-        <div class="col-md-10" id="envDiv"></div>
-        <div class="col-md-2" id="nodeReportButtonDiv"></div>
-    </div>
-    <div class="row big-top-margin">
-        <div class="col-md-12" id="nodeReportDiv"></div>
-    </div>
-        <script>
-            // Set the dimensions of the canvas / graph
-            var margin = {
-                    top: 120,
-                    shortTop: 60,
-                    right: 20,
-                    bottom: 30,
-                    left: 60
-                },
-                width = $("#cpuDiv1").width(),
-                httpWidth = $("#httpDiv1").width(),
-                graphWidth = width - margin.left - margin.right,
-                httpGraphWidth = httpWidth - margin.left - margin.right,
-                height = 300 - margin.top - margin.bottom;
-                tallerHeight = 300 - margin.shortTop - margin.bottom;
-                
-        var myurl = location.host;
-        var socket = io.connect(myurl);
-        var systemMEMLatest = 0;
-        var processMEMLatest = 0;
-        var systemCPULatest = 0;
-        var processCPULatest = 0;
+<script>
+    var monitoringStartTime = new Date();
+    // Initialise graph and canvas dimensions
+    var margin = {
+         top: 50,
+         right: 20,
+         bottom: 50,
+         shortBottom: 30,
+         left: 60
+    },
+    canvasWidth = $("#cpuDiv1").width() - 8, // -8 for margins and borders
+    httpCanvasWidth = $("#httpDiv1").width() - 8,
+    graphWidth = canvasWidth - margin.left - margin.right,
+    httpGraphWidth = httpCanvasWidth - margin.left - margin.right,
+    canvasHeight = 250,
+    tallerGraphHeight = canvasHeight - margin.top - margin.shortBottom,
+    graphHeight = canvasHeight - margin.top - margin.bottom;
+     
+    var myurl = location.host;
+    var socket = io.connect(myurl);
+    socket.emit('connected');
+    socket.emit('disableprofiling'); //profiling disabled
 
-        //socket = io.connect();
-        socket.emit('connected');
-        socket.emit('disableprofiling'); //profiling disabled
-        
-    </script>
-
-
+    function getTimeFormat() {
+        var currentTime = new Date()
+        if(currentTime.getMinutes() - monitoringStartTime.getMinutes() >= 3
+            || currentTime.getHours() > monitoringStartTime.getHours()) {
+            return d3.time.format("%H:%M");
+        } else {
+            return d3.time.format("%H:%M:%S");
+        }
+    }
+</script>
     <script type="text/javascript" src="js/nodeReport.js"></script>
     <script type="text/javascript" src="js/gauge.js"></script>
     <script type="text/javascript" src="js/envTable.js"></script>
@@ -78,6 +78,7 @@
     <script type="text/javascript" src="js/httpRequestsChart.js"></script>
     <script type="text/javascript" src="js/httpThroughPutChart.js"></script>
     <script type="text/javascript" src="js/httpTop5.js"></script>
+    <script type="text/javascript" src="js/httpOutboundRequestsChart.js"></script>
 	
 	<script type="text/javascript" src="js/memChart.js"></script>
     <script type="text/javascript" src="js/gcChart.js"></script>
@@ -87,23 +88,19 @@
         window.addEventListener('resize', resize); 
 
         function resize() {
-            width = $("#cpuDiv1").width(),
-            httpWidth = $("#httpDiv1").width(),
-            graphWidth = width - margin.left - margin.right,
-            httpGraphWidth = httpWidth - margin.left - margin.right;
+            canvasWidth = $("#cpuDiv1").width() - 8,
+            httpCanvasWidth = $("#httpDiv1").width() - 8,
+            graphWidth = canvasWidth - margin.left - margin.right,
+            httpGraphWidth = httpCanvasWidth - margin.left - margin.right;
             resizeCPUChart();
-            updateCPUData();
             resizeHttpChart();
-            updateHttpData();
-            resizeMemChart();
-            updateMemData();
+            resizeHttpOBChart();
             resizeGCChart();
-            updateGCData();
             resizeEventLoopChart();
-            updateEventLoopData();
             resizeHttpThroughputChart();
-            updateThroughPutData();
             resizeHttpTop5Chart();
+            resizeMemChart();
+            resizeEnvTable();
         }
 
     </script>
