@@ -73,7 +73,7 @@ httpTP_yScale.domain([0, d3.max(httpRate, function(d) {
 
 //The data line
 httpThroughPutChart.append("path")
-    .attr("class", "line")
+    .attr("class", "httpline")
     .attr("d", httpThroughPutline(httpRate));
 
 // X axis line
@@ -134,7 +134,7 @@ function updateThroughPutData() {
 
             // update the data and axes lines to the new data values
             var selection = d3.select(".httpThroughPutChart");
-            selection.select(".line")
+            selection.select(".httpline")
                 .attr("d", httpThroughPutline(httpRate));
             selection.select(".xAxis")
                 .call(httpTP_xAxis);
@@ -170,7 +170,7 @@ function resizeHttpThroughputChart() {
 
     // update the data and axes lines to the new data values
     var selection = d3.select(".httpThroughPutChart");
-    selection.select(".line")
+    selection.select(".httpline")
         .attr("d", httpThroughPutline(httpRate));
     selection.select(".xAxis")
         .call(httpTP_xAxis);

@@ -71,7 +71,6 @@ var httpChart = httpSVG
 // Create the line
 httpChart.append("path")
     .attr("class", "httpline")
-    .style("stroke", "#7cc7ff")
     .attr("d", httpline(httpData));
 
 // Define the axes
