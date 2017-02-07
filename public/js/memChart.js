@@ -88,7 +88,6 @@ memChart.append("path")
 // Add the process line path.
 memChart.append("path")
 		.attr("class", "processLine")
-		.style("stroke", "#8cd211")
 		.attr("d", mem_processLine(memData));
 
 // Add the X Axis

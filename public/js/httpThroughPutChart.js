@@ -73,7 +73,7 @@ httpTP_yScale.domain([0, d3.max(httpRate, function(d) {
 
 //The data line
 httpThroughPutChart.append("path")
-    .attr("class", "line")
+    .attr("class", "httpline")
     .attr("d", httpThroughPutline(httpRate));
 
 // X axis line
@@ -101,7 +101,9 @@ function updateThroughPutData() {
         data = JSON.parse(httpRequest);  // parses the data into a JSON array
         if (data.length == 0) return
 
-        var d = data;
+		for (var i = 0, len = data.length; i < len; i++) {
+			var d = data[i];
+        
         if (d != null && d.hasOwnProperty('time')) {
             d.date = new Date(+d.time);
             if (httpRate.length == 0) {
@@ -114,9 +116,10 @@ function updateThroughPutData() {
                     httpRate.push({httpRate:averageRate, time:d.date})
                 }
             }
+        }
             // Only keep 30 minutes or 2000 items of data
             var currentTime = Date.now()
-            d = httpRate[0]
+            var d = httpRate[0]
    	        while (httpRate.length > 2000 || (d.hasOwnProperty('time') && d.time.valueOf() + 1800000 < currentTime)) {
                 httpRate.shift()
                 d = httpRate[0]
@@ -134,7 +137,7 @@ function updateThroughPutData() {
 
             // update the data and axes lines to the new data values
             var selection = d3.select(".httpThroughPutChart");
-            selection.select(".line")
+            selection.select(".httpline")
                 .attr("d", httpThroughPutline(httpRate));
             selection.select(".xAxis")
                 .call(httpTP_xAxis);
@@ -170,7 +173,7 @@ function resizeHttpThroughputChart() {
 
     // update the data and axes lines to the new data values
     var selection = d3.select(".httpThroughPutChart");
-    selection.select(".line")
+    selection.select(".httpline")
         .attr("d", httpThroughPutline(httpRate));
     selection.select(".xAxis")
         .call(httpTP_xAxis);

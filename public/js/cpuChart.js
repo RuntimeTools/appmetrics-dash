@@ -87,7 +87,6 @@ cpuChart.append("path")
 // Add the processline path.
 cpuChart.append("path")
     .attr("class", "processLine")
-    .style("stroke", "#8cd211")
     .attr("d", processline(cpuData));
 
 // Add the X Axis
