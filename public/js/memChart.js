@@ -34,6 +34,7 @@ var mem_yAxis = d3.svg.axis()
     .tickFormat(function(d) {
         return d3.format(".2s")(d * 1024 *1024);
     });
+
 // Memory data storage
 var memData = [];
 var memProcessLatest = 0;
