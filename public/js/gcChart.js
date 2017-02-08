@@ -16,7 +16,7 @@
 
 // Line chart for displaying GC-reported heap size and used heap size
 
-//set up axes scales to the dimensions of the graph
+// set up axes scales to the dimensions of the graph
 var gc_xScale = d3.time.scale().range([0, graphWidth]);
 var gc_yScale = d3.scale.linear().range([graphHeight, 0]);
 
@@ -25,128 +25,128 @@ var gcData = [];
 
 // set up X axis for time as HH:MM:SS or HH:MM depending on time elapsed
 var gc_xAxis = d3.svg.axis()
-    .scale(gc_xScale)
-    .orient("bottom")
-    .ticks(3)
-    .tickFormat(getTimeFormat());
+.scale(gc_xScale)
+.orient("bottom")
+.ticks(3)
+.tickFormat(getTimeFormat());
 
 // set up Y axis for memory
 var gc_yAxis = d3.svg.axis()
-    .scale(gc_yScale)
-    .orient("left")
-    .ticks(8)
-    .tickFormat(function(d) {
-        return d3.format(".2s")(d * 1024 * 1024)
-    });
+.scale(gc_yScale)
+.orient("left")
+.ticks(8)
+.tickFormat(function(d) {
+    return d3.format(".2s")(d * 1024 * 1024)
+});
 
 // line function for heap size
 var gc_size_line = d3.svg.line()
-    .x(function(d) {
-        return  gc_xScale(d.time);
-    })
-    .y(function(d) {
-        return gc_yScale(d.size);
-    });
+.x(function(d) {
+    return  gc_xScale(d.time);
+})
+.y(function(d) {
+    return gc_yScale(d.size);
+});
 
 // line function for used heap size
 var gc_used_line = d3.svg.line()
-    .x(function(d) {
-        return gc_xScale(d.time);
-    })
-    .y(function(d) {
-        return gc_yScale(d.used);
-    });
+.x(function(d) {
+    return gc_xScale(d.time);
+})
+.y(function(d) {
+    return gc_yScale(d.used);
+});
 
 var gcSVG = d3.select("#gcDiv")
-    .append("svg")
-    .attr("width", canvasWidth)
-    .attr("height", canvasHeight)
-    .attr("class", "gcChart")
+.append("svg")
+.attr("width", canvasWidth)
+.attr("height", canvasHeight)
+.attr("class", "gcChart")
 
 var gcTitleBox = gcSVG.append("rect")
-    .attr("width", canvasWidth)
-    .attr("height", 30)
-    .attr("class", "titlebox")
+.attr("width", canvasWidth)
+.attr("height", 30)
+.attr("class", "titlebox")
 
 // create the chart canvas
 var gcChart = gcSVG
-    .append("g")
-    .attr("transform",
+.append("g")
+.attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");
 
 // Draw the heap size path.
 gcChart.append("path")
-    .attr("class", "line1")
-    .attr("d", gc_size_line(gcData));
+.attr("class", "line1")
+.attr("d", gc_size_line(gcData));
 
 // Draw the used heap path.
 gcChart.append("path")
-    .attr("class", "line2")
-    .attr("d", gc_used_line(gcData));
+.attr("class", "line2")
+.attr("d", gc_used_line(gcData));
 
 // Draw the X Axis
 gcChart.append("g")
-    .attr("class", "xAxis")
-    .attr("transform", "translate(0," + graphHeight + ")")
-    .call(gc_xAxis);
+.attr("class", "xAxis")
+.attr("transform", "translate(0," + graphHeight + ")")
+.call(gc_xAxis);
 
 // Draw the Y Axis
 gcChart.append("g")
-    .attr("class", "yAxis")
-    .call(gc_yAxis);
+.attr("class", "yAxis")
+.call(gc_yAxis);
 
 // Draw the title
 gcChart.append("text")
-    .attr("x", 7 - margin.left)
-    .attr("y", 15 - margin.top)
-    .attr("dominant-baseline", "central")
-    .style("font-size", "18px")
-    .text("Heap");
+.attr("x", 7 - margin.left)
+.attr("y", 15 - margin.top)
+.attr("dominant-baseline", "central")
+.style("font-size", "18px")
+.text("Heap");
 
 // Add the heap size colour box
 gcChart.append("rect")
-    .attr("x", 0) 
-    .attr("y", graphHeight + margin.bottom - 15)
-    .attr("class", "colourbox1")
-    .attr("width", 10)
-    .attr("height", 10)
+.attr("x", 0) 
+.attr("y", graphHeight + margin.bottom - 15)
+.attr("class", "colourbox1")
+.attr("width", 10)
+.attr("height", 10)
 
 // Add the heap size label
 var gcHeapSizeLabel = gcChart.append("text")
-    .attr("x", 15) 
-    .attr("y", graphHeight + margin.bottom - 5)
-    .attr("text-anchor", "start")
-    .attr("class", "lineLabel")
-    .text("Heap Size");
+.attr("x", 15) 
+.attr("y", graphHeight + margin.bottom - 5)
+.attr("text-anchor", "start")
+.attr("class", "lineLabel")
+.text("Heap Size");
 
 // Add the used heap colour box
 gcChart.append("rect")
-    .attr("x", gcHeapSizeLabel.node().getBBox().width + 45) 
-    .attr("y", graphHeight + margin.bottom - 15)
-    .attr("width", 10)
-    .attr("height", 10)
-    .attr("class", "colourbox2")
+.attr("x", gcHeapSizeLabel.node().getBBox().width + 45) 
+.attr("y", graphHeight + margin.bottom - 15)
+.attr("width", 10)
+.attr("height", 10)
+.attr("class", "colourbox2")
 
 // Add the used heap label
 gcChart.append("text")
-    .attr("x", gcHeapSizeLabel.node().getBBox().width + 60) 
-    .attr("y", graphHeight + margin.bottom - 5)
-    .attr("class", "lineLabel2")
-    .text("Used Heap");
+.attr("x", gcHeapSizeLabel.node().getBBox().width + 60) 
+.attr("y", graphHeight + margin.bottom - 5)
+.attr("class", "lineLabel2")
+.text("Used Heap");
 
 // Draw the Latest HEAP SIZE Data
 gcChart.append("text")
-    .attr("x", 0)
-    .attr("y", 0 - (margin.top * 3 / 8))
-    .attr("class", "sizelatest")
-    .style("font-size", "32px");
+.attr("x", 0)
+.attr("y", 0 - (margin.top * 3 / 8))
+.attr("class", "sizelatest")
+.style("font-size", "32px");
 
 // Draw the Latest USED HEAP Data
 gcChart.append("text")
-    .attr("x", graphWidth / 2) // 1/2 along
-    .attr("y", 0 - (margin.top * 3 / 8))
-    .attr("class", "usedlatest")
-    .style("font-size", "32px");
+.attr("x", graphWidth / 2) // 1/2 along
+.attr("y", 0 - (margin.top * 3 / 8))
+.attr("class", "usedlatest")
+.style("font-size", "32px");
 
 // latest data storage
 var sizeLatest = 0;
@@ -161,11 +161,11 @@ function resizeGCChart() {
     gc_xScale = d3.time.scale().range([0, graphWidth]);
     // resize the X axis
     gc_xAxis = d3.svg.axis()
-        .scale(gc_xScale)
-        .orient("bottom")
-        .ticks(3)
-        .tickFormat(getTimeFormat());
-    
+    .scale(gc_xScale)
+    .orient("bottom")
+    .ticks(3)
+    .tickFormat(getTimeFormat());
+
     gcTitleBox.attr("width", canvasWidth)
 
     // Redraw lines and axes
@@ -173,30 +173,33 @@ function resizeGCChart() {
         return d.time;
     }));
     chart.select(".line1")
-            .attr("d", gc_size_line(gcData));
+    .attr("d", gc_size_line(gcData));
     chart.select(".line2")
-            .attr("d", gc_used_line(gcData));
+    .attr("d", gc_used_line(gcData));
     chart.select(".xAxis") 
-        .call(gc_xAxis);
+    .call(gc_xAxis);
     chart.select(".yAxis") 
-        .call(gc_yAxis);
+    .call(gc_yAxis);
 }
 
 function updateGCData() {
 
     socket.on('gc', function (gcRequest){
-        data = JSON.parse(gcRequest);  // parses the data into a JSON array  
+        data = JSON.parse(gcRequest);  // parses the data into a JSON array
         if (!data) return;
-        var d = data;
-        d.time = new Date(+d.time);
-        // store data in MB from B
-        d.used  = +d.used  / (1024 * 1024);
-        d.size  = +d.size  / (1024 * 1024);
-        // round latest data to nearest whole MB
-        sizeLatest = Math.round(d.size);
-        usedLatest = Math.round(d.used);
-        gcData.push(d)
-		
+        for (var i = 0, len = data.length; i < len; i++) {
+            var d = data[i];
+
+            d.time = new Date(+d.time);
+            // store data in MB from B
+            d.used  = +d.used  / (1024 * 1024);
+            d.size  = +d.size  / (1024 * 1024);
+            // round latest data to nearest whole MB
+            sizeLatest = Math.round(d.size);
+            usedLatest = Math.round(d.used);
+            gcData.push(d)
+        }
+
         // Only keep 30 minutes of data
         var currentTime = Date.now()
         var d = gcData[0]
@@ -219,19 +222,19 @@ function updateGCData() {
         var selection = d3.select(".gcChart");
         // Update the data lines
         selection.select(".line1")
-            .attr("d", gc_size_line(gcData));
+        .attr("d", gc_size_line(gcData));
         selection.select(".line2")
-            .attr("d", gc_used_line(gcData));
+        .attr("d", gc_used_line(gcData));
         // Update the axes
         selection.select(".xAxis")
-            .call(gc_xAxis);
+        .call(gc_xAxis);
         selection.select(".yAxis")
-            .call(gc_yAxis);
+        .call(gc_yAxis);
         // Update the latest texts
-        //selection.select(".sizelatest")
-        //    .text(sizeLatest + "MB");
-        //selection.select(".usedlatest")
-        //    .text(usedLatest + "MB");
+        // selection.select(".sizelatest")
+        // .text(sizeLatest + "MB");
+        // selection.select(".usedlatest")
+        // .text(usedLatest + "MB");
     });
 }
 
