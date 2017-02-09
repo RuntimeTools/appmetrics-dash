@@ -7,6 +7,7 @@ d3.select("#nodeReportButtonDiv")
     .attr("value", "Show NodeReport")
     .style("background-color", "#eff3f5")
     .style("border", "2px solid #dbe6e9")
+    .style("color", "#3b4b54")
     .attr("onClick", "socket.emit('nodereport')");
 
 socket.on('nodereport', function (nodereport){
