@@ -86,6 +86,7 @@ function populateEnvTable() {
 }
 
 function resizeEnvTable() {
+    envDivCanvasWidth = $("#envDiv").width() - 8;
     envSVG.attr("width", envDivCanvasWidth);
     envTitleBox.attr("width", envDivCanvasWidth)
 }

@@ -207,6 +207,9 @@ var minLatest = 0;
 var avgLatest = 0;
 
 function resizeEventLoopChart() {
+    eventLoopCanvasWidth = $("#eventLoopDiv").width() - 8;
+    eventLoopGraphWidth = eventLoopCanvasWidth - margin.left - margin.right;
+
     // just doing horizontal resizes for now
     //resize the canvas
     var chart = d3.select(".elChart")

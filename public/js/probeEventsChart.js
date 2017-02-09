@@ -109,14 +109,32 @@ function resizeProbesChart() {
 
     probesTitleBox.attr("width", httpCanvasWidth)
 
+    // Update the input domain
     probes_xScale.domain(d3.extent(probesData, function(d) {
         return d.time;
     }));
+
+    var selection = d3.select(".probesChart");
+    selection.selectAll("circle").remove();
+    
     // update the data lines
     for(var i= 0; i< probeNames.length; i++) {
         var lineName = ".line" + (i + 1)
         selection.select(lineName)
             .attr("d", lineFunction(probeDataSeparated[i]));
+
+        // Add the points
+        selection.selectAll("point"+ (i + 1))
+            .data(probeDataSeparated[i])
+            .enter().append("circle")
+            .attr("r", 4)
+            .style("fill", colourPalette[i])
+            .style("stroke", "white")
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")")
+                .attr("cx", function(d) { return probes_xScale(d.time); })
+                .attr("cy", function(d) { return probes_yScale(d.duration); })
+                //.append("svg:title").text(function(d) { return d.url; }); // tooltip
     }
 
     // update the axes
