@@ -2,13 +2,14 @@
     width: 320;
     }
 
-    html {
-        background-color: white;
-    }
-
-    body {
-        font: 12px Arial;
-        fill: #3b4b54;
+   body,html {
+        background-color: #f5f7fa; 
+        width : 100%;
+        border-color:#f5f7fa;
+        height: 100%;
+        margin: 0 auto;
+        font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+        color: #ffffff;
     }
 
     h1 {
@@ -17,10 +18,14 @@
         text-align: center;
         color: #3b4b54;
     }
+   .container-fluid {
+        background-color: #f5f7fa;
+    }
 
     svg {
         margin: 3px;
         border: 1px solid #dfe6eb;
+        background-color: #ffffff;
     }
 
     .col-md-2,
