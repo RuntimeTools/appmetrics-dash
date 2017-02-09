@@ -25,19 +25,19 @@ var gcData = [];
 
 // set up X axis for time as HH:MM:SS or HH:MM depending on time elapsed
 var gc_xAxis = d3.svg.axis()
-.scale(gc_xScale)
-.orient("bottom")
-.ticks(3)
-.tickFormat(getTimeFormat());
+    .scale(gc_xScale)
+    .orient("bottom")
+    .ticks(3)
+    .tickFormat(getTimeFormat());
 
 // set up Y axis for memory
 var gc_yAxis = d3.svg.axis()
-.scale(gc_yScale)
-.orient("left")
-.ticks(8)
-.tickFormat(function(d) {
-    return d3.format(".2s")(d * 1024 * 1024)
-});
+    .scale(gc_yScale)
+    .orient("left")
+    .ticks(8)
+    .tickFormat(function(d) {
+        return d3.format(".2s")(d * 1024 * 1024)
+    });
 
 // line function for heap size
 var gc_size_line = d3.svg.line()
@@ -185,10 +185,10 @@ function resizeGCChart() {
 function updateGCData() {
 
     socket.on('gc', function (gcRequest){
-        data = JSON.parse(gcRequest);  // parses the data into a JSON array
-        if (!data) return;
-        for (var i = 0, len = data.length; i < len; i++) {
-            var d = data[i];
+        gcRequestData = JSON.parse(gcRequest);  // parses the data into a JSON array
+        if (!gcRequestData) return;
+        for (var i = 0, len = gcRequestData.length; i < len; i++) {
+            var d = gcRequestData[i];
 
             d.time = new Date(+d.time);
             // store data in MB from B

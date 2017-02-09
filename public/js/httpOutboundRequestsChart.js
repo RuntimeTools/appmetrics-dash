@@ -93,20 +93,16 @@ httpOBChart.append("text")
 
 
 function updateHttpOBData() {
-    socket.on('http-outbound', function (httpRequest) {
-        data = JSON.parse(httpRequest);  // parses the data into a JSON array
-        if (data.length == 0) {
-            return
-        }
-        if (data == null)
-            return
-            for (var i = 0, len = data.length; i < len; i++) {
-                var d = data[i];
-                if (d != null && d.hasOwnProperty('time')) {
-                    d.date = new Date(+d.time);
-                    httpOBData.push(d)
-                }
+    socket.on('http-outbound', function (httpOutboundRequest) {
+        httpOutboundRequestData = JSON.parse(httpOutboundRequest);  // parses the data into a JSON array
+        if (httpOutboundRequestData == null || httpOutboundRequestData.length == 0) return;
+        for (var i = 0, len = httpOutboundRequestData.length; i < len; i++) {
+            var d = httpOutboundRequestData[i];
+            if (d != null && d.hasOwnProperty('time')) {
+                d.date = new Date(+d.time);
+                httpOBData.push(d)
             }
+        }
         // Only keep 30 minutes or 2000 items of data
         var currentTime = Date.now()
         var d = httpOBData[0]

@@ -1,36 +1,41 @@
     @viewport {
-	width: 320;
+        width: 320;
     }
 
     html {
-    background-color: #3b4b54;
+        background-color: #3b4b54;
     }
 
     body {
-	font: 12px Arial;
-	fill: white;
-    background-color: #3b4b54;
+        font: 12px Arial;
+        fill: white;
+    }
+
+    .container-fluid {
+        background-color: #3b4b54;
     }
 
     h1 {
-	font: 26px Arial;
-	font-weight: bold;
-	text-align: center;
-	color: white;
-    }
-
-    p {
-	font: 18px;
-	color: white;
+        font: 26px Arial;
+        font-weight: bold;
+        text-align: center;
+        color: white;
     }
 
     svg {
-	margin: 3px;
-    background-color: #3f505a;
+        margin: 3px;
+        border: 1px solid #dfe6eb;
     }
 
-    #envDiv {
-        background-color: #3f505a;
+    .col-md-2,
+    .col-md-3,
+    .col-md-4,
+    .col-md-5,
+    .col-md-6 { 
+        padding-right: 1px;
+        padding-left: 1px; 
+        padding-top: 0px; 
+        padding-bottom: 0px
     }
 
     .cpuChart path,
@@ -39,53 +44,77 @@
     .elChart path,
     .httpThroughPutChart path,
     .httpChart path {
-	stroke: #6decd7;
-	stroke-width: 2;
-	fill: none;
+        stroke: #00b4a0;
+        stroke-width: 2;
+        fill: none;
     }
 
+    path.line1 {
+        stroke: #00b4a0;
+        stroke-width: 2;
+        fill: none;
+    }
+
+    path.line2,
+    path.processLine {
+        stroke: #95d13c;
+        stroke-width: 2;
+        fill: none;
+    }
+
+    path.line3,
+    path.httpline {
+        stroke: #5aaafa;
+        stroke-width: 2;
+        fill: none;
+    }
   
-    .axis path,
-    .axis line {
-	fill: none;
-	stroke: grey;
-	stroke-width: 1;
-	shape-rendering: crispEdges;
+    g.xAxis path,
+    g.xAxis line,
+    g.yAxis path,
+    g.yAxis line {
+        fill: none;
+        stroke: white;
+        stroke-width: 1;
+        shape-rendering: crispEdges;
+    }
+
+    g.tick line {
+        stroke: white;
     }
 
     .axis2 path,
     .axis2 line {
-	fill: none;
-	stroke: grey;
-	stroke-width: 1;
-	shape-rendering: crispEdges;
+    fill: none;
+    stroke: white;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
     }
 
-    .legend {
-	font: 12px Arial;
-	font-weight: bold;
-	text-anchor: left;
+    .lineLabel,
+    .lineLabel2,
+    .avglatestlabel,
+    .minlatestlabel {
+        font: 14px Arial;
+        text-anchor: left;
     }
 
-    .grid .tick {
-	stroke: lightgrey;
-	stroke-opacity: 0.7;
-	shape-rendering: crispEdges;
+    .colourbox1 {
+        fill: #00b4a0;
+        stroke: #dbe6e9;
+        stroke-width: 1px;
     }
 
-    .grid path {
-	stroke-width: 0;
+    .colourbox2 {
+        fill: #95d13c;
+        stroke: #dbe6e9;
+        stroke-width: 1px;
     }
 
-    div.tooltip {
-	position: absolute;
-	text-align: center;
-	padding: 3px;
-	font: 12px sans-serif;
-	background: #b0f4e8;
-	border: 0px;
-	border-radius: 8px;
-	pointer-events: none;
+    .colourbox3 {
+        fill: #5aaafa;
+        stroke: #dbe6e9;
+        stroke-width: 1px;
     }
 
     .container {
@@ -98,36 +127,27 @@
         text-align: center;
     }
 
-
     g.arc {
-	fill: #6decd7;
+        fill: #6decd7;
     }
 
     g.pointer {
-	fill: #959f9f;
-	stroke: #000000;
+        fill: #959f9f;
+        stroke: #000000;
     }
 
     g.label text {
-	text-anchor: middle;
-	text-align: center;
-	font-size: 12px;
+        text-anchor: middle;
+        text-align: center;
+        font-size: 12px;
     }
 
-    .urlChart rect {
-      fill: #6decd7;
+    .httpTop5Chart .bar {
+        fill: #5aaafa;
     }
 
-    th, td {
-        padding: 5px;
-        border-bottom: 1px solid #696969;
-	    color: white;
+    .titlebox {
+        fill: #949394;
+        stroke: #dbe6e9;
+        stroke-width: 1px;
     }
-
-    pre {
-        white-space: pre-wrap;
-    }
-
-    .row-margins { margin-top:2px; margin-bottom:2px}
-    .big-top-margin { margin-top:8px;}
-

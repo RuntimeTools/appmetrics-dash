@@ -36,6 +36,7 @@
             <div class="col-md-2" id="nodeReportButtonDiv"></div>
         </div>
     </div>
+
 <script>
     var monitoringStartTime = new Date();
     // Initialise graph and canvas dimensions
@@ -69,41 +70,38 @@
         }
     }
 </script>
-    <script type="text/javascript" src="js/nodeReport.js"></script>
-    <script type="text/javascript" src="js/gauge.js"></script>
-    <script type="text/javascript" src="js/envTable.js"></script>
 
-    <script type="text/javascript" src="js/cpuChart.js"></script>
-    
-    <script type="text/javascript" src="js/httpRequestsChart.js"></script>
-    <script type="text/javascript" src="js/httpThroughPutChart.js"></script>
-    <script type="text/javascript" src="js/httpTop5.js"></script>
-    <script type="text/javascript" src="js/httpOutboundRequestsChart.js"></script>
-	
-	<script type="text/javascript" src="js/memChart.js"></script>
-    <script type="text/javascript" src="js/gcChart.js"></script>
-    <script type="text/javascript" src="js/eventLoopChart.js"></script>
-    
-    <script>
-        window.addEventListener('resize', resize); 
+<script type="text/javascript" src="js/nodeReport.js"></script>
+<script type="text/javascript" src="js/envTable.js"></script>
+<script type="text/javascript" src="js/cpuChart.js"></script>
+<script type="text/javascript" src="js/httpRequestsChart.js"></script>
+<script type="text/javascript" src="js/httpThroughPutChart.js"></script>
+<script type="text/javascript" src="js/httpTop5.js"></script>
+<script type="text/javascript" src="js/httpOutboundRequestsChart.js"></script>
+<script type="text/javascript" src="js/memChart.js"></script>
+<script type="text/javascript" src="js/gcChart.js"></script>
+<script type="text/javascript" src="js/eventLoopChart.js"></script>
 
-        function resize() {
-            canvasWidth = $("#cpuDiv1").width() - 8,
-            httpCanvasWidth = $("#httpDiv1").width() - 8,
-            graphWidth = canvasWidth - margin.left - margin.right,
-            httpGraphWidth = httpCanvasWidth - margin.left - margin.right;
-            resizeCPUChart();
-            resizeHttpChart();
-            resizeHttpOBChart();
-            resizeGCChart();
-            resizeEventLoopChart();
-            resizeHttpThroughputChart();
-            resizeHttpTop5Chart();
-            resizeMemChart();
-            resizeEnvTable();
-        }
+<script>
+    window.addEventListener('resize', resize); 
 
-    </script>
+    function resize() {
+        canvasWidth = $("#cpuDiv1").width() - 8,
+        httpCanvasWidth = $("#httpDiv1").width() - 8,
+        graphWidth = canvasWidth - margin.left - margin.right,
+        httpGraphWidth = httpCanvasWidth - margin.left - margin.right;
+        resizeCPUChart();
+        resizeHttpChart();
+        resizeHttpOBChart();
+        resizeGCChart();
+        resizeEventLoopChart();
+        resizeHttpThroughputChart();
+        resizeHttpTop5Chart();
+        resizeMemChart();
+        resizeEnvTable();
+    }
+
+</script>
 
 </body>
 

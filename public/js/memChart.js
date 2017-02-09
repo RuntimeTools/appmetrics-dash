@@ -22,18 +22,18 @@ var mem_xScale = d3.time.scale().range([0, graphWidth]);
 var mem_yScale = d3.scale.linear().range([graphHeight, 0]);
 
 var mem_xAxis = d3.svg.axis()
-.scale(mem_xScale)
-.orient("bottom")
-.ticks(3)
-.tickFormat(getTimeFormat());
+    .scale(mem_xScale)
+    .orient("bottom")
+    .ticks(3)
+    .tickFormat(getTimeFormat());
 
 var mem_yAxis = d3.svg.axis()
-.scale(mem_yScale)
-.orient("left")
-.ticks(8)
-.tickFormat(function(d) {
-    return d3.format(".2s")(d * 1024 * 1024)
-});
+    .scale(mem_yScale)
+    .orient("left")
+    .ticks(8)
+    .tickFormat(function(d) {
+        return d3.format(".2s")(d * 1024 *1024);
+    });
 
 // Memory data storage
 var memData = [];
@@ -42,32 +42,33 @@ var memSystemLatest = 0;
 
 // Set input domain for both x and y scales
 mem_xScale.domain(d3.extent(memData, function(d) {
-				return d.date;
+    return d.date;
 }));
 
 mem_yScale.domain([0, Math.ceil(d3.extent(memData, function(d) {
-				return d.system;
+    return d.system;
 })[1] / 100) * 100]);
 
 
 // Define the process memory line
 var mem_processLine = d3.svg.line()
-			.x(function(d) {
-				return  mem_xScale(d.date);
-			})
-			.y(function(d) {
-				return mem_yScale(d.process);
-			});
+    .x(function(d) {
+        return  mem_xScale(d.date);
+    })
+    .y(function(d) {
+        return mem_yScale(d.process);
+    });
 
 // Define the system memory line
 var mem_systemLine = d3.svg.line()
-			.x(function(d) {
-				return mem_xScale(d.date);
-			})
-			.y(function(d) {
-				return mem_yScale(d.system);
-			});
+    .x(function(d) {
+        return mem_xScale(d.date);
+    })
+    .y(function(d) {
+        return mem_yScale(d.system);
+    });
 
+// Define the memory SVG
 var memSVG = d3.select("#memDiv1")
     .append("svg")
     .attr("width", canvasWidth)
@@ -79,41 +80,40 @@ var memTitleBox = memSVG.append("rect")
     .attr("height", 30)
     .attr("class", "titlebox")
 
-// Define the memChart
-var memChart = memSVG
-			.append("g")
-			.attr("class", "memGroup")
-			.attr("transform",
-				"translate(" + margin.left + "," + margin.top + ")");
+// Define the memory Chart
+var memChart = memSVG.append("g")
+    .attr("class", "memGroup")
+    .attr("transform",
+        "translate(" + margin.left + "," + margin.top + ")");
 
 // Add the system line path.
 memChart.append("path")
-		.attr("class", "systemLine")
-		.attr("d", mem_systemLine(memData));
+    .attr("class", "systemLine")
+    .attr("d", mem_systemLine(memData));
 
 // Add the process line path.
 memChart.append("path")
-		.attr("class", "processLine")
-		.attr("d", mem_processLine(memData));
+    .attr("class", "processLine")
+    .attr("d", mem_processLine(memData));
 
 // Add the X Axis
 memChart.append("g")
-		.attr("class", "xAxis")
-		.attr("transform", "translate(0," + graphHeight + ")")
-		.call(mem_xAxis);
+    .attr("class", "xAxis")
+    .attr("transform", "translate(0," + graphHeight + ")")
+    .call(mem_xAxis);
 
 // Add the Y Axis
 memChart.append("g")
-		.attr("class", "yAxis")
-		.call(mem_yAxis);
+    .attr("class", "yAxis")
+    .call(mem_yAxis);
 
 // Add the title
 memChart.append("text")
     .attr("x", 7 - margin.left)
     .attr("y", 15 - margin.top)
     .attr("dominant-baseline", "central")
-	.style("font-size", "18px")
-	.text("Memory");
+    .style("font-size", "18px")
+    .text("Memory");
 
 // Add the system colour box
 memChart.append("rect")
@@ -148,10 +148,10 @@ memChart.append("text")
 
 function resizeMemChart() {
     var chart = d3.select(".memChart")
-	chart.attr("width", canvasWidth);
+    chart.attr("width", canvasWidth);
     mem_xScale = d3.time.scale().range([0, graphWidth]);
     mem_xAxis = d3.svg.axis().scale(mem_xScale)
-			.orient("bottom").ticks(3).tickFormat(getTimeFormat());
+        .orient("bottom").ticks(3).tickFormat(getTimeFormat());
     
     memTitleBox.attr("width", canvasWidth)
 
@@ -167,66 +167,63 @@ function resizeMemChart() {
     chart.select(".yAxis").call(mem_yAxis);
 }
 
-
 function updateMemData() {
-	// Get the data again
-	socket.on('memory', function (memRequest) {
-    data = JSON.parse(memRequest);  // parses the data into a JSON array
-  	if (!data)
-			return
+
+    socket.on('memory', function (memRequest) {
+        memRequestData = JSON.parse(memRequest);  // parses the data into a JSON array
+        if (!memRequestData) return;
   
-    var d = data;
-    d.date = new Date(+d.time);
-    d.system  = +d.physical_used  / (1024 * 1024);
-    d.process  = +d.physical  / (1024 * 1024);
+        var d = memRequestData;
+        d.date = new Date(+d.time);
+        d.system  = +d.physical_used  / (1024 * 1024);
+        d.process  = +d.physical  / (1024 * 1024);
 
-    var _memProcessLatest = Math.round(d.process);
-    // Update gauge if loaded
-    if (typeof(updateMemProcessGauge) === 'function' && _memProcessLatest != memProcessLatest) {
-    	updateMemProcessGauge(d.process);
-    }
-    memProcessLatest = _memProcessLatest;
-    memSystemLatest = Math.round(d.system);
-    memData.push(d)
+        var _memProcessLatest = Math.round(d.process);
+        // Update gauge if loaded
+        if (typeof(updateMemProcessGauge) === 'function' && _memProcessLatest != memProcessLatest) {
+    	    updateMemProcessGauge(d.process);
+        }
+        memProcessLatest = _memProcessLatest;
+        memSystemLatest = Math.round(d.system);
+        memData.push(d)
+
+        // Only keep 30 minutes of data
+        var currentTime = Date.now()
+        var d = memData[0]
+        if (d === null) return;
 			
-	// Only keep 30 minutes of data
-	var currentTime = Date.now()
-	var d = memData[0]
-	if (d === null)
-		return
-			
-	while (d.hasOwnProperty('date') && d.date.valueOf() + 1800000 < currentTime) {
-		memData.shift()
-		d = memData[0]
-	}
+        while (d.hasOwnProperty('date') && d.date.valueOf() + 1800000 < currentTime) {
+            memData.shift()
+            d = memData[0]
+        }
 
-	// Set the input domain for the x axis
-	mem_xScale.domain(d3.extent(memData, function(d) {
-		return d.date;
-	}));
-	mem_yScale.domain([0, Math.ceil(d3.extent(memData, function(d) {
-		return d.system;
-	})[1] / 100) * 100]);
+        // Set the input domain for the axes
+        mem_xScale.domain(d3.extent(memData, function(d) {
+            return d.date;
+        }));
+        mem_yScale.domain([0, Math.ceil(d3.extent(memData, function(d) {
+            return d.system;
+        })[1] / 100) * 100]);
 
-    mem_xAxis.tickFormat(getTimeFormat());
+        mem_xAxis.tickFormat(getTimeFormat());
 
-	// Select the section we want to apply our changes to
-	var selection = d3.select(".memChart");
+        // Select the section we want to apply our changes to
+        var selection = d3.select(".memChart");
 
-	// Make the changes
-	selection.select(".systemLine") // change the line
-		.attr("d", mem_systemLine(memData));
-	selection.select(".processLine") // change the line
-		.attr("d", mem_processLine(memData));
-	selection.select(".xAxis") // change the x axis
-		.call(mem_xAxis);
-	selection.select(".yAxis") // change the y axis
-		.call(mem_yAxis);
-	//selection.select(".processLatest") // change the text
-	//	.text(memProcessLatest + "MB");
-	//selection.select(".systemLatest") // change the text
-	//	.text(memSystemLatest + "MB");
-	});
+        // Make the changes
+        selection.select(".systemLine")
+            .attr("d", mem_systemLine(memData));
+        selection.select(".processLine")
+            .attr("d", mem_processLine(memData));
+        selection.select(".xAxis")
+            .call(mem_xAxis);
+        selection.select(".yAxis")
+            .call(mem_yAxis);
+//        selection.select(".processLatest")
+//            .text(memProcessLatest + "MB");
+//        selection.select(".systemLatest")
+//            .text(memSystemLatest + "MB");
+    });
 }
 
 updateMemData()

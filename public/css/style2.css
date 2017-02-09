@@ -1,5 +1,5 @@
     @viewport {
-    width: 320;
+        width: 320;
     }
 
    body,html {
@@ -10,6 +10,10 @@
         margin: 0 auto;
         font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
         color: #ffffff;
+    }
+
+    .container-fluid {
+        background-color: white;
     }
 
     h1 {
@@ -32,12 +36,19 @@
     .col-md-3,
     .col-md-4,
     .col-md-5,
-    .col-md-6 { padding-right: 1px;padding-left: 1px; padding-top: 0px; padding-bottom: 0px}
+    .col-md-6 { 
+        padding-right: 1px;
+        padding-left: 1px; 
+        padding-top: 0px; 
+        padding-bottom: 0px
+    }
 
     .cpuChart path,
     .memChart path,
     .gcChart path,
-    .elChart path {
+    .elChart path,
+    .httpThroughPutChart path,
+    .httpChart path {
         stroke: #00b4a0;
         stroke-width: 2;
         fill: none;
@@ -136,7 +147,7 @@
         font-size: 12px;
     }
 
-    .httpTop5Chart rect {
+    .httpTop5Chart .bar {
         fill: #5aaafa;
     }
 
