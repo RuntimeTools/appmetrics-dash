@@ -21,13 +21,19 @@
 var mem_xScale = d3.time.scale().range([0, graphWidth]);
 var mem_yScale = d3.scale.linear().range([graphHeight, 0]);
 
-var mem_xAxis = d3.svg.axis().scale(mem_xScale)
-			.orient("bottom").ticks(3).tickFormat(getTimeFormat());
+var mem_xAxis = d3.svg.axis()
+.scale(mem_xScale)
+.orient("bottom")
+.ticks(3)
+.tickFormat(getTimeFormat());
 
-var mem_yAxis = d3.svg.axis().scale(mem_yScale)
-			.orient("left").ticks(8).tickFormat(function(d) {
-				return d + "MB";
-			});
+var mem_yAxis = d3.svg.axis()
+.scale(mem_yScale)
+.orient("left")
+.ticks(8)
+.tickFormat(function(d) {
+    return d3.format(".2s")(d * 1024 * 1024)
+});
 
 // Memory data storage
 var memData = [];

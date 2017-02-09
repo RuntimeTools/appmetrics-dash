@@ -23,14 +23,20 @@ var gc_yScale = d3.scale.linear().range([graphHeight, 0]);
 // GC data storage
 var gcData = [];
 
-// set up X axis for time as HH:MM:SS
-var gc_xAxis = d3.svg.axis().scale(gc_xScale)
-.orient("bottom").ticks(3).tickFormat(getTimeFormat());
+// set up X axis for time as HH:MM:SS or HH:MM depending on time elapsed
+var gc_xAxis = d3.svg.axis()
+.scale(gc_xScale)
+.orient("bottom")
+.ticks(3)
+.tickFormat(getTimeFormat());
 
-// set up Y axis for memory in MB
-var gc_yAxis = d3.svg.axis().scale(gc_yScale)
-.orient("left").ticks(8).tickFormat(function(d) {
-    return d + "MB";
+// set up Y axis for memory
+var gc_yAxis = d3.svg.axis()
+.scale(gc_yScale)
+.orient("left")
+.ticks(8)
+.tickFormat(function(d) {
+    return d3.format(".2s")(d * 1024 * 1024)
 });
 
 // line function for heap size
