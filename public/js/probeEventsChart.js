@@ -160,7 +160,7 @@ function updateProbesData() {
         
         for (var i=0; i< data.length; i++) {
             var d = data[i]
-            d.time = new Date(+d.time);
+            //d.time = new Date(+d.time);
             probesData.push(d)
             var found = false
             for(var j=0; j< probeNames.length; j++) {
@@ -204,20 +204,20 @@ function updateProbesData() {
         var currentTime = Date.now()
         var cutoffTime = currentTime - 1800000;
         var d = probesData[0]
-        while (d.hasOwnProperty('date') && d.date.valueOf() < cutoffTime) {
+        while (d.hasOwnProperty('time') && d.time.valueOf() < cutoffTime) {
             probesData.shift()
             d = probesData[0]
         }
         while (probesData.length > 2000) {
             var d1 = probesData[0]
-            if(d1.hasOwnProperty('date'))
-                cutoffTime = d1.date.valueOf()
+            if(d1.hasOwnProperty('time'))
+                cutoffTime = d1.time.valueOf()
             probesData.shift()
         }
         for (var i= 0; i< probeDataSeparated.length; i++) {
             var oneProbesData = probeDataSeparated[i];
             var d1 = oneProbesData[0]
-            while (d1.hasOwnProperty('date') && d1.date.valueOf() < cutoffTime) {
+            while (d1.hasOwnProperty('time') && d1.time.valueOf() < cutoffTime) {
                 oneProbesData.shift()
                 d1 = oneProbesData[0]
             }

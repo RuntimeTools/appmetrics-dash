@@ -14,9 +14,7 @@
  * the License.
  ******************************************************************************/
 
-// Table for displaying environmental parameters
-
-var request = "http://" + myurl + "/envRequest";
+// Table for displaying environment parameters
 
 // Width of environment div
 var envDivCanvasWidth = $("#envDiv").width() - 8;
@@ -24,7 +22,7 @@ var envDivCanvasWidth = $("#envDiv").width() - 8;
 var tableRowHeight = 30;
 var tableRowWidth = 170;
 
-// Define the cpuChart
+// Define the environment chart space
 var envSVG = d3.select("#envDiv")
     .append("svg")
     .attr("width", envDivCanvasWidth)
@@ -50,9 +48,11 @@ var paragraph = envSVG.append("g")
 
 function populateEnvTable() {
     socket.on('environment', function (envRequest){
-        data = JSON.parse(envRequest);
-        if (data == null) return
+        envRequestData = JSON.parse(envRequest);
+        if (envRequestData == null) return
+
         function tabulate(data) {
+
             // create a row for each object in the data
             var rows = paragraph.selectAll('text')
                 .data(data)
@@ -62,7 +62,6 @@ function populateEnvTable() {
                 .attr("transform", function(d, i) {
                     return "translate(0," + (i * tableRowHeight) + ")";
                 });
-
 
             // create a cell in each row for each column
             var cells = rows.selectAll('tspan')
@@ -80,7 +79,7 @@ function populateEnvTable() {
         }
 	
         // render the table(s)
-        tabulate(data); // 2 column table
+        tabulate(envRequestData); // 2 column table
 
     });
 }

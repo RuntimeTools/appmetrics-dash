@@ -244,11 +244,10 @@ function resizeEventLoopChart() {
 function updateEventLoopData() {
 
     socket.on('eventloop', function (elRequest){
-        data = JSON.parse(elRequest);  // parses the data into a JSON array  
+        elRequestData = JSON.parse(elRequest);  // parses the data into a JSON array  
 
-        if (!data) return;
-
-        var d = data;
+        if (!elRequestData) return;
+        var d = elRequestData;
         d.time = new Date(+d.time);
         d.latency.min  = +d.latency.min;
         d.latency.max  = +d.latency.max;
