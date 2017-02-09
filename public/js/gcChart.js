@@ -103,6 +103,14 @@ gcChart.append("text")
 .style("font-size", "18px")
 .text("Heap");
 
+// Add the placeholder text
+var gcChartPlaceholder = gcChart.append("text")
+    .attr("x", graphWidth/2)
+    .attr("y", graphHeight/2)
+    .attr("text-anchor", "middle")
+    .style("font-size", "18px")
+    .text("No Data Available");
+
 // Add the heap size colour box
 gcChart.append("rect")
 .attr("x", 0) 
@@ -121,7 +129,7 @@ var gcHeapSizeLabel = gcChart.append("text")
 
 // Add the used heap colour box
 gcChart.append("rect")
-.attr("x", gcHeapSizeLabel.node().getBBox().width + 45) 
+.attr("x", gcHeapSizeLabel.node().getBBox().width + 25) 
 .attr("y", graphHeight + margin.bottom - 15)
 .attr("width", 10)
 .attr("height", 10)
@@ -129,7 +137,7 @@ gcChart.append("rect")
 
 // Add the used heap label
 gcChart.append("text")
-.attr("x", gcHeapSizeLabel.node().getBBox().width + 60) 
+.attr("x", gcHeapSizeLabel.node().getBBox().width + 40) 
 .attr("y", graphHeight + margin.bottom - 5)
 .attr("class", "lineLabel2")
 .text("Used Heap");
@@ -187,6 +195,12 @@ function updateGCData() {
     socket.on('gc', function (gcRequest){
         data = JSON.parse(gcRequest);  // parses the data into a JSON array
         if (!data) return;
+
+        if(gcData.length < 2 && gcData.length + data.length >= 2) {
+            // second data point - remove "No Data Available" label
+            gcChartPlaceholder.attr("visibility", "hidden");
+        }
+
         for (var i = 0, len = data.length; i < len; i++) {
             var d = data[i];
 

@@ -108,6 +108,14 @@ cpuChart.append("text")
     .style("font-size", "18px")
     .text("CPU");
 
+// Add the placeholder text
+var cpuChartPlaceholder = cpuChart.append("text")
+    .attr("x", graphWidth/2)
+    .attr("y", graphHeight/2 - 2)
+    .attr("text-anchor", "middle")
+    .style("font-size", "18px")
+    .text("No Data Available");
+
 // Add the system colour box
 cpuChart.append("rect")
     .attr("x", 0) 
@@ -126,7 +134,7 @@ var cpuSystemLabel = cpuChart.append("text")
 
 // Add the process colour box
 cpuChart.append("rect")
-    .attr("x", cpuSystemLabel.node().getBBox().width + 45) 
+    .attr("x", cpuSystemLabel.node().getBBox().width + 25) 
     .attr("y", graphHeight + margin.bottom - 15)
     .attr("width", 10)
     .attr("height", 10)
@@ -134,7 +142,7 @@ cpuChart.append("rect")
 
 // Add the PROCESS label
 cpuChart.append("text")
-    .attr("x", cpuSystemLabel.node().getBBox().width + 60) 
+    .attr("x", cpuSystemLabel.node().getBBox().width + 40) 
     .attr("y", graphHeight + margin.bottom - 5)
     .attr("class", "lineLabel2")
     .text("Node Process");
@@ -171,7 +179,7 @@ function updateCPUData() {
         cpuRequestData = JSON.parse(cpuRequest);  // parses the data into a JSON array
         if (!cpuRequestData)
             return
-       
+
         var d = cpuRequestData;
         if(d != null && d.hasOwnProperty('time')) {
           d.date = new Date(+d.time);
@@ -180,12 +188,16 @@ function updateCPUData() {
           var _processLatest = Math.round(d.process);
           if(typeof(updateCpuProcessGauge) === 'function' && _processLatest != cpuProcessLatest) {
             updateCpuProcessGauge(cpuProcessLatest);
-           }
-            cpuProcessLatest = _processLatest;
-            cpuSystemLatest = Math.round(d.system);
           }
-          cpuData.push(d);
-      
+          cpuProcessLatest = _processLatest;
+          cpuSystemLatest = Math.round(d.system);
+        }
+        cpuData.push(d);
+
+        if(cpuData.length === 2) {
+            // second data point - remove "No Data Available" label
+            cpuChartPlaceholder.attr("visibility", "hidden");
+        }
 
         // Only keep 30 minutes of data
         var currentTime = Date.now();

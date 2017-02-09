@@ -19,22 +19,25 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-3" id="cpuDiv1"></div>
-            <div class="col-md-3" id="memDiv1"></div>
-            <div class="col-md-3" id="gcDiv"></div>
+            <div class="col-md-2" id="cpuDiv1"></div>
+            <div class="col-md-2" id="memDiv1"></div>
+            <div class="col-md-2" id="gcDiv"></div>
+            <div class="col-md-3" id="httpDiv2"></div>
             <div class="col-md-3" id="envDiv"></div>
         </div>
 
         <div class="row">
-            <div class="col-md-5" id="httpDiv1"></div>
-            <div class="col-md-5" id="httpDiv3"></div>
-            <div class="col-md-2" id="httpDiv2"></div>
+            <div class="col-md-6" id="httpDiv1"></div>
+            <div class="col-md-3" id="httpDiv3"></div>
+            <div class="col-md-3" id="eventLoopDiv"></div>
         </div>
         <div class="row">
-            <div class="col-md-5" id="httpOBDiv"></div>
-            <div class="col-md-5" id="eventLoopDiv"></div>
-            <div class="col-md-2" id="nodeReportButtonDiv"></div>
+            <div class="col-md-6" id="probeEventsDiv"></div>
+            <div class="col-md-6" id="httpOBDiv"></div>
         </div>
+        <div class="row"> 
+            <div class="col-md-12" id="nodeReportButtonDiv"></div>
+        </div>        
     </div>
 <script>
     var monitoringStartTime = new Date();
@@ -83,6 +86,7 @@
 	<script type="text/javascript" src="js/memChart.js"></script>
     <script type="text/javascript" src="js/gcChart.js"></script>
     <script type="text/javascript" src="js/eventLoopChart.js"></script>
+    <script type="text/javascript" src="js/probeEventsChart.js"></script>
     
     <script>
         window.addEventListener('resize', resize); 

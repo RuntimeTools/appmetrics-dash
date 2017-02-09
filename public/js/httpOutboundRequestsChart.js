@@ -91,6 +91,13 @@ httpOBChart.append("text")
 .style("font-size", "18px")
 .text("HTTP Outbound Requests");
 
+// Add the placeholder text
+var httpOBChartPlaceholder = httpOBChart.append("text")
+    .attr("x", httpGraphWidth/2)
+    .attr("y", tallerGraphHeight/2)
+    .attr("text-anchor", "middle")
+    .style("font-size", "18px")
+    .text("No Data Available");
 
 function updateHttpOBData() {
     socket.on('http-outbound', function (httpRequest) {
@@ -98,15 +105,23 @@ function updateHttpOBData() {
         if (data.length == 0) {
             return
         }
+
         if (data == null)
             return
-            for (var i = 0, len = data.length; i < len; i++) {
-                var d = data[i];
-                if (d != null && d.hasOwnProperty('time')) {
-                    d.date = new Date(+d.time);
-                    httpOBData.push(d)
-                }
+
+        if(httpOBData.length === 0) {
+            // first data - remove "No Data Available" label
+            httpOBChartPlaceholder.attr("visibility", "hidden");
+        }
+
+        for (var i = 0, len = data.length; i < len; i++) {
+            var d = data[i];
+            if (d != null && d.hasOwnProperty('time')) {
+                d.date = new Date(+d.time);
+                httpOBData.push(d)
             }
+        }
+
         // Only keep 30 minutes or 2000 items of data
         var currentTime = Date.now()
         var d = httpOBData[0]

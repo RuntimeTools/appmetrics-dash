@@ -18,6 +18,8 @@
 
 var request = "http://" + myurl + "/envRequest";
 
+// Width of environment div
+var envDivCanvasWidth = $("#envDiv").width() - 8;
 
 var tableRowHeight = 30;
 var tableRowWidth = 170;
@@ -25,12 +27,12 @@ var tableRowWidth = 170;
 // Define the cpuChart
 var envSVG = d3.select("#envDiv")
     .append("svg")
-    .attr("width", canvasWidth)
+    .attr("width", envDivCanvasWidth)
     .attr("height", canvasHeight)
     .attr("class", "envData")
 
 var envTitleBox = envSVG.append("rect")
-    .attr("width", canvasWidth)
+    .attr("width", envDivCanvasWidth)
     .attr("height", 30)
     .attr("class", "titlebox")
 
@@ -84,8 +86,8 @@ function populateEnvTable() {
 }
 
 function resizeEnvTable() {
-    envSVG.attr("width", canvasWidth);
-    envTitleBox.attr("width", canvasWidth)
+    envSVG.attr("width", envDivCanvasWidth);
+    envTitleBox.attr("width", envDivCanvasWidth)
 }
 
 populateEnvTable()

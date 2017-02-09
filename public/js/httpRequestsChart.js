@@ -91,6 +91,13 @@ httpChart.append("text")
 .style("font-size", "18px")
 .text("HTTP Incoming Requests");
 
+// Add the placeholder text
+var httpChartPlaceholder = httpChart.append("text")
+    .attr("x", httpGraphWidth/2)
+    .attr("y", tallerGraphHeight/2)
+    .attr("text-anchor", "middle")
+    .style("font-size", "18px")
+    .text("No Data Available");
 
 function updateHttpData() {
     socket.on('http', function (httpRequest){
@@ -98,23 +105,28 @@ function updateHttpData() {
         if (data.length == 0)
             return
 
-            for (var i = 0, len = data.length; i < len; i++) {
-                var d = data[i];
-                if (d != null && d.hasOwnProperty('time')) {
-                    d.date = new Date(+d.time);
-                    d.responseTime = Math.round(+d.duration)
-                    httpData.push(d)
-                    var urlStats = httpAverages[d.url]
-                    if(urlStats != null) {
-                        var averageResponseTime = urlStats[0]
-                        var hits = urlStats[1]
-                        // Recalculate the average
-                        httpAverages[d.url] = [(averageResponseTime * hits + parseFloat(d.duration))/(hits + 1), hits + 1]
-                    } else {
-                        httpAverages[d.url] = [parseFloat(d.duration), 1]
-                    } 
-                }
+        if(httpData.length === 0) {
+            // first data - remove "No Data Available" label
+            httpChartPlaceholder.attr("visibility", "hidden");
+        }
+
+        for (var i = 0, len = data.length; i < len; i++) {
+            var d = data[i];
+            if (d != null && d.hasOwnProperty('time')) {
+                d.date = new Date(+d.time);
+                d.responseTime = Math.round(+d.duration)
+                httpData.push(d)
+                var urlStats = httpAverages[d.url]
+                if(urlStats != null) {
+                    var averageResponseTime = urlStats[0]
+                    var hits = urlStats[1]
+                    // Recalculate the average
+                    httpAverages[d.url] = [(averageResponseTime * hits + parseFloat(d.duration))/(hits + 1), hits + 1]
+                } else {
+                    httpAverages[d.url] = [parseFloat(d.duration), 1]
+                } 
             }
+        }
 
         // Only keep 30 minutes or 2000 items of data
         var currentTime = Date.now()
