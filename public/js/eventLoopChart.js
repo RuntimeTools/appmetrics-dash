@@ -16,8 +16,13 @@
 
 // Line chart for displaying event loop latency
 
+// Width of div allocated for this graph
+var eventLoopCanvasWidth = $("#eventLoopDiv").width() - 8; // -8 for margin and
+// border
+var eventLoopGraphWidth = eventLoopCanvasWidth - margin.left - margin.right;
+
 // set up the scales for x and y using the graph's dimensions
-var el_xScale = d3.time.scale().range([0, httpGraphWidth]);
+var el_xScale = d3.time.scale().range([0, eventLoopGraphWidth]);
 var el_yScale = d3.scale.linear().range([graphHeight, 0]);
 
 // data storage
@@ -62,12 +67,12 @@ var el_avg_line = d3.svg.line()
 
 var elSVG = d3.select("#eventLoopDiv")
     .append("svg")
-    .attr("width", httpCanvasWidth)
+    .attr("width", eventLoopCanvasWidth)
     .attr("height", canvasHeight)
     .attr("class", "elChart")
 
 var elTitleBox = elSVG.append("rect")
-    .attr("width", httpCanvasWidth)
+    .attr("width", eventLoopCanvasWidth)
     .attr("height", 30)
     .attr("class", "titlebox")
 
@@ -121,6 +126,14 @@ elChart.append("text")
     .style("font-size", "18px")
     .text("Event Loop Latency");
 
+// Add the placeholder text
+var elChartPlaceholder = elChart.append("text")
+    .attr("x", eventLoopGraphWidth/2)
+    .attr("y", graphHeight/2)
+    .attr("text-anchor", "middle")
+    .style("font-size", "18px")
+    .text("No Data Available");
+
 // Add the MAXIMUM colour box
 elChart.append("rect")
     .attr("x", 0) 
@@ -139,7 +152,7 @@ var elMaxLabel = elChart.append("text")
 
 // Add the MINIMUM colour box
 elChart.append("rect")
-    .attr("x", elMaxLabel.node().getBBox().width + 45) 
+    .attr("x", elMaxLabel.node().getBBox().width + 25) 
     .attr("y", graphHeight + margin.bottom - 15)
     .attr("width", 10)
     .attr("height", 10)
@@ -147,14 +160,14 @@ elChart.append("rect")
 
 // Add the MINIMUM line label
 var elMinLabel = elChart.append("text")
-    .attr("x", elMaxLabel.node().getBBox().width + 60) 
+    .attr("x", elMaxLabel.node().getBBox().width + 40) 
     .attr("y", graphHeight + margin.bottom - 5)
     .attr("class", "lineLabel")
     .text("Minimum");
 
 // Add the AVERAGE colour box
 elChart.append("rect")
-    .attr("x", elMaxLabel.node().getBBox().width + elMinLabel.node().getBBox().width + 105) 
+    .attr("x", elMaxLabel.node().getBBox().width + elMinLabel.node().getBBox().width + 50) 
     .attr("y", graphHeight + margin.bottom - 15)
     .attr("width", 10)
     .attr("height", 10)
@@ -162,7 +175,7 @@ elChart.append("rect")
 
 // Add the AVERAGE line label
 elChart.append("text")
-    .attr("x", elMaxLabel.node().getBBox().width + elMinLabel.node().getBBox().width + 120) 
+    .attr("x", elMaxLabel.node().getBBox().width + elMinLabel.node().getBBox().width + 65) 
     .attr("y", graphHeight + margin.bottom - 5)
     .attr("class", "lineLabel")
     .text("Average");
@@ -176,14 +189,14 @@ elChart.append("text")
 
 // Draw the Latest MIN Data
 elChart.append("text")
-    .attr("x", httpGraphWidth / 3) // 1/3 across
+    .attr("x", eventLoopGraphWidth / 3) // 1/3 across
     .attr("y", 0 - (margin.top * 3 / 8))
     .attr("class", "minlatest")
     .style("font-size", "32px");
 
 // Draw the Latest AVG Data
 elChart.append("text")
-    .attr("x", (httpGraphWidth / 3) * 2) // 2/3 across
+    .attr("x", (eventLoopGraphWidth / 3) * 2) // 2/3 across
     .attr("y", 0 - (margin.top * 3 / 8))
     .attr("class", "avglatest")
     .style("font-size", "32px");
@@ -194,19 +207,22 @@ var minLatest = 0;
 var avgLatest = 0;
 
 function resizeEventLoopChart() {
+    eventLoopCanvasWidth = $("#eventLoopDiv").width() - 8;
+    eventLoopGraphWidth = eventLoopCanvasWidth - margin.left - margin.right;
+
     // just doing horizontal resizes for now
     //resize the canvas
     var chart = d3.select(".elChart")
-    chart.attr("width", httpCanvasWidth);
+    chart.attr("width", eventLoopCanvasWidth);
     //resize the scale and axes
-    el_xScale = d3.time.scale().range([0, httpGraphWidth]);
+    el_xScale = d3.time.scale().range([0, eventLoopGraphWidth]);
     el_xAxis = d3.svg.axis()
         .scale(el_xScale)
         .orient("bottom")
         .ticks(3)
         .tickFormat(getTimeFormat());
 
-    elTitleBox.attr("width", httpCanvasWidth)
+    elTitleBox.attr("width", eventLoopCanvasWidth)
 
     el_xScale.domain(d3.extent(elData, function(d) {
         return d.time;
@@ -242,6 +258,11 @@ function updateEventLoopData() {
         avgLatest = Math.round(d.latency.avg * 1000) / 1000;
         elData.push(d)
 
+        if(elData.length === 2) {
+            // second data point - remove "No Data Available" label
+            elChartPlaceholder.attr("visibility", "hidden");
+        }
+      
         // Only keep 30 minutes of data
         var currentTime = Date.now()
         var d = elData[0]
@@ -274,13 +295,6 @@ function updateEventLoopData() {
             .call(el_xAxis);
         selection.select(".yAxis")
             .call(el_yAxis);
-        // update the latest displays
-        //selection.select(".maxlatest")
-            //.text(maxLatest + "ms");
-        //selection.select(".minlatest")
-            //.text(minLatest + "ms");
-        //selection.select(".avglatest")
-            //.text(avgLatest + "ms");
 	});
 }
 

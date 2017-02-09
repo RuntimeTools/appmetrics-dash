@@ -90,10 +90,23 @@ httpChart.append("text")
     .style("font-size", "18px")
     .text("HTTP Incoming Requests");
 
+// Add the placeholder text
+var httpChartPlaceholder = httpChart.append("text")
+    .attr("x", httpGraphWidth/2)
+    .attr("y", tallerGraphHeight/2)
+    .attr("text-anchor", "middle")
+    .style("font-size", "18px")
+    .text("No Data Available");
+
 function updateHttpData() {
     socket.on('http', function (httpRequest){
         httpRequestData = JSON.parse(httpRequest);  // parses the data into a JSON array
         if (httpRequestData.length == 0) return;
+
+        if(httpData.length === 0) {
+            // first data - remove "No Data Available" label
+            httpChartPlaceholder.attr("visibility", "hidden");
+        }
 
         for (var i = 0, len = httpRequestData.length; i < len; i++) {
             var d = httpRequestData[i];

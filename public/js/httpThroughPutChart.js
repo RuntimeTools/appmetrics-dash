@@ -56,7 +56,7 @@ var httpThroughPutSVG = d3.select("#httpDiv2")
     .attr("class", "httpThroughPutChart")
 
 var httpThroughPutTitleBox = httpThroughPutSVG.append("rect")
-    .attr("width", canvasWidth)
+    .attr("width", httpDiv2CanvasWidth)
     .attr("height", 30)
     .attr("class", "titlebox")
 
@@ -98,11 +98,24 @@ httpThroughPutChart.append("text")
     .style("font-size", "18px")
     .text("HTTP Throughput");
 
+// Add the placeholder text
+var httpTPChartPlaceholder = httpThroughPutChart.append("text")
+    .attr("x", httpDiv2GraphWidth/2)
+    .attr("y", graphHeight/2)
+    .attr("text-anchor", "middle")
+    .style("font-size", "18px")
+    .text("No Data Available");
+
 function updateThroughPutData() {
 
     socket.on('http', function (httpThroughPutRequest){
         httpThroughPutRequestData = JSON.parse(httpThroughPutRequest);  // parses the data into a JSON array
         if (httpThroughPutRequestData.length == 0) return
+
+        if(httpRate.length < 2 && httpRate.length + httpThroughPutRequestData.length >= 2) {
+            // second data point - remove "No Data Available" label
+            httpTPChartPlaceholder.attr("visibility", "hidden");
+        }
 
         for (var i = 0, len = httpThroughPutRequestData.length; i < len; i++) {
             var d = httpThroughPutRequestData[i];

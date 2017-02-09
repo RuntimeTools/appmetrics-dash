@@ -49,6 +49,14 @@ httpTop5Chart.append("text")
     .style("font-size", "18px")
     .text("Average Response Times (top 5)");
 
+// Add the placeholder text
+var httpTop5ChartPlaceholder = httpTop5Chart.append("text")
+    .attr("x", httpDiv3CanvasWidth/2)
+    .attr("y", canvasHeight/2)
+    .attr("text-anchor", "middle")
+    .style("font-size", "18px")
+    .text("No Data Available");
+
 function convertURL(url) {
     if (url.toString().startsWith("http://" + myurl)) {
         return url.toString().substring(myurl.length + 7)
@@ -129,7 +137,14 @@ function updateHttpAverages(workingData) {
 function updateURLData() {
     // Get the HTTP average response times
     socket.on('http', function (httpTop5Request){
+
+        if(httpTop5Data.length == 0) {
+            // first data - remove "No Data Available" label
+            httpTop5ChartPlaceholder.attr("visibility", "hidden");
+        }
+
         httpTop5RequestData = JSON.parse(httpTop5Request);  // parses the data into a
+
         // JSON array
         if (httpTop5RequestData.length == 0) return
         for (var i = 0, len = httpTop5RequestData.length; i < len; i++) {

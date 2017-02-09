@@ -115,6 +115,14 @@ memChart.append("text")
     .style("font-size", "18px")
     .text("Memory");
 
+// Add the placeholder text
+var memChartPlaceholder = memChart.append("text")
+    .attr("x", graphWidth/2)
+    .attr("y", graphHeight/2)
+    .attr("text-anchor", "middle")
+    .style("font-size", "18px")
+    .text("No Data Available");
+
 // Add the system colour box
 memChart.append("rect")
     .attr("x", 0) 
@@ -133,7 +141,7 @@ var memSystemLabel = memChart.append("text")
 
 // Add the process colour box
 memChart.append("rect")
-    .attr("x", memSystemLabel.node().getBBox().width + 45) 
+    .attr("x", memSystemLabel.node().getBBox().width + 25) 
     .attr("y", graphHeight + margin.bottom - 15)
     .attr("width", 10)
     .attr("height", 10)
@@ -141,7 +149,7 @@ memChart.append("rect")
 
 // Add the PROCESS label
 memChart.append("text")
-    .attr("x", memSystemLabel.node().getBBox().width + 60) 
+    .attr("x", memSystemLabel.node().getBBox().width + 40) 
     .attr("y", graphHeight + margin.bottom - 5)
     .attr("class", "lineLabel2")
     .text("Node Process");
@@ -168,12 +176,13 @@ function resizeMemChart() {
 }
 
 function updateMemData() {
+	// Get the data again
+	socket.on('memory', function (memRequest) {
+        data = JSON.parse(memRequest);  // parses the data into a JSON array
+      	if (!data)
+	        return
 
-    socket.on('memory', function (memRequest) {
-        memRequestData = JSON.parse(memRequest);  // parses the data into a JSON array
-        if (!memRequestData) return;
-  
-        var d = memRequestData;
+        var d = data;
         d.date = new Date(+d.time);
         d.system  = +d.physical_used  / (1024 * 1024);
         d.process  = +d.physical  / (1024 * 1024);
@@ -181,16 +190,22 @@ function updateMemData() {
         var _memProcessLatest = Math.round(d.process);
         // Update gauge if loaded
         if (typeof(updateMemProcessGauge) === 'function' && _memProcessLatest != memProcessLatest) {
-    	    updateMemProcessGauge(d.process);
+        	updateMemProcessGauge(d.process);
         }
         memProcessLatest = _memProcessLatest;
         memSystemLatest = Math.round(d.system);
         memData.push(d)
 
-        // Only keep 30 minutes of data
-        var currentTime = Date.now()
-        var d = memData[0]
-        if (d === null) return;
+        if(memData.length === 2) {
+            // second data point - remove "No Data Available" label
+            memChartPlaceholder.attr("visibility", "hidden");
+        }
+
+	    // Only keep 30 minutes of data
+	    var currentTime = Date.now()
+	    var d = memData[0]
+	    if (d === null)
+		    return;
 			
         while (d.hasOwnProperty('date') && d.date.valueOf() + 1800000 < currentTime) {
             memData.shift()

@@ -14,7 +14,10 @@
  * the License.
  ******************************************************************************/
 
-// Table for displaying environmental parameters
+// Table for displaying environment parameters
+
+// Width of environment div
+var envDivCanvasWidth = $("#envDiv").width() - 8;
 
 var tableRowHeight = 30;
 var tableRowWidth = 170;
@@ -22,12 +25,12 @@ var tableRowWidth = 170;
 // Define the environment chart space
 var envSVG = d3.select("#envDiv")
     .append("svg")
-    .attr("width", canvasWidth)
+    .attr("width", envDivCanvasWidth)
     .attr("height", canvasHeight)
     .attr("class", "envData")
 
 var envTitleBox = envSVG.append("rect")
-    .attr("width", canvasWidth)
+    .attr("width", envDivCanvasWidth)
     .attr("height", 30)
     .attr("class", "titlebox")
 
@@ -82,8 +85,9 @@ function populateEnvTable() {
 }
 
 function resizeEnvTable() {
-    envSVG.attr("width", canvasWidth);
-    envTitleBox.attr("width", canvasWidth)
+    envDivCanvasWidth = $("#envDiv").width() - 8;
+    envSVG.attr("width", envDivCanvasWidth);
+    envTitleBox.attr("width", envDivCanvasWidth)
 }
 
 populateEnvTable()
