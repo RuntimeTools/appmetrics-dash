@@ -1,11 +1,10 @@
 
-d3.select("#nodeReportButtonDiv")
-	.append("input")
-	.attr("name", "nodeReportButton")
+d3.select("#nodeReportButtonDiv").append("input")
+    .attr("name", "nodeReportButton")
     .attr("class", "btn btn-secondary btn-lg btn-block")
-	.attr("type", "button")
-	.attr("value", "Show NodeReport")
-	.attr("onClick", "socket.emit('nodereport')");
+    .attr("type", "button")
+    .attr("value", "Show NodeReport")
+    .attr("onClick", "socket.emit('nodereport')");
 
 socket.on('nodereport', function (nodereport){
     var newWindow = window.open();

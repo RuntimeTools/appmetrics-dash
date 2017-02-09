@@ -24,16 +24,20 @@ var cpu_yScale = d3.scale.linear().range([graphHeight, 0]);
 
 var cpu_yTicks = [0, 25, 50, 75, 100];
 
-var cpu_xAxis = d3.svg.axis().scale(cpu_xScale)
-    .orient("bottom").ticks(3).tickFormat(getTimeFormat());
+var cpu_xAxis = d3.svg.axis()
+    .scale(cpu_xScale)
+    .orient("bottom")
+    .ticks(3)
+    .tickFormat(getTimeFormat());
 
 var cpu_yAxis = d3.svg.axis()
     .scale(cpu_yScale)
     .orient("left")
     .tickValues(cpu_yTicks)
     .tickSize(-graphWidth, 0, 0)
-    .tickFormat(function(d) { return d + "%"; });
-
+    .tickFormat(function(d) {
+        return d + "%";
+    });
 
 // CPU Data storage
 var cpuData = [];
@@ -166,25 +170,25 @@ function resizeCPUChart() {
         .call(cpu_yAxis);
 }
 
+
 function updateCPUData() {
     socket.on('cpu', function (cpuRequest) {
         cpuRequestData = JSON.parse(cpuRequest);  // parses the data into a JSON array
-        if (!cpuRequestData)
-            return
+        if (!cpuRequestData) return;
        
         var d = cpuRequestData;
         if(d != null && d.hasOwnProperty('time')) {
-          d.date = new Date(+d.time);
-          d.system = +d.system * 100;
-          d.process = +d.process * 100;
-          var _processLatest = Math.round(d.process);
-          if(typeof(updateCpuProcessGauge) === 'function' && _processLatest != cpuProcessLatest) {
-            updateCpuProcessGauge(cpuProcessLatest);
-           }
+            d.date = new Date(+d.time);
+            d.system = +d.system * 100;
+            d.process = +d.process * 100;
+            var _processLatest = Math.round(d.process);
+            if(typeof(updateCpuProcessGauge) === 'function' && _processLatest != cpuProcessLatest) {
+                updateCpuProcessGauge(cpuProcessLatest);
+            }
             cpuProcessLatest = _processLatest;
             cpuSystemLatest = Math.round(d.system);
-          }
-          cpuData.push(d);
+        }
+        cpuData.push(d);
       
 
         // Only keep 30 minutes of data
@@ -198,7 +202,7 @@ function updateCPUData() {
             d = cpuData[0];
         }
         // Set the input domain for the x axis
-            cpu_xScale.domain(d3.extent(cpuData, function(d) {
+        cpu_xScale.domain(d3.extent(cpuData, function(d) {
             return d.date;
         }));
 
@@ -206,10 +210,9 @@ function updateCPUData() {
 
         // Select the CPU chart svg element to apply changes
         var selection = d3.select(".cpuChart");
-
         selection.select(".systemLine")
             .attr("d", systemline(cpuData));
-        selection.select(".processLine")
+        selection.select(".processLine") 
             .attr("d", processline(cpuData));
         selection.select(".xAxis")
             .call(cpu_xAxis);
