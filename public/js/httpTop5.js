@@ -128,12 +128,12 @@ function updateHttpAverages(workingData) {
 
 function updateURLData() {
     // Get the HTTP average response times
-    socket.on('http', function (httpRequest){
-        httpTop5Data = JSON.parse(httpRequest);  // parses the data into a
+    socket.on('http', function (httpTop5Request){
+        httpTop5RequestData = JSON.parse(httpTop5Request);  // parses the data into a
         // JSON array
-        if (httpTop5Data.length == 0) return
-        for (var i = 0, len = data.length; i < len; i++) {
-            var d = httpTop5Data[i];
+        if (httpTop5RequestData.length == 0) return
+        for (var i = 0, len = httpTop5RequestData.length; i < len; i++) {
+            var d = httpTop5RequestData[i];
 
             if (d != null && d.hasOwnProperty('url')) {
                 var urlStats = httpAverages[d.url]

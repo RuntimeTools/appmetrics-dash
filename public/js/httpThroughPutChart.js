@@ -100,21 +100,23 @@ httpThroughPutChart.append("text")
 
 function updateThroughPutData() {
 
-    socket.on('http', function (httpRequest){
-        data = JSON.parse(httpRequest);  // parses the data into a JSON array
-        if (data.length == 0) return
+    socket.on('http', function (httpThroughPutRequest){
+        httpThroughPutRequestData = JSON.parse(httpThroughPutRequest);  // parses the data into a JSON array
+        if (httpThroughPutRequestData.length == 0) return
 
-        var d = data;
-        if (d != null && d.hasOwnProperty('time')) {
-            d.date = new Date(+d.time);
-            if (httpRate.length == 0) {
-                httpRate.push({httpRate:0, time:d.date})
-            } else {
-                // calculate the new http rate
-                var timeDifference = d.date - httpRate[0].time;
-                if (timeDifference > 0) {
-                    var averageRate = (httpData.length + 1) * 1000 / timeDifference
-                    httpRate.push({httpRate:averageRate, time:d.date})
+        for (var i = 0, len = httpThroughPutRequestData.length; i < len; i++) {
+            var d = httpThroughPutRequestData[i];
+            if (d != null && d.hasOwnProperty('time')) {
+                d.date = new Date(+d.time);
+                if (httpRate.length == 0) {
+                    httpRate.push({httpRate:0, time:d.date})
+                } else {
+                    // calculate the new http rate
+                    var timeDifference = d.date - httpRate[0].time;
+                    if (timeDifference > 0) {
+                        var averageRate = (httpData.length + 1) * 1000 / timeDifference
+                        httpRate.push({httpRate:averageRate, time:d.date})
+                    }
                 }
             }
         }

@@ -92,14 +92,16 @@ httpChart.append("text")
 
 function updateHttpData() {
     socket.on('http', function (httpRequest){
-        data = JSON.parse(httpRequest);  // parses the data into a JSON array
-        if (data.length == 0) return;
+        httpRequestData = JSON.parse(httpRequest);  // parses the data into a JSON array
+        if (httpRequestData.length == 0) return;
 
-        var d = data;
-        if (d != null && d.hasOwnProperty('time')) {
-            d.date = new Date(+d.time);
-            d.responseTime = Math.round(+d.duration)
-            httpData.push(d)
+        for (var i = 0, len = httpRequestData.length; i < len; i++) {
+            var d = httpRequestData[i];
+            if (d != null && d.hasOwnProperty('time')) {
+                d.date = new Date(+d.time);
+                d.responseTime = Math.round(+d.duration)
+                httpData.push(d)
+            }
         }
 
         // Only keep 30 minutes or 2000 items of data

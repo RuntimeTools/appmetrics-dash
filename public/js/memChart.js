@@ -170,10 +170,10 @@ function resizeMemChart() {
 function updateMemData() {
 
     socket.on('memory', function (memRequest) {
-        data = JSON.parse(memRequest);  // parses the data into a JSON array
-  	if (!data) return;
+        memRequestData = JSON.parse(memRequest);  // parses the data into a JSON array
+        if (!memRequestData) return;
   
-        var d = data;
+        var d = memRequestData;
         d.date = new Date(+d.time);
         d.system  = +d.physical_used  / (1024 * 1024);
         d.process  = +d.physical  / (1024 * 1024);

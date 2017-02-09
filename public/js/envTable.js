@@ -45,8 +45,8 @@ var paragraph = envSVG.append("g")
 
 function populateEnvTable() {
     socket.on('environment', function (envRequest){
-        data = JSON.parse(envRequest);
-        if (data == null) return
+        envRequestData = JSON.parse(envRequest);
+        if (envRequestData == null) return
 
         function tabulate(data) {
 
@@ -76,7 +76,7 @@ function populateEnvTable() {
         }
 	
         // render the table(s)
-        tabulate(data); // 2 column table
+        tabulate(envRequestData); // 2 column table
 
     });
 }

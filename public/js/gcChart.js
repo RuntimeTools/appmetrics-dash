@@ -185,10 +185,10 @@ function resizeGCChart() {
 function updateGCData() {
 
     socket.on('gc', function (gcRequest){
-        data = JSON.parse(gcRequest);  // parses the data into a JSON array
-        if (!data) return;
-        for (var i = 0, len = data.length; i < len; i++) {
-            var d = data[i];
+        gcRequestData = JSON.parse(gcRequest);  // parses the data into a JSON array
+        if (!gcRequestData) return;
+        for (var i = 0, len = gcRequestData.length; i < len; i++) {
+            var d = gcRequestData[i];
 
             d.time = new Date(+d.time);
             // store data in MB from B
