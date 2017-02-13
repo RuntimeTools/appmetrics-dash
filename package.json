@@ -1,27 +1,27 @@
 {
   "name": "appmetrics-dash",
   "version": "1.0.0",
-  "description": "Monitoring Dashboard for Node Application Metrics",
+  "description": "The Node.js Starter demonstrates a simple, reusable Node.js web application based on the Express framework.",
   "main": "index.js",
   "dependencies": {
     "appmetrics": "*",
+    "nodereport": "https://github.com/hhellyer/nodereport.git#stream_output_dev",
     "express": "*",
-    "socket.io": "*"
+    "socket.io": "*",
+    "cfenv": "1.0.x"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^3.14.1",
+    "eslint-config-strongloop": "^2.1.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pretest": "eslint .",
+    "test": "echo FIXME"
   },
-  "keywords": [
-    "appmetrics",
-    "dashboard",
-    "performance",
-    "monitoring"
-  ],
+  "repository": {
+    "type": "git",
+    "url": "git002@gitlab-polyglot.hursley.ibm.com:runtimetools/appmetrics-dash.git"
+  },
   "author": "",
-  "repository" : {
-    "type" : "git",
-    "url" : "git://github.com/RuntimeTools/appmetrics-dash.git"
-  },
-  "license": "Apache-2.0"
+  "license": "ISC"
 }
