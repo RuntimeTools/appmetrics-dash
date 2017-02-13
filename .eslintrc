@@ -1,0 +1,12 @@
+{
+  "extends": "strongloop",
+  "env": {
+    "node": true
+  },
+  "rules": {
+    "eqeqeq": "off",
+    "max-len": "off",
+    "comma-dangle": "off",
+    "spaced-comment": ["error", "always", { "exceptions": ["*"] }]
+  }
+}
