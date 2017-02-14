@@ -13,6 +13,8 @@ d3.select("#nodeReportButtonDiv")
 socket.on('nodereport', function (nodereport){
     var newWindow = window.open();
     newWindow.document.open();
+    // XXX(sam) perhaps the errors should be formatted differently?
+    nodereport = nodereport.error || nodereport.report;
     newWindow.document.write('<html><head><title>NodeReport: '
         + new Date().toUTCString()
         + '</title></head><body><pre style="white-space: pre-wrap;">'
