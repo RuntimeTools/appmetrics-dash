@@ -31,15 +31,12 @@ tap.test('runs dashboard on ephemeral port', function(t) {
     const base = util.format('http://%s:%s', a.address, a.port);
     const options = {
       url: base + '/appmetrics-dash',
-      auth: {
-        user: 'admin',
-        pass: 'admin',
-      },
     };
     t.equal(a.address, '127.0.0.1');
     t.comment(util.inspect(options));
     request(options, function(err, resp, body) {
       t.ifError(err);
+      t.equal(resp.statusCode, 200);
       t.similar(body, /DOCTYPE html/);
       server.close(t.end);
     });
