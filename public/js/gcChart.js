@@ -214,10 +214,10 @@ function updateGCData() {
             gcData.push(d)
         }
 
-        // Only keep 30 minutes of data
+        // Only keep 30 minutes or 'maxDataPoints' (defined in index.html) items of data
         var currentTime = Date.now()
         var d = gcData[0]
-        while (d.hasOwnProperty('time') && d.time.valueOf() + 1800000 < currentTime) {
+        while (gcData.length > maxDataPoints || (d.hasOwnProperty('date') && d.date.valueOf() + 1800000 < currentTime)) {
             gcData.shift()
             d = gcData[0]
         }

@@ -248,7 +248,6 @@ function updateEventLoopData() {
 
         if (!elRequestData) return;
         var d = elRequestData;
-        d.time = new Date(+d.time);
         d.latency.min  = +d.latency.min;
         d.latency.max  = +d.latency.max;
         d.latency.avg  = +d.latency.avg;
@@ -262,11 +261,11 @@ function updateEventLoopData() {
             // second data point - remove "No Data Available" label
             elChartPlaceholder.attr("visibility", "hidden");
         }
-      
-        // Only keep 30 minutes of data
+
+        // Only keep 30 minutes or 'maxDataPoints' (defined in index.html) items of data
         var currentTime = Date.now()
         var d = elData[0]
-        while (d.hasOwnProperty('date') && d.date.valueOf() + 1800000 < currentTime) {
+        while (elData.length > maxDataPoints || (d.hasOwnProperty('time') && d.time + 1800000 < currentTime)) {
             elData.shift()
             d = elData[0]
         }

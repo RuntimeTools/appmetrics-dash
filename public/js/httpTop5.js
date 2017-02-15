@@ -51,8 +51,8 @@ httpTop5Chart.append("text")
 
 // Add the placeholder text
 var httpTop5ChartPlaceholder = httpTop5Chart.append("text")
-    .attr("x", httpDiv3CanvasWidth/2)
-    .attr("y", canvasHeight/2)
+    .attr("x", httpDiv3GraphWidth/2)
+    .attr("y", graphHeight/2)
     .attr("text-anchor", "middle")
     .style("font-size", "18px")
     .text("No Data Available");

@@ -42,7 +42,7 @@ var lineFunction = d3.svg.line()
 
 // set up X axis for time in HH:MM:SS
 var probes_xAxis = d3.svg.axis().scale(probes_xScale)
-    .orient("bottom").ticks(3).tickFormat(getTimeFormat());
+    .orient("bottom").ticks(3).tickFormat(d3.time.format("%H:%M:%S"));
 
 // set up Y axis for time in ms
 var probes_yAxis = d3.svg.axis().scale(probes_yScale)
@@ -104,8 +104,7 @@ function resizeProbesChart() {
     probes_xAxis = d3.svg.axis()
         .scale(probes_xScale)
         .orient("bottom")
-        .ticks(3)
-        .tickFormat(getTimeFormat());
+        .ticks(3);
 
     probesTitleBox.attr("width", httpCanvasWidth)
 
@@ -157,10 +156,17 @@ function updateProbesData() {
             // first data - remove "No Data Available" label
             probesChartPlaceholder.attr("visibility", "hidden");
         }
-        
+
+        if(data.length >= maxDataPoints) {
+            // empty arrays
+            probesData = [];
+            for (var i= 0; i< probeDataSeparated.length; i++) {
+                probeDataSeparated[i] = [];
+            }
+        }
+
         for (var i=0; i< data.length; i++) {
             var d = data[i]
-            //d.time = new Date(+d.time);
             probesData.push(d)
             var found = false
             for(var j=0; j< probeNames.length; j++) {
@@ -200,24 +206,24 @@ function updateProbesData() {
             }
         }
 
-        // Only keep 30 minutes of data or most recent 2000 items if more than that
+        // Only keep 30 minutes of data or most recent 'maxDataPoints' number of items if more than that
         var currentTime = Date.now()
         var cutoffTime = currentTime - 1800000;
         var d = probesData[0]
-        while (d.hasOwnProperty('time') && d.time.valueOf() < cutoffTime) {
+        while (d.hasOwnProperty('time') && d.time < cutoffTime) {
             probesData.shift()
             d = probesData[0]
         }
-        while (probesData.length > 2000) {
+        while (probesData.length > maxDataPoints) {
             var d1 = probesData[0]
             if(d1.hasOwnProperty('time'))
-                cutoffTime = d1.time.valueOf()
+                cutoffTime = d1.time
             probesData.shift()
         }
         for (var i= 0; i< probeDataSeparated.length; i++) {
             var oneProbesData = probeDataSeparated[i];
             var d1 = oneProbesData[0]
-            while (d1.hasOwnProperty('time') && d1.time.valueOf() < cutoffTime) {
+            while (d1.hasOwnProperty('time') && d1.time <= cutoffTime) {
                 oneProbesData.shift()
                 d1 = oneProbesData[0]
             }
@@ -230,8 +236,6 @@ function updateProbesData() {
         probes_yScale.domain([0, Math.ceil(d3.extent(probesData, function(d) {
             return d.duration;
         })[1])]);
-
-        probes_xAxis.tickFormat(getTimeFormat());
 
         var selection = d3.select(".probesChart");
         selection.selectAll("circle").remove();
