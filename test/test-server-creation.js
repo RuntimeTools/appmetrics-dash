@@ -8,13 +8,6 @@ const util = require('util');
 const appmetrics = require('appmetrics');
 appmetrics.start();
 
-tap.test('throw with no appmetrics', function(t) {
-  t.throws(function() {
-    require('../').monitor({port: '8765'});
-  });
-  t.end();
-});
-
 tap.test('throw with no port', function(t) {
   t.throws(function() {
     require('../').monitor({appmetrics: appmetrics});
