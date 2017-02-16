@@ -13,7 +13,7 @@
     "node-report": "^2.1.0"
   },
   "devDependencies": {
-    "appmetrics": "^1.2.0",
+    "appmetrics": "^2.0.0",
     "compression": "^1.6.2",
     "cors": "^2.8.1",
     "eslint": "^3.14.1",

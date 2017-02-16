@@ -196,15 +196,15 @@ function updateGCData() {
         gcRequestData = JSON.parse(gcRequest);  // parses the data into a JSON array
         if (!gcRequestData) return;
 
-        if(gcData.length < 2 && gcData.length + gcRequestData.length >= 2) {
+        if(gcData.length === 1) {
             // second data point - remove "No Data Available" label
             gcChartPlaceholder.attr("visibility", "hidden");
         }
 
-        for (var i = 0, len = gcRequestData.length; i < len; i++) {
-            var d = gcRequestData[i];
+        //for (var i = 0, len = gcRequestData.length; i < len; i++) {
+            var d = gcRequestData//[i];
 
-            d.time = new Date(+d.time);
+            //d.time = new Date(+d.time);
             // store data in MB from B
             d.used  = +d.used  / (1024 * 1024);
             d.size  = +d.size  / (1024 * 1024);
@@ -212,12 +212,12 @@ function updateGCData() {
             sizeLatest = Math.round(d.size);
             usedLatest = Math.round(d.used);
             gcData.push(d)
-        }
+        //}
 
-        // Only keep 30 minutes of data
+        // Only keep 'maxTimeWindow' milliseconds (defined in index.html) of data
         var currentTime = Date.now()
-        var d = gcData[0]
-        while (d.hasOwnProperty('time') && d.time.valueOf() + 1800000 < currentTime) {
+        var d0 = gcData[0]
+        while (d0.hasOwnProperty('time') && d0.time + maxTimeWindow < currentTime) {
             gcData.shift()
             d = gcData[0]
         }
