@@ -40,10 +40,6 @@ tap.test('loopack api available', function(t) {
 tap.test('dashboard available', function(t) {
   const options = {
     url: base + '/appmetrics-dash',
-    auth: {
-      user: 'admin',
-      pass: 'admin',
-    },
   };
   request(options, function(err, resp, body) {
     t.ifError(err);
