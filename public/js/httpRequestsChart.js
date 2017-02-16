@@ -43,7 +43,7 @@ var httpline = d3.svg.line()
         return http_xScale(d.time);
     })
     .y(function(d) {
-        return http_yScale(d.duration);
+        return http_yScale(d.longest);
     });
 
 var httpSVG = d3.select("#httpDiv1")
@@ -100,29 +100,30 @@ var httpChartPlaceholder = httpChart.append("text")
 
 function updateHttpData() {
     socket.on('http', function (httpRequest){
-        httpRequestData = JSON.parse(httpRequest);  // parses the data into a JSON array
-        if (httpRequestData.length == 0) return;
+        httpRequestData = JSON.parse(httpRequest);  // parses the data into a JSON object
+        if (!httpRequestData) return;
 
         if(httpData.length === 0) {
             // first data - remove "No Data Available" label
             httpChartPlaceholder.attr("visibility", "hidden");
         }
 
-        if(httpRequestData.length >= maxDataPoints) {
-            httpData = httpRequestData;
-        } else {
-            for (var i = 0, len = httpRequestData.length; i < len; i++) {
-                var d = httpRequestData[i];
-                if (d != null && d.hasOwnProperty('time')) {
-                    httpData.push(d)
-                }
-            }
-        }
+        //if(httpRequestData.length >= maxDataPoints) {
+        //    httpData = httpRequestData;
+        //} else {
+        //    for (var i = 0, len = httpRequestData.length; i < len; i++) {
+        //        var d = httpRequestData[i];
+        //        if (d != null && d.hasOwnProperty('time')) {
+        //            httpData.push(d)
+        //        }
+        //    }
+        //}
+        httpData.push(httpRequestData);
 
-        // Only keep 30 minutes or 'maxDataPoints' (defined in index.html) items of data
+        // Only keep 30 minutes of data
         var currentTime = Date.now()
         var d = httpData[0]
-        while (httpData.length > maxDataPoints || (d.hasOwnProperty('time') && d.time + 1800000 < currentTime)) {
+        while (d.hasOwnProperty('time') && d.time + maxTimeWindow < currentTime) {
             httpData.shift()
             d = httpData[0]
         }
@@ -134,28 +135,43 @@ function updateHttpData() {
                 return d.time;
             }));
             http_yScale.domain([0, d3.max(httpData, function(d) {
-                return d.duration;
+                return d.longest;
             })]);
             var selection = d3.select(".httpChart");
-            selection.selectAll("circle").remove();
+            //selection.selectAll("circle").remove();
             selection.select(".httpline")
                 .attr("d", httpline(httpData));
             selection.select(".xAxis")
                 .call(http_xAxis);
             selection.select(".yAxis")
                 .call(http_yAxis);
-            // Add the points
-            selection.selectAll("point")
-                .data(httpData)
-                .enter().append("circle")
+
+            // Re-adjust the points
+            var points = selection.selectAll(".point").data(httpData)
+                .attr("cx", function(d) { return http_xScale(d.time); })
+                .attr("cy", function(d) { return http_yScale(d.longest); })
+            points.exit().remove();
+            points.enter().append("circle")
+                .attr("class", "point")
                 .attr("r", 4)
                 .style("fill", "#5aaafa")
                 .style("stroke", "white")
                 .attr("transform",
                     "translate(" + margin.left + "," + margin.top + ")")
                 .attr("cx", function(d) { return http_xScale(d.time); })
-                .attr("cy", function(d) { return http_yScale(d.duration); })
-                .append("svg:title").text(function(d) { return d.url; }); // tooltip
+                .attr("cy", function(d) { return http_yScale(d.longest); })
+                .append("svg:title").text(function(d) { // tooltip
+                    if(d.total === 1) {
+                        return d.url
+                    } else {
+                        return d.total
+                         + " requests\n average duration = "
+                         + d3.format(".2s")(d.average)
+                         + "ms\n longest duration = "
+                         +  d3.format(".2s")(d.longest)
+                         + "ms for URL: " + d.url;
+                    }
+                });
         }
     });
 }
@@ -186,15 +202,8 @@ function resizeHttpChart() {
         .call(http_yAxis);
     chart.selectAll("point")
         .data(httpData)
-        .enter().append("circle")
-        .attr("r", 4)
-        .style("fill", "#5aaafa")
-        .style("stroke", "white")
-        .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")")
         .attr("cx", function(d) { return http_xScale(d.time); })
-        .attr("cy", function(d) { return http_yScale(d.duration); })
-        .append("svg:title").text(function(d) { return d.url; });
+        .attr("cy", function(d) { return http_yScale(d.longest); });
 }
 
 updateHttpData()

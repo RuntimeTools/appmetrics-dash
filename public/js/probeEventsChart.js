@@ -157,13 +157,13 @@ function updateProbesData() {
             probesChartPlaceholder.attr("visibility", "hidden");
         }
 
-        if(data.length >= maxDataPoints) {
+        //if(data.length >= maxDataPoints) {
             // empty arrays
-            probesData = [];
-            for (var i= 0; i< probeDataSeparated.length; i++) {
-                probeDataSeparated[i] = [];
-            }
-        }
+        //    probesData = [];
+        //    for (var i= 0; i< probeDataSeparated.length; i++) {
+        //        probeDataSeparated[i] = [];
+        //    }
+        //}
 
         for (var i=0; i< data.length; i++) {
             var d = data[i]
@@ -206,20 +206,20 @@ function updateProbesData() {
             }
         }
 
-        // Only keep 30 minutes of data or most recent 'maxDataPoints' number of items if more than that
+        // Only keep 'maxTimeWindow' milliseconds of data
         var currentTime = Date.now()
-        var cutoffTime = currentTime - 1800000;
+        var cutoffTime = currentTime - maxTimeWindow;
         var d = probesData[0]
         while (d.hasOwnProperty('time') && d.time < cutoffTime) {
             probesData.shift()
             d = probesData[0]
         }
-        while (probesData.length > maxDataPoints) {
-            var d1 = probesData[0]
-            if(d1.hasOwnProperty('time'))
-                cutoffTime = d1.time
-            probesData.shift()
-        }
+      //  while (probesData.length > maxDataPoints) {
+      //      var d1 = probesData[0]
+      //      if(d1.hasOwnProperty('time'))
+       //         cutoffTime = d1.time
+       //     probesData.shift()
+      //  }
         for (var i= 0; i< probeDataSeparated.length; i++) {
             var oneProbesData = probeDataSeparated[i];
             var d1 = oneProbesData[0]
@@ -257,7 +257,7 @@ function updateProbesData() {
                     "translate(" + margin.left + "," + margin.top + ")")
                     .attr("cx", function(d) { return probes_xScale(d.time); })
                     .attr("cy", function(d) { return probes_yScale(d.duration); })
-                    //.append("svg:title").text(function(d) { return d.url; }); // tooltip
+                    .append("svg:title").text(function(d) { return d.total + " events"; }); // tooltip
 
 
         }

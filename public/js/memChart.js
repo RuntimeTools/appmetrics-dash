@@ -207,7 +207,7 @@ function updateMemData() {
 	    if (d === null)
 		    return;
 			
-        while (d.hasOwnProperty('date') && d.date.valueOf() + 1800000 < currentTime) {
+        while (d.hasOwnProperty('date') && d.date.valueOf() + maxTimeWindow < currentTime) {
             memData.shift()
             d = memData[0]
         }

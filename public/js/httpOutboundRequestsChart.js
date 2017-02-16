@@ -43,7 +43,7 @@ var httpOBline = d3.svg.line()
     return httpOB_xScale(d.time);
 })
 .y(function(d) {
-    return httpOB_yScale(d.duration);
+    return httpOB_yScale(d.longest);
 });
 
 var httpOBSVG = d3.select("#httpOBDiv")
@@ -109,17 +109,18 @@ function updateHttpOBData() {
             httpOBChartPlaceholder.attr("visibility", "hidden");
         }
 
-        for (var i = 0, len = httpOutboundRequestData.length; i < len; i++) {
-            var d = httpOutboundRequestData[i];
-            if (d != null && d.hasOwnProperty('time')) {
-                httpOBData.push(d)
-            }
-        }
+        //for (var i = 0, len = httpOutboundRequestData.length; i < len; i++) {
+        //    var d = httpOutboundRequestData[i];
+        //    if (d != null && d.hasOwnProperty('time')) {
+        //        httpOBData.push(d)
+        //    }
+        //}
+        httpOBData.push(httpOutboundRequestData)
 
-        // Only keep 30 minutes or 'maxDataPoints' (defined in index.html) items of data
+        // Only keep 'maxTimeWindow' (defined in index.html) milliseconds of data
         var currentTime = Date.now()
         var d = httpOBData[0]
-        while (httpOBData.length > maxDataPoints || (d.hasOwnProperty('time') && d.time + 1800000 < currentTime)) {
+        while (d.hasOwnProperty('time') && d.time + maxTimeWindow < currentTime) {
             httpOBData.shift()
             d = httpOBData[0]
         }
@@ -132,7 +133,7 @@ function updateHttpOBData() {
                 return d.time;
             }));
             httpOB_yScale.domain([0, d3.max(httpOBData, function(d) {
-                return d.duration;
+                return d.longest;
             })]);
 
             var selection = d3.select(".httpOBChart");
@@ -154,8 +155,19 @@ function updateHttpOBData() {
             .attr("transform",
                     "translate(" + margin.left + "," + margin.top + ")")
                     .attr("cx", function(d) { return httpOB_xScale(d.time); })
-                    .attr("cy", function(d) { return httpOB_yScale(d.duration); })
-                    .append("svg:title").text(function(d) { return d.url; }); // tooltip
+                    .attr("cy", function(d) { return httpOB_yScale(d.longest); })
+                    .append("svg:title").text(function(d) { // tooltip
+                    if(d.total === 1) {
+                        return d.url
+                    } else {
+                        return d.total
+                         + " requests\n average duration = "
+                         + d3.format(".2s")(d.average)
+                         + "ms\n longest duration = "
+                         +  d3.format(".2s")(d.longest)
+                         + "ms for URL: " + d.url;
+                    }
+                });
 
         }
     });
@@ -194,7 +206,7 @@ function resizeHttpOBChart() {
     .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")")
             .attr("cx", function(d) { return httpOB_xScale(d.time); })
-            .attr("cy", function(d) { return httpOB_yScale(d.duration); })
+            .attr("cy", function(d) { return httpOB_yScale(d.longest); })
             .append("svg:title").text(function(d) { return d.url; });
 }
 
