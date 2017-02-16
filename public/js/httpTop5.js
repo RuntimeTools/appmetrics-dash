@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2017 IBM Corp.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -21,12 +21,12 @@ var httpTop5Data = [];
 
 var httpTop5_barHeight = tallerGraphHeight / 5;
 
-var httpDiv3CanvasWidth = $("#httpDiv3").width() - 8; // -8 for margin and border
+var httpDiv3CanvasWidth = $("#httpTop5Div").width() - 8; // -8 for margin and border
 var httpDiv3GraphWidth = httpDiv3CanvasWidth - margin.left - margin.right;
 
 var httpTop5_xScale = d3.scale.linear().range([0, httpDiv3GraphWidth]);
 
-var httpTop5SVG = d3.select("#httpDiv3")
+var httpTop5SVG = d3.select("#httpTop5Div")
     .append("svg")
     .attr("width", httpDiv3CanvasWidth)
     .attr("height", canvasHeight)
@@ -76,7 +76,7 @@ function updateChart() {
     var bar = d3.select(".httpTop5Chart").selectAll(".bar")
         .data(httpTop5Data)
         .enter().append("g").attr("class", "bar")
-        .attr("transform", function(d, i) { 
+        .attr("transform", function(d, i) {
             return "translate(50," + (margin.top + i * httpTop5_barHeight) + ")";
         });
 
@@ -97,7 +97,7 @@ function updateChart() {
         .attr("y", httpTop5_barHeight / 2)
         .attr("dy", ".35em")
         .attr("fill", "white")
-        .text(function(d) {            
+        .text(function(d) {
             return convertURL(d.url)
         });
 
@@ -110,7 +110,7 @@ function updateChart() {
         .text(function(d) {
             return d3.format(",.2f")(d.averageResponseTime) + "ms";
         });
-    
+
     // Tooltip
     bar.append("svg:title").text(function(d) {return d.url;});
 }
@@ -160,7 +160,7 @@ function updateURLData() {
                 } else {
                     httpAverages[d.url] = [parseFloat(d.duration), 1]
                 }
-            }        
+            }
             var workingData = []
             for (urlValue in httpAverages) {
                 workingData.push({url:urlValue, averageResponseTime:httpAverages[urlValue][0]})
@@ -171,7 +171,7 @@ function updateURLData() {
 }
 
 function resizeHttpTop5Chart() {
-    httpDiv3CanvasWidth = $("#httpDiv3").width() - 8;
+    httpDiv3CanvasWidth = $("#httpTop5Div").width() - 8;
     httpDiv3GraphWidth = httpDiv3CanvasWidth - margin.left - margin.right;
     httpTop5_xScale = d3.scale.linear().range([0, httpDiv3GraphWidth]);
     var chart = d3.select(".httpTop5Chart")
