@@ -13,31 +13,31 @@
     <!--<h1>Application Metrics Dashboard for Node.js (Tech Preview)</h1>-->
     <!-- load the d3.js library -->
     <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>    
+    <script src="/socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-2" id="cpuDiv1"></div>
-            <div class="col-md-2" id="memDiv1"></div>
+            <div class="col-md-2" id="cpuDiv"></div>
+            <div class="col-md-2" id="memDiv"></div>
             <div class="col-md-2" id="gcDiv"></div>
-            <div class="col-md-3" id="httpDiv2"></div>
+            <div class="col-md-3" id="httpThroughPutDiv"></div>
             <div class="col-md-3" id="envDiv"></div>
         </div>
 
         <div class="row">
-            <div class="col-md-6" id="httpDiv1"></div>
-            <div class="col-md-3" id="httpDiv3"></div>
+            <div class="col-md-6" id="httpResponseDiv"></div>
+            <div class="col-md-3" id="httpTop5Div"></div>
             <div class="col-md-3" id="eventLoopDiv"></div>
         </div>
         <div class="row">
             <div class="col-md-6" id="probeEventsDiv"></div>
             <div class="col-md-6" id="httpOBDiv"></div>
         </div>
-        <div class="row"> 
+        <div class="row">
             <div class="col-md-12" id="nodeReportButtonDiv"></div>
-        </div>        
+        </div>
     </div>
 
 <script>
@@ -50,14 +50,14 @@
          shortBottom: 30,
          left: 60
     },
-    canvasWidth = $("#cpuDiv1").width() - 8, // -8 for margins and borders
-    httpCanvasWidth = $("#httpDiv1").width() - 8,
+    canvasWidth = $("#cpuDiv").width() - 8, // -8 for margins and borders
+    httpCanvasWidth = $("#httpResponseDiv").width() - 8,
     graphWidth = canvasWidth - margin.left - margin.right,
     httpGraphWidth = httpCanvasWidth - margin.left - margin.right,
     canvasHeight = 250,
     tallerGraphHeight = canvasHeight - margin.top - margin.shortBottom,
     graphHeight = canvasHeight - margin.top - margin.bottom;
-     
+
     var myurl = location.host;
     var socket = io.connect(myurl);
     socket.emit('connected');
@@ -88,11 +88,11 @@
 <script type="text/javascript" src="js/probeEventsChart.js"></script>
 
 <script>
-    window.addEventListener('resize', resize); 
+    window.addEventListener('resize', resize);
 
     function resize() {
-        canvasWidth = $("#cpuDiv1").width() - 8,
-        httpCanvasWidth = $("#httpDiv1").width() - 8,
+        canvasWidth = $("#cpuDiv").width() - 8,
+        httpCanvasWidth = $("#httpResponseDiv").width() - 8,
         graphWidth = canvasWidth - margin.left - margin.right,
         httpGraphWidth = httpCanvasWidth - margin.left - margin.right;
         resizeCPUChart();
