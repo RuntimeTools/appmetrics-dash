@@ -10,7 +10,7 @@
     "socket.io": "^1.7.2"
   },
   "optionalDependencies": {
-    "nodereport": "https://github.com/hhellyer/nodereport.git#stream_output_dev"
+    "node-report": "^2.1.0"
   },
   "devDependencies": {
     "appmetrics": "^1.2.0",
