@@ -1,4 +1,10 @@
 {
+<<<<<<< HEAD
+=======
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
+>>>>>>> 67eea239b0865b023be19c09908611390eb64c1e
   "extends": "strongloop",
   "env": {
     "node": true

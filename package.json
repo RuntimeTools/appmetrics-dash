@@ -4,6 +4,7 @@
   "description": "The Node.js Starter demonstrates a simple, reusable Node.js web application based on the Express framework.",
   "main": "index.js",
   "dependencies": {
+<<<<<<< HEAD
     "appmetrics": "*",
     "nodereport": "https://github.com/hhellyer/nodereport.git#stream_output_dev",
     "express": "*",
@@ -17,6 +18,35 @@
   "scripts": {
     "pretest": "eslint .",
     "test": "echo FIXME"
+=======
+    "debug": "^2.6.0",
+    "express": "^4.14.1",
+    "express-basic-auth": "^0.2.3",
+    "socket.io": "^1.7.2"
+  },
+  "optionalDependencies": {
+    "nodereport": "https://github.com/hhellyer/nodereport.git#stream_output_dev"
+  },
+  "devDependencies": {
+    "appmetrics": "^1.2.0",
+    "compression": "^1.6.2",
+    "cors": "^2.8.1",
+    "eslint": "^3.14.1",
+    "eslint-config-strongloop": "^2.1.0",
+    "helmet": "^3.4.0",
+    "loopback": "^3.2.1",
+    "loopback-boot": "^2.23.0",
+    "loopback-component-explorer": "^4.1.0",
+    "request": "^2.79.0",
+    "serve-favicon": "^2.3.2",
+    "socket.io-client": "^1.7.2",
+    "strong-error-handler": "^1.2.1",
+    "tap": "^10.0.1"
+  },
+  "scripts": {
+    "pretest": "eslint .",
+    "test": "tap test/test-*.js"
+>>>>>>> 67eea239b0865b023be19c09908611390eb64c1e
   },
   "repository": {
     "type": "git",
