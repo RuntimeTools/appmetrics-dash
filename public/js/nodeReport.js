@@ -19,5 +19,5 @@ socket.on('nodereport', function (nodereport){
         + new Date().toUTCString()
         + '</title></head><body><pre style="white-space: pre-wrap;">'
         + nodereport + '</pre></body></h‌​tml>');
-    newWindow.document.close();  
+    newWindow.document.close();
 });

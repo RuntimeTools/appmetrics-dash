@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2017 IBM Corp.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -69,7 +69,7 @@ var mem_systemLine = d3.svg.line()
     });
 
 // Define the memory SVG
-var memSVG = d3.select("#memDiv1")
+var memSVG = d3.select("#memDiv")
     .append("svg")
     .attr("width", canvasWidth)
     .attr("height", canvasHeight)
@@ -125,7 +125,7 @@ var memChartPlaceholder = memChart.append("text")
 
 // Add the system colour box
 memChart.append("rect")
-    .attr("x", 0) 
+    .attr("x", 0)
     .attr("y", graphHeight + margin.bottom - 15)
     .attr("class", "colourbox1")
     .attr("width", 10)
@@ -133,7 +133,7 @@ memChart.append("rect")
 
 // Add the SYSTEM label
 var memSystemLabel = memChart.append("text")
-    .attr("x", 15) 
+    .attr("x", 15)
     .attr("y", graphHeight + margin.bottom - 5)
     .attr("text-anchor", "start")
     .attr("class", "lineLabel")
@@ -141,7 +141,7 @@ var memSystemLabel = memChart.append("text")
 
 // Add the process colour box
 memChart.append("rect")
-    .attr("x", memSystemLabel.node().getBBox().width + 25) 
+    .attr("x", memSystemLabel.node().getBBox().width + 25)
     .attr("y", graphHeight + margin.bottom - 15)
     .attr("width", 10)
     .attr("height", 10)
@@ -149,7 +149,7 @@ memChart.append("rect")
 
 // Add the PROCESS label
 memChart.append("text")
-    .attr("x", memSystemLabel.node().getBBox().width + 40) 
+    .attr("x", memSystemLabel.node().getBBox().width + 40)
     .attr("y", graphHeight + margin.bottom - 5)
     .attr("class", "lineLabel2")
     .text("Node Process");
@@ -160,16 +160,16 @@ function resizeMemChart() {
     mem_xScale = d3.time.scale().range([0, graphWidth]);
     mem_xAxis = d3.svg.axis().scale(mem_xScale)
         .orient("bottom").ticks(3).tickFormat(getTimeFormat());
-    
+
     memTitleBox.attr("width", canvasWidth)
 
     // Redraw lines and axes
     mem_xScale.domain(d3.extent(memData, function(d) {
         return d.date;
     }));
-    chart.select(".systemLine") 
+    chart.select(".systemLine")
         .attr("d", mem_systemLine(memData));
-    chart.select(".processLine") 
+    chart.select(".processLine")
         .attr("d", mem_processLine(memData));
     chart.select(".xAxis").call(mem_xAxis);
     chart.select(".yAxis").call(mem_yAxis);
@@ -206,7 +206,7 @@ function updateMemData() {
 	    var d = memData[0]
 	    if (d === null)
 		    return;
-			
+
         while (d.hasOwnProperty('date') && d.date.valueOf() + 1800000 < currentTime) {
             memData.shift()
             d = memData[0]

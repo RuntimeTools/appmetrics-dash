@@ -4,6 +4,20 @@
   "description": "The Node.js Starter demonstrates a simple, reusable Node.js web application based on the Express framework.",
   "main": "index.js",
   "dependencies": {
+<<<<<<< HEAD
+    "appmetrics": "*",
+    "nodereport": "https://github.com/hhellyer/nodereport.git#stream_output_dev",
+    "express": "*",
+    "socket.io": "*",
+    "cfenv": "1.0.x"
+  },
+  "devDependencies": {
+    "eslint": "^3.14.1",
+    "eslint-config-strongloop": "^2.1.0"
+  },
+  "scripts": {
+    "pretest": "eslint .",
+    "test": "echo FIXME",
     "debug": "^2.6.0",
     "express": "^4.14.1",
     "express-basic-auth": "^0.2.3",
