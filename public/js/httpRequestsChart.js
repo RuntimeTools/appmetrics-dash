@@ -25,7 +25,7 @@ var http_xAxis = d3.svg.axis()
     .scale(http_xScale)
     .orient("bottom")
     .ticks(3)
-    .tickFormat(getTimeFormat());
+    .tickFormat(d3.time.format("%H:%M:%S"));
 
 var http_yAxis = d3.svg.axis()
     .scale(http_yScale)
@@ -40,10 +40,10 @@ var mouseOverHttpGraph = false;
 // Define the HTTP request time line
 var httpline = d3.svg.line()
     .x(function(d) {
-        return http_xScale(d.date);
+        return http_xScale(d.time);
     })
     .y(function(d) {
-        return http_yScale(d.duration);
+        return http_yScale(d.longest);
     });
 
 var httpSVG = d3.select("#httpDiv1")
@@ -100,60 +100,78 @@ var httpChartPlaceholder = httpChart.append("text")
 
 function updateHttpData() {
     socket.on('http', function (httpRequest){
-        httpRequestData = JSON.parse(httpRequest);  // parses the data into a JSON array
-        if (httpRequestData.length == 0) return;
+        httpRequestData = JSON.parse(httpRequest);  // parses the data into a JSON object
+        if (!httpRequestData) return;
 
         if(httpData.length === 0) {
             // first data - remove "No Data Available" label
             httpChartPlaceholder.attr("visibility", "hidden");
         }
 
-        for (var i = 0, len = httpRequestData.length; i < len; i++) {
-            var d = httpRequestData[i];
-            if (d != null && d.hasOwnProperty('time')) {
-                d.date = new Date(+d.time);
-                d.responseTime = Math.round(+d.duration)
-                httpData.push(d)
-            }
-        }
+        //if(httpRequestData.length >= maxDataPoints) {
+        //    httpData = httpRequestData;
+        //} else {
+        //    for (var i = 0, len = httpRequestData.length; i < len; i++) {
+        //        var d = httpRequestData[i];
+        //        if (d != null && d.hasOwnProperty('time')) {
+        //            httpData.push(d)
+        //        }
+        //    }
+        //}
+        httpData.push(httpRequestData);
 
-        // Only keep 30 minutes or 2000 items of data
+        // Only keep 30 minutes of data
         var currentTime = Date.now()
         var d = httpData[0]
-        while (httpData.length > 2000 || (d.hasOwnProperty('date') && d.date.valueOf() + 1800000 < currentTime)) {
+        while (d.hasOwnProperty('time') && d.time + maxTimeWindow < currentTime) {
             httpData.shift()
             d = httpData[0]
         }
+
         // Don't redraw graph if mouse is over it (keeps it still for tooltips)
         if(!mouseOverHttpGraph) {
             // Set the input domain for x and y axes
             http_xScale.domain(d3.extent(httpData, function(d) {
-                return d.date;
+                return d.time;
             }));
             http_yScale.domain([0, d3.max(httpData, function(d) {
-                return d.duration;
+                return d.longest;
             })]);
-            http_xAxis.tickFormat(getTimeFormat());
             var selection = d3.select(".httpChart");
-            selection.selectAll("circle").remove();
+            //selection.selectAll("circle").remove();
             selection.select(".httpline")
                 .attr("d", httpline(httpData));
             selection.select(".xAxis")
                 .call(http_xAxis);
             selection.select(".yAxis")
                 .call(http_yAxis);
-            // Add the points
-            selection.selectAll("point")
-                .data(httpData)
-                .enter().append("circle")
+
+            // Re-adjust the points
+            var points = selection.selectAll(".point").data(httpData)
+                .attr("cx", function(d) { return http_xScale(d.time); })
+                .attr("cy", function(d) { return http_yScale(d.longest); })
+            points.exit().remove();
+            points.enter().append("circle")
+                .attr("class", "point")
                 .attr("r", 4)
                 .style("fill", "#5aaafa")
                 .style("stroke", "white")
                 .attr("transform",
                     "translate(" + margin.left + "," + margin.top + ")")
-                .attr("cx", function(d) { return http_xScale(d.date); })
-                .attr("cy", function(d) { return http_yScale(d.duration); })
-                .append("svg:title").text(function(d) { return d.url; }); // tooltip
+                .attr("cx", function(d) { return http_xScale(d.time); })
+                .attr("cy", function(d) { return http_yScale(d.longest); })
+                .append("svg:title").text(function(d) { // tooltip
+                    if(d.total === 1) {
+                        return d.url
+                    } else {
+                        return d.total
+                         + " requests\n average duration = "
+                         + d3.format(".2s")(d.average)
+                         + "ms\n longest duration = "
+                         +  d3.format(".2s")(d.longest)
+                         + "ms for URL: " + d.url;
+                    }
+                });
         }
     });
 }
@@ -166,13 +184,12 @@ function resizeHttpChart() {
     http_xAxis = d3.svg.axis()
         .scale(http_xScale)
         .orient("bottom")
-        .ticks(3)
-        .tickFormat(getTimeFormat());
+        .ticks(3);
 
     httpTitleBox.attr("width", httpCanvasWidth)
 
     http_xScale.domain(d3.extent(httpData, function(d) {
-        return d.date;
+        return d.time;
     }));
 
     chart.selectAll("circle").remove();
@@ -185,15 +202,8 @@ function resizeHttpChart() {
         .call(http_yAxis);
     chart.selectAll("point")
         .data(httpData)
-        .enter().append("circle")
-        .attr("r", 4)
-        .style("fill", "#5aaafa")
-        .style("stroke", "white")
-        .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")")
-        .attr("cx", function(d) { return http_xScale(d.date); })
-        .attr("cy", function(d) { return http_yScale(d.duration); })
-        .append("svg:title").text(function(d) { return d.url; });
+        .attr("cx", function(d) { return http_xScale(d.time); })
+        .attr("cy", function(d) { return http_yScale(d.longest); });
 }
 
 updateHttpData()

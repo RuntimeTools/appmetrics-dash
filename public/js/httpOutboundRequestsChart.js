@@ -25,7 +25,7 @@ var httpOB_xAxis = d3.svg.axis()
 .scale(httpOB_xScale)
 .orient("bottom")
 .ticks(3)
-.tickFormat(getTimeFormat());
+.tickFormat(d3.time.format("%H:%M:%S"));
 
 var httpOB_yAxis = d3.svg.axis()
 .scale(httpOB_yScale)
@@ -40,10 +40,11 @@ var mouseOverHttpOBGraph = false;
 // Define the HTTP request time line
 var httpOBline = d3.svg.line()
 .x(function(d) {
-    return httpOB_xScale(d.date);
-})
 .y(function(d) {
     return httpOB_yScale(d.duration);
+})
+.y(function(d) {
+    return httpOB_yScale(d.longest);
 });
 
 var httpOBSVG = d3.select("#httpOBDiv")
@@ -109,18 +110,18 @@ function updateHttpOBData() {
             httpOBChartPlaceholder.attr("visibility", "hidden");
         }
 
-        for (var i = 0, len = httpOutboundRequestData.length; i < len; i++) {
-            var d = httpOutboundRequestData[i];
-            if (d != null && d.hasOwnProperty('time')) {
-                d.date = new Date(+d.time);
-                httpOBData.push(d)
-            }
-        }
+        //for (var i = 0, len = httpOutboundRequestData.length; i < len; i++) {
+        //    var d = httpOutboundRequestData[i];
+        //    if (d != null && d.hasOwnProperty('time')) {
+        //        httpOBData.push(d)
+        //    }
+        //}
+        httpOBData.push(httpOutboundRequestData)
 
-        // Only keep 30 minutes or 2000 items of data
+        // Only keep 'maxTimeWindow' (defined in index.html) milliseconds of data
         var currentTime = Date.now()
         var d = httpOBData[0]
-        while (httpOBData.length > 2000 || (d.hasOwnProperty('date') && d.date.valueOf() + 1800000 < currentTime)) {
+        while (d.hasOwnProperty('time') && d.time + maxTimeWindow < currentTime) {
             httpOBData.shift()
             d = httpOBData[0]
         }
@@ -130,13 +131,11 @@ function updateHttpOBData() {
 
             // Set the input domain for x and y axes
             httpOB_xScale.domain(d3.extent(httpOBData, function(d) {
-                return d.date;
+                return d.time;
             }));
             httpOB_yScale.domain([0, d3.max(httpOBData, function(d) {
-                return d.duration;
+                return d.longest;
             })]);
-
-            httpOB_xAxis.tickFormat(getTimeFormat());
 
             var selection = d3.select(".httpOBChart");
             selection.selectAll("circle").remove();
@@ -159,6 +158,20 @@ function updateHttpOBData() {
                     .attr("cx", function(d) { return httpOB_xScale(d.date); })
                     .attr("cy", function(d) { return httpOB_yScale(d.duration); })
                     .append("svg:title").text(function(d) { return d.url; }); // tooltip
+                    .attr("cx", function(d) { return httpOB_xScale(d.time); })
+                    .attr("cy", function(d) { return httpOB_yScale(d.longest); })
+                    .append("svg:title").text(function(d) { // tooltip
+                    if(d.total === 1) {
+                        return d.url
+                    } else {
+                        return d.total
+                         + " requests\n average duration = "
+                         + d3.format(".2s")(d.average)
+                         + "ms\n longest duration = "
+                         +  d3.format(".2s")(d.longest)
+                         + "ms for URL: " + d.url;
+                    }
+                });
 
         }
     });
@@ -172,11 +185,10 @@ function resizeHttpOBChart() {
     httpOB_xAxis = d3.svg.axis()
     .scale(httpOB_xScale)
     .orient("bottom")
-    .ticks(3)
-    .tickFormat(getTimeFormat());
+    .ticks(3);
 
     httpOB_xScale.domain(d3.extent(httpOBData, function(d) {
-        return d.date;
+        return d.time;
     }));
 
     httpOBTitleBox.attr("width", httpCanvasWidth)
@@ -197,8 +209,8 @@ function resizeHttpOBChart() {
     .style("stroke", "white")
     .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")")
-            .attr("cx", function(d) { return httpOB_xScale(d.date); })
-            .attr("cy", function(d) { return httpOB_yScale(d.duration); })
+            .attr("cx", function(d) { return httpOB_xScale(d.time); })
+            .attr("cy", function(d) { return httpOB_yScale(d.longest); })
             .append("svg:title").text(function(d) { return d.url; });
 }
 
