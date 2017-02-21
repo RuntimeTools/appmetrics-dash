@@ -51,8 +51,8 @@ httpTop5Chart.append("text")
 
 // Add the placeholder text
 var httpTop5ChartPlaceholder = httpTop5Chart.append("text")
-    .attr("x", httpDiv3CanvasWidth/2)
-    .attr("y", canvasHeight/2)
+    .attr("x", httpDiv3GraphWidth/2)
+    .attr("y", graphHeight/2)
     .attr("text-anchor", "middle")
     .style("font-size", "18px")
     .text("No Data Available");
@@ -136,8 +136,7 @@ function updateHttpAverages(workingData) {
 
 function updateURLData() {
     // Get the HTTP average response times
-    socket.on('http', function (httpTop5Request){
-
+    socket.on('http-urls', function (httpTop5Request){
         if(httpTop5Data.length == 0) {
             // first data - remove "No Data Available" label
             httpTop5ChartPlaceholder.attr("visibility", "hidden");
@@ -145,28 +144,8 @@ function updateURLData() {
 
         httpTop5RequestData = JSON.parse(httpTop5Request);  // parses the data into a
 
-        // JSON array
-        if (httpTop5RequestData.length == 0) return
-        for (var i = 0, len = httpTop5RequestData.length; i < len; i++) {
-            var d = httpTop5RequestData[i];
+        updateHttpAverages(httpTop5RequestData);
 
-            if (d != null && d.hasOwnProperty('url')) {
-                var urlStats = httpAverages[d.url]
-                if(urlStats != null) {
-                    var averageResponseTime = urlStats[0]
-                    var hits = urlStats[1]
-                    // Recalculate the averate
-                    httpAverages[d.url] = [(averageResponseTime * hits + parseFloat(d.duration))/(hits + 1), hits + 1]
-                } else {
-                    httpAverages[d.url] = [parseFloat(d.duration), 1]
-                }
-            }        
-            var workingData = []
-            for (urlValue in httpAverages) {
-                workingData.push({url:urlValue, averageResponseTime:httpAverages[urlValue][0]})
-            }
-            updateHttpAverages(workingData);
-        }
     });
 }
 
