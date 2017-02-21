@@ -12,7 +12,7 @@ The dashboard will be available at /appmetrics-dash
 ## dash.monitor(options)
 
 * options.url {String} Path to serve dashboard from. Optional, defaults to
-  `'/appmetricsdash'`.
+  `'/appmetrics-dash'`.
 * options.console {Object} Some messages are printed to the console using
   `console.log()` and `console.error()`. Optional, defaults to the global
   `console` object.
