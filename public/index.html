@@ -41,7 +41,10 @@
     </div>
 
 <script>
+    // Global variables
     var monitoringStartTime = new Date();
+    var maxTimeWindow = 900000; // 15 minutes
+
     // Initialise graph and canvas dimensions
     var margin = {
          top: 50,
@@ -88,7 +91,7 @@
 <script type="text/javascript" src="js/probeEventsChart.js"></script>
 
 <script>
-    window.addEventListener('resize', resize); 
+    window.addEventListener('resize', resize);
 
     function resize() {
         canvasWidth = $("#cpuDiv1").width() - 8,

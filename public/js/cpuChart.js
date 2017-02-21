@@ -203,13 +203,14 @@ function updateCPUData() {
             cpuChartPlaceholder.attr("visibility", "hidden");
         }
 
-        // Only keep 30 minutes of data
+        // Throw away expired data
+
         var currentTime = Date.now();
         var d = cpuData[0];
         if (d === null)
             return
 
-        while (d.hasOwnProperty('date') && d.date.valueOf() + 1800000 < currentTime) {
+        while (d.hasOwnProperty('date') && d.date.valueOf() + maxTimeWindow < currentTime) {
             cpuData.shift();
             d = cpuData[0];
         }

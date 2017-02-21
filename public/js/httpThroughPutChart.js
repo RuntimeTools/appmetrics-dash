@@ -112,33 +112,33 @@ function updateThroughPutData() {
         httpThroughPutRequestData = JSON.parse(httpThroughPutRequest);  // parses the data into a JSON array
         if (httpThroughPutRequestData.length == 0) return
 
-        if(httpRate.length < 2 && httpRate.length + httpThroughPutRequestData.length >= 2) {
+        if(httpRate.length === 1) {
             // second data point - remove "No Data Available" label
             httpTPChartPlaceholder.attr("visibility", "hidden");
         }
 
-        for (var i = 0, len = httpThroughPutRequestData.length; i < len; i++) {
-            var d = httpThroughPutRequestData[i];
+        //for (var i = 0, len = httpThroughPutRequestData.length; i < len; i++) {
+            var d = httpThroughPutRequestData//[i];
             if (d != null && d.hasOwnProperty('time')) {
-                d.date = new Date(+d.time);
+                //d.date = new Date(+d.time);
                 if (httpRate.length == 0) {
-                    httpRate.push({httpRate:0, time:d.date})
+                    httpRate.push({httpRate:0, time:d.time})
                 } else {
                     // calculate the new http rate
-                    var timeDifference = d.date - httpRate[0].time;
+                    var timeDifference = d.time/1000 - httpRate[httpRate.length - 1].time/1000;
                     if (timeDifference > 0) {
-                        var averageRate = (httpData.length + 1) * 1000 / timeDifference
-                        httpRate.push({httpRate:averageRate, time:d.date})
+                        var averageRate = d.total / timeDifference
+                        httpRate.push({httpRate:averageRate, time:d.time})
                     }
                 }
             }
-        }
-        // Only keep 30 minutes or 2000 items of data
+        //}
+        // Only keep 30 minutes of data
         var currentTime = Date.now()
-        var d = httpRate[0]
-        while (httpRate.length > 2000 || (d.hasOwnProperty('time') && d.time.valueOf() + 1800000 < currentTime)) {
+        var d0 = httpRate[0]
+        while (d0.time + maxTimeWindow < currentTime) {
             httpRate.shift()
-            d = httpRate[0]
+            d0 = httpRate[0]
         }
 
         // Re-scale the x range to the new time interval

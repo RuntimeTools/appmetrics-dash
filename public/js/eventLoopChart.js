@@ -262,11 +262,10 @@ function updateEventLoopData() {
             // second data point - remove "No Data Available" label
             elChartPlaceholder.attr("visibility", "hidden");
         }
-      
-        // Only keep 30 minutes of data
+        // Only keep 'maxTimeWindow' (defined in index.html) milliseconds of data
         var currentTime = Date.now()
         var d = elData[0]
-        while (d.hasOwnProperty('date') && d.date.valueOf() + 1800000 < currentTime) {
+        while (d.hasOwnProperty('time') && d.time + maxTimeWindow < currentTime) {
             elData.shift()
             d = elData[0]
         }
