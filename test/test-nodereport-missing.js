@@ -9,7 +9,7 @@ tap.test('missing nodereport handled gracefully', function(t) {
   var server = require('../').monitor({
     appmetrics: appmetrics,
     nodereport: null,
-    port: 3000,
+    port: 0,
     host: '127.0.0.1',
     console: {
       log: function() { /* ignore */ },
