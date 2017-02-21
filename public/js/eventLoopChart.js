@@ -1,3 +1,4 @@
+HEAD
 /*******************************************************************************
  * Copyright 2017 IBM Corp.
  * 
@@ -248,6 +249,7 @@ function updateEventLoopData() {
 
         if (!elRequestData) return;
         var d = elRequestData;
+        d.time = new Date(+d.time);
         d.latency.min  = +d.latency.min;
         d.latency.max  = +d.latency.max;
         d.latency.avg  = +d.latency.avg;
