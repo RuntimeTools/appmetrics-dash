@@ -40,8 +40,7 @@ var mouseOverHttpOBGraph = false;
 // Define the HTTP request time line
 var httpOBline = d3.svg.line()
 .x(function(d) {
-.y(function(d) {
-    return httpOB_yScale(d.duration);
+    return httpOB_xScale(d.time);
 })
 .y(function(d) {
     return httpOB_yScale(d.longest);
@@ -155,9 +154,6 @@ function updateHttpOBData() {
             .style("stroke", "white")
             .attr("transform",
                     "translate(" + margin.left + "," + margin.top + ")")
-                    .attr("cx", function(d) { return httpOB_xScale(d.date); })
-                    .attr("cy", function(d) { return httpOB_yScale(d.duration); })
-                    .append("svg:title").text(function(d) { return d.url; }); // tooltip
                     .attr("cx", function(d) { return httpOB_xScale(d.time); })
                     .attr("cy", function(d) { return httpOB_yScale(d.longest); })
                     .append("svg:title").text(function(d) { // tooltip

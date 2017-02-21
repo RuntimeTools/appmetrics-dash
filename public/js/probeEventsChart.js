@@ -206,24 +206,6 @@ function updateProbesData() {
             }
         }
 
-        // Only keep 30 minutes of data or most recent 2000 items if more than that
-        var currentTime = Date.now()
-        var cutoffTime = currentTime - 1800000;
-        var d = probesData[0]
-        while (d.hasOwnProperty('time') && d.time.valueOf() < cutoffTime) {
-            probesData.shift()
-            d = probesData[0]
-        }
-        while (probesData.length > 2000) {
-            var d1 = probesData[0]
-            if(d1.hasOwnProperty('time'))
-                cutoffTime = d1.time.valueOf()
-            probesData.shift()
-        }
-        for (var i= 0; i< probeDataSeparated.length; i++) {
-            var oneProbesData = probeDataSeparated[i];
-            var d1 = oneProbesData[0]
-            while (d1.hasOwnProperty('time') && d1.time.valueOf() < cutoffTime) {
         // Only keep 'maxTimeWindow' milliseconds of data
         var currentTime = Date.now()
         var cutoffTime = currentTime - maxTimeWindow;
@@ -276,14 +258,15 @@ function updateProbesData() {
                     .attr("cx", function(d) { return probes_xScale(d.time); })
                     .attr("cy", function(d) { return probes_yScale(d.duration); })
                     .append("svg:title").text(function(d) { return d.total + " events"; }); // tooltip
+
+
         }
         // update the axes
         selection.select(".xAxis")
             .call(probes_xAxis);
         selection.select(".yAxis")
             .call(probes_yAxis);
-	});
+    });
 }
 
 updateProbesData()
-
