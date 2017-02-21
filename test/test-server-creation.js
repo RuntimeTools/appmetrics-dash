@@ -8,13 +8,6 @@ const util = require('util');
 const appmetrics = require('appmetrics');
 appmetrics.start();
 
-tap.test('throw with no port', function(t) {
-  t.throws(function() {
-    require('../').monitor({appmetrics: appmetrics});
-  });
-  t.end();
-});
-
 tap.test('runs dashboard on ephemeral port', function(t) {
   var server = require('../').monitor({
     appmetrics: appmetrics,
