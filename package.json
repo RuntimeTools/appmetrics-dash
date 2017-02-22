@@ -35,5 +35,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/RuntimeTools/appmetrics-dash.git"
-  }
+  },
+   "license": "Apache-2.0"
 }
