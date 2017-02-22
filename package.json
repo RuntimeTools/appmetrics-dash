@@ -1,6 +1,6 @@
 {
   "name": "appmetrics-dash",
-  "version": "1.0.0",
+  "version": "3.0.0-RC.1",
   "description": "Monitoring Dashboard for Node Application Metrics",
   "main": "index.js",
   "dependencies": {
