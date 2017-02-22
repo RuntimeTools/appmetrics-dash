@@ -1,27 +1,39 @@
 {
   "name": "appmetrics-dash",
   "version": "3.0.0-RC.1",
-  "description": "Monitoring Dashboard for Node Application Metrics",
+  "description": "Embedded monitoring dashboard for Node.js applications.",
   "main": "index.js",
   "dependencies": {
-    "appmetrics": "*",
-    "express": "*",
-    "socket.io": "*"
+    "appmetrics": "^2.0.0",
+    "debug": "^2.6.0",
+    "express": "^4.14.1",
+    "express-basic-auth": "^0.2.3",
+    "socket.io": "^1.7.2"
   },
-  "devDependencies": {},
+  "optionalDependencies": {
+    "node-report": "^2.1.0"
+  },
+  "devDependencies": {
+    "compression": "^1.6.2",
+    "cors": "^2.8.1",
+    "eslint": "^3.14.1",
+    "eslint-config-strongloop": "^2.1.0",
+    "helmet": "^3.4.0",
+    "loopback": "^3.2.1",
+    "loopback-boot": "^2.23.0",
+    "loopback-component-explorer": "^4.1.0",
+    "request": "^2.79.0",
+    "serve-favicon": "^2.3.2",
+    "socket.io-client": "^1.7.2",
+    "strong-error-handler": "^1.2.1",
+    "tap": "^10.0.1"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pretest": "eslint .",
+    "test": "tap test/test-*.js"
   },
-  "keywords": [
-    "appmetrics",
-    "dashboard",
-    "performance",
-    "monitoring"
-  ],
-  "author": "",
-  "repository" : {
-    "type" : "git",
-    "url" : "git://github.com/RuntimeTools/appmetrics-dash.git"
-  },
-  "license": "Apache-2.0"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RuntimeTools/appmetrics-dash.git"
+  }
 }
