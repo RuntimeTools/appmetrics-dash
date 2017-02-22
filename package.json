@@ -1,7 +1,7 @@
 {
   "name": "appmetrics-dash",
-  "version": "1.0.0",
-  "description": "The Node.js Starter demonstrates a simple, reusable Node.js web application based on the Express framework.",
+  "version": "3.0.0-RC.1",
+  "description": "Embedded monitoring dashboard for Node.js applications.",
   "main": "index.js",
   "dependencies": {
     "appmetrics": "^2.0.0",
@@ -34,8 +34,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git002@gitlab-polyglot.hursley.ibm.com:runtimetools/appmetrics-dash.git"
+    "url": "https://github.com/RuntimeTools/appmetrics-dash.git"
   },
-  "author": "",
-  "license": "ISC"
+   "license": "Apache-2.0"
 }
