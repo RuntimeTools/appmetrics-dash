@@ -219,7 +219,7 @@ function updateGCData() {
         var d0 = gcData[0]
         while (d0.hasOwnProperty('time') && d0.time + maxTimeWindow < currentTime) {
             gcData.shift()
-            d = gcData[0]
+            d0 = gcData[0]
         }
 
         // Scale the X range to the new data time interval
