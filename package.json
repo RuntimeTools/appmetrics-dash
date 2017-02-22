@@ -4,6 +4,7 @@
   "description": "The Node.js Starter demonstrates a simple, reusable Node.js web application based on the Express framework.",
   "main": "index.js",
   "dependencies": {
+    "appmetrics": "^2.0.0",
     "debug": "^2.6.0",
     "express": "^4.14.1",
     "express-basic-auth": "^0.2.3",
@@ -13,7 +14,6 @@
     "node-report": "^2.1.0"
   },
   "devDependencies": {
-    "appmetrics": "^2.0.0",
     "compression": "^1.6.2",
     "cors": "^2.8.1",
     "eslint": "^3.14.1",
