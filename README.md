@@ -1,6 +1,13 @@
 # appmetrics-dash
 
-## dash = require('appmetrics-dash')
+A dashboard to visualize the performance of your Node.js application. The dashboard
+uses "[Node Application Metrics][1]" to monitor the application. 
+
+## dash = require('appmetrics-dash').monitor()
+
+This will launch the dashboard and start monitoring your application. When
+no options are specified, an http server will be created and listen on port 3000.
+The dashboard will be available at /appmetrics-dash
 
 ## dash.monitor(options)
 
@@ -31,3 +38,10 @@
 
 Auto-attach to all `http` servers, calling `dash.monitor(options)` for every
 server created.
+
+### License
+The Node Application Metrics Dashboard is licensed using an Apache v2.0 License.
+
+
+[1]:https://developer.ibm.com/open/node-application-metrics/
+
