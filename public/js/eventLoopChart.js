@@ -248,6 +248,7 @@ function updateEventLoopData() {
 
         if (!elRequestData) return;
         var d = elRequestData;
+        d.time = new Date(+d.time);
         d.latency.min  = +d.latency.min;
         d.latency.max  = +d.latency.max;
         d.latency.avg  = +d.latency.avg;
@@ -261,7 +262,6 @@ function updateEventLoopData() {
             // second data point - remove "No Data Available" label
             elChartPlaceholder.attr("visibility", "hidden");
         }
-
         // Only keep 'maxTimeWindow' (defined in index.html) milliseconds of data
         var currentTime = Date.now()
         var d = elData[0]

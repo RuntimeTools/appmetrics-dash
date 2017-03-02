@@ -204,6 +204,7 @@ function updateCPUData() {
         }
 
         // Throw away expired data
+
         var currentTime = Date.now();
         var d = cpuData[0];
         if (d === null)

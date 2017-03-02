@@ -266,8 +266,7 @@ function updateProbesData() {
             .call(probes_xAxis);
         selection.select(".yAxis")
             .call(probes_yAxis);
-	});
+    });
 }
 
 updateProbesData()
-

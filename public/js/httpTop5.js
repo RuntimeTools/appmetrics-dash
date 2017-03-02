@@ -137,7 +137,6 @@ function updateHttpAverages(workingData) {
 function updateURLData() {
     // Get the HTTP average response times
     socket.on('http-urls', function (httpTop5Request){
-        
         if(httpTop5Data.length == 0) {
             // first data - remove "No Data Available" label
             httpTop5ChartPlaceholder.attr("visibility", "hidden");
