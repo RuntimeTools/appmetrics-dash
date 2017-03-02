@@ -19,6 +19,40 @@
         text-align: center;
         color: #3b4b54;
     }
+
+    .headerDiv {
+        width: 100%;
+        height: 50px;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 15px;
+        margin: 0px;
+        font-family: 'IBM Helvetica', Helvetica Neue, HelveticaNeue, Helvetica, sans-serif;
+        font-size: 16px;
+        background-color: #1D3649;
+    }
+
+    .rightHeader{
+        color: #FFFFFF;
+        float:right;
+    }
+
+    a {
+        color: #FFFFFF;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: #BBC3C8;
+        text-decoration: underline;
+    }
+
+    .leftHeader{
+        color: #BBC3C8;
+        float:left;
+    }
+
+
    .container-fluid {
         background-color: #f5f7fa;
     }
