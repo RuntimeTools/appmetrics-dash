@@ -6,7 +6,7 @@ uses "[Node Application Metrics][1]" to monitor the application.
 ## dash = require('appmetrics-dash').monitor()
 
 This will launch the dashboard and start monitoring your application. When
-no options are specified, an http server will be created and listen on port 3000.
+no options are specified, an http server will be created and listen on port 3001.
 The dashboard will be available at /appmetrics-dash
 
 ## dash.monitor(options)
