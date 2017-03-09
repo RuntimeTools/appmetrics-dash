@@ -18,7 +18,12 @@ socket.on('title', function (data){
     var titleAndDocs = JSON.parse(data);
     if(titleAndDocs.hasOwnProperty('title'))
         d3.select('.leftHeader').text(titleAndDocs.title)
-    if(titleAndDocs.hasOwnProperty('docs'))
-        d3.select('.rightHeader').append("a").attr("href", titleAndDocs.docs).text("Go To Documentation");
+    if(titleAndDocs.hasOwnProperty('docs')) {
+        d3.select('.rightHeader').select('.docLink').remove();
+        d3.select('.rightHeader').append('a')
+            .attr('class', 'docLink')
+            .attr('href', titleAndDocs.docs)
+            .text('Go To Documentation');
+    }
 });
 
