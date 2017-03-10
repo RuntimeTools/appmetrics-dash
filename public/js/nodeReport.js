@@ -10,14 +10,14 @@ d3.select("#nodeReportButtonDiv")
     .style("color", "#3b4b54")
     .attr("onClick", "socket.emit('nodereport')");
 
-socket.on('nodereport', function (nodereport){
-    var newWindow = window.open();
-    newWindow.document.open();
+socket.on("nodereport", function(nodereport){
+  var newWindow = window.open();
+  newWindow.document.open();
     // XXX(sam) perhaps the errors should be formatted differently?
-    nodereport = nodereport.error || nodereport.report;
-    newWindow.document.write('<html><head><title>NodeReport: '
+  nodereport = nodereport.error || nodereport.report;
+  newWindow.document.write("<html><head><title>NodeReport: "
         + new Date().toUTCString()
-        + '</title></head><body><pre style="white-space: pre-wrap;">'
-        + nodereport + '</pre></body></h‌​tml>');
-    newWindow.document.close();  
+        + "</title></head><body><pre style=\"white-space: pre-wrap;\">"
+        + nodereport + "</pre></body></h‌​tml>");
+  newWindow.document.close();
 });
