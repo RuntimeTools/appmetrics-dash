@@ -31,6 +31,8 @@ The dashboard will be available at /appmetrics-dash
   injected if the application wants to use node-report, since it is a singleton
   module and only one can be present in an application. Optional, defaults to
   the node-report dependency of this module.
+* options.title {String} Title for the dashboard.
+* options.docs {String} URL link to accompanying documentation.
 
 ## dash.attach(options)
 
