@@ -79,7 +79,7 @@ function populateEnvTable() {
                 })
                 .text(function(d) { return d.value; })
                 .append("svg:title") // tooltip
-                .text(function(d) { return d.value; })
+                .text(function(d) { return d.value; });
     }
 
         // render the table(s)
