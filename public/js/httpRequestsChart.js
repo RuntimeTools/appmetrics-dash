@@ -148,7 +148,7 @@ function updateHttpData() {
       selection.select(".yAxis")
                 .call(http_yAxis);
 
-            // Re-adjust the points
+      // Re-adjust the points
       var points = selection.selectAll(".point").data(httpData)
                 .attr("cx", function(d) { return http_xScale(d.time); })
                 .attr("cy", function(d) { return http_yScale(d.longest); });
@@ -168,10 +168,10 @@ function updateHttpData() {
                   } else {
                     return d.total
                          + " requests\n average duration = "
-                         + d3.format(".2s")(d.average)
-                         + "ms\n longest duration = "
-                         + d3.format(".2s")(d.longest)
-                         + "ms for URL: " + d.url;
+                         + d3.format(".2s")(d.average / 1000)
+                         + "s\n longest duration = "
+                         + d3.format(".2s")(d.longest / 1000)
+                         + "s for URL: " + d.url;
                   }
                 });
     }
@@ -194,7 +194,7 @@ function resizeHttpChart() {
     return d.time;
   }));
 
-  chart.selectAll("circle").remove();
+  chart.selectAll(".point").remove();
 
   chart.select(".httpline")
         .attr("d", httpline(httpData));
@@ -202,10 +202,30 @@ function resizeHttpChart() {
         .call(http_xAxis);
   chart.select(".yAxis")
         .call(http_yAxis);
-  chart.selectAll("point")
+
+  chart.selectAll(".point")
         .data(httpData)
+        .enter().append("circle")
+        .attr("class", "point")
+        .attr("r", 4)
+        .style("fill", "#5aaafa")
+        .style("stroke", "white")
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")")
         .attr("cx", function(d) { return http_xScale(d.time); })
-        .attr("cy", function(d) { return http_yScale(d.longest); });
+        .attr("cy", function(d) { return http_yScale(d.longest); })
+        .append("svg:title").text(function(d) { // tooltip
+          if (d.total === 1) {
+            return d.url;
+          } else {
+            return d.total
+                 + " requests\n average duration = "
+                 + d3.format(".2s")(d.average / 1000)
+                 + "s\n longest duration = "
+                 + d3.format(".2s")(d.longest / 1000)
+                 + "s for URL: " + d.url;
+          }
+        });
 }
 
 updateHttpData();
