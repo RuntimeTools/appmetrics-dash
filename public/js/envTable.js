@@ -77,6 +77,8 @@ function populateEnvTable() {
                 .attr("x", function(d, i) {
                   return i * tableRowWidth; // indent second element for each row
                 })
+                .text(function(d) { return d.value; })
+                .append("svg:title") // tooltip
                 .text(function(d) { return d.value; });
     }
 
@@ -93,4 +95,5 @@ function resizeEnvTable() {
 }
 
 populateEnvTable();
+
 
