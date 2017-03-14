@@ -1,7 +1,13 @@
 'use strict';
 
+const options = {
+  cert: require('fs').readFileSync(__dirname + '/ec-cert.pem'),
+  key: require('fs').readFileSync(__dirname + '/ec-key.pem'),
+};
 const port = 'PORT' in process.env ? process.env.PORT : 3000;
-const server = require('http').createServer();
+const server = process.env.HTTPS ?
+  require('https').createServer(options) :
+  require('http').createServer();
 
 server.listen(port, 'localhost', function() {
   const a = this.address();
