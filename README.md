@@ -1,7 +1,22 @@
 # appmetrics-dash
 
-A dashboard to visualize the performance of your Node.js application. The dashboard
-uses "[Node Application Metrics][1]" to monitor the application. 
+appmetrics-dash provides a very easy to use, web based, dashboard to show the performance metrics of your running Node.js application.  
+
+The data available on the dashboard is as follows:
+* HTTP Incoming Requests
+* HTTP Throughput
+* Average Reponse Times (top 5)
+* CPU
+* Memory
+* Heap
+* Event loop Latency
+* Environment
+* Other Requests
+* HTTP Outbound Requests
+
+As well as displaying data, it also provides the ability to generate both [Node Report][2] and Heap Snapshots directly from the dashboard.  The Node Report will display in a new tab in the browser whilst the Heap Snapshot will be written to disk for loading into the Chrome DevTools for analysis.
+
+The dashboard uses [Node Application Metrics][1] to monitor the application. 
 
 ## dash = require('appmetrics-dash').monitor()
 
@@ -75,4 +90,5 @@ The Node Application Metrics Dashboard is licensed using an Apache v2.0 License.
 
 
 [1]:https://developer.ibm.com/open/node-application-metrics/
+[2]:https://www.npmjs.com/package/node-report/
 
