@@ -13,10 +13,16 @@
         color: #ffffff;
     }
 
-    h1 {
-        font: 26px Arial;
+    h4 {
+        font-family: 'IBM Helvetica', Helvetica Neue, HelveticaNeue, Helvetica, sans-serif;
+        font-size: 20px;
         font-weight: bold;
-        text-align: center;
+        color: #3b4b54;
+    }
+
+    p {
+        font-family: 'IBM Helvetica', Helvetica Neue, HelveticaNeue, Helvetica, sans-serif;
+        font-size: 16px;
         color: #3b4b54;
     }
 
@@ -186,4 +192,16 @@
         fill: #dde4ee;
         stroke: #aabbd4;
         stroke-width: 1px;
+    }
+
+    .heapDumppopup {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 80%; /* Full width */
+        padding: 20px;
+        background-color: #fefefe;
+        border: 1px solid #888;
     }
