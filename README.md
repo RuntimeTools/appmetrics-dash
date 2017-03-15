@@ -16,7 +16,7 @@ The data available on the dashboard is as follows:
 
 As well as displaying data, it also provides the ability to generate both [Node Report][2] and Heap Snapshots directly from the dashboard.  The Node Report will display in a new tab in the browser whilst the Heap Snapshot will be written to disk for loading into the Chrome DevTools for analysis.
 
-The dashboard uses "[Node Application Metrics][1]" to monitor the application. 
+The dashboard uses [Node Application Metrics][1] to monitor the application. 
 
 ## dash = require('appmetrics-dash').monitor()
 
