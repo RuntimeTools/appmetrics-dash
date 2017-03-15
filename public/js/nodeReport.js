@@ -35,11 +35,11 @@ socket.on("nodereport", function(nodereport){
 
 socket.on("heapdump", function(info){
   var text = "Heap snapshot generated at " + info.location;
-  if(info.error) {
+  if (info.error) {
     text = "An error occurred: " + info.error;
   }
-  d3.select(".modal-body").select(".modaltext").remove()
+  d3.select(".modal-body").select(".modaltext").remove();
   d3.select(".modal-body").append("p")
-    .attr("class", "modaltext").text(text)
-  $('#heapdumpModal').modal('show')
+    .attr("class", "modaltext").text(text);
+  $("#heapdumpModal").modal("show");
 });
