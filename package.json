@@ -7,7 +7,7 @@
     "appmetrics": "^2.0.0",
     "debug": "^2.6.0",
     "express": "^4.14.1",
-    "express-basic-auth": "^0.2.3",
+    "express-basic-auth": "^1.0.0",
     "socket.io": "^1.7.2"
   },
   "optionalDependencies": {
