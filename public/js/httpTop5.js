@@ -59,17 +59,17 @@ var httpTop5ChartPlaceholder = httpTop5Chart.append("text")
     .text("No Data Available");
 
 function convertURL(url, httpDiv3GraphWidth) {
-    var stringToDisplay = url.toString()
-    if (stringToDisplay.startsWith("http://" + myurl)) {
-        stringToDisplay = stringToDisplay.substring(myurl.length + 7)
-    }
-    // Do a rough calculation to find out whether the URL will need more space than is available and truncate if it does
-    var stringLength = stringToDisplay.length
-    var charSpaceAvailable = Math.floor(httpDiv3GraphWidth/8) // allow 8 pixels per character (higher than needed but allows space for the time at the end)
-    if(stringLength > charSpaceAvailable) {
-        stringToDisplay = "..." + stringToDisplay.substring(stringLength - charSpaceAvailable - 3);
-    }
-    return stringToDisplay;
+  var stringToDisplay = url.toString();
+  if (stringToDisplay.startsWith("http://" + myurl)) {
+      stringToDisplay = stringToDisplay.substring(myurl.length + 7);
+  }
+  // Do a rough calculation to find out whether the URL will need more space than is available and truncate if it does
+  var stringLength = stringToDisplay.length
+  var charSpaceAvailable = Math.floor(httpDiv3GraphWidth/8); // allow 8 pixels per character (higher than needed but allows space for the time at the end)
+  if (stringLength > charSpaceAvailable) {
+      stringToDisplay = "..." + stringToDisplay.substring(stringLength - charSpaceAvailable - 3);
+  }
+  return stringToDisplay;
 }
 
 
