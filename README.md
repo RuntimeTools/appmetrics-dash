@@ -82,8 +82,30 @@ var server = app.listen(appEnv.port, '0.0.0.0', function() {
 
 * options {Object} Options are the same as for `dash.monitor()`.
 
-Auto-attach to all `http` servers, calling `dash.monitor(options)` for every
-server created.
+Auto-attach to all `http` servers created after this call, calling `dash.monitor(options)` for every server.
+
+Simple example using attach
+
+    var dash = require('appmetrics-dash');
+    dash.attach();
+
+    var http = require('http');
+
+    const port = 3000;
+
+    const requestHandler = (request, response) => {  
+      response.end('Hello')
+    }
+
+    const server = http.createServer(requestHandler);
+
+    server.listen(port, (err) => {  
+      if (err) {
+        return console.log('An error occurred', err)
+      }
+      console.log(`Server is listening on ${port}`)
+    });
+
 
 ### License
 The Node Application Metrics Dashboard is licensed using an Apache v2.0 License.
