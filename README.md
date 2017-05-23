@@ -24,6 +24,11 @@ As well as displaying data, it also provides the ability to generate both [Node 
 
 The dashboard uses [Node Application Metrics][1] to monitor the application. 
 
+## Performance overhead
+
+Our testing has shown that the performance overhead in terms of processing is minimal, adding less than 0.5 % to the CPU usage of your application. The additional memory required is around 30 MB to gather information about your system and application which is then visualized in the dashboard. 
+
+We gathered this information by monitoring the sample application [Acme Air][3]. We used MongoDB as our datastore and used JMeter to drive load though the program.  We have performed this testing with Node.js version 6.10.3
 ## dash = require('appmetrics-dash').monitor()
 
 This will launch the dashboard and start monitoring your application. When
@@ -119,4 +124,5 @@ The Node Application Metrics Dashboard is licensed using an Apache v2.0 License.
 
 [1]:https://developer.ibm.com/open/node-application-metrics/
 [2]:https://www.npmjs.com/package/node-report/
+[3]:https://github.com/acmeair/acmeair-nodejs/
 
