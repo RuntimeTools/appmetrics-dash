@@ -26,7 +26,9 @@ The dashboard uses [Node Application Metrics][1] to monitor the application.
 
 ## Installation
 
-`npm install appmetrics-dash`
+```console
+npm install appmetrics-dash
+```
 
 ## dash = require('appmetrics-dash').monitor()
 
