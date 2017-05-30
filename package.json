@@ -31,6 +31,7 @@
   },
   "scripts": {
     "test": "tap test/test-*.js",
+    "pretest": "eslint .",
     "pretravis": "eslint .",
     "travis": "tap test/test-*.js --coverage",
     "posttravis": "tap --coverage-report=lcov && codecov"
