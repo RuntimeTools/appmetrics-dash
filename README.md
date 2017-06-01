@@ -24,11 +24,18 @@ As well as displaying data, it also provides the ability to generate both [Node 
 
 The dashboard uses [Node Application Metrics][1] to monitor the application. 
 
+## Installation
+
+```console
+npm install appmetrics-dash
+```
+
 ## Performance overhead
 
 Our testing has shown that the performance overhead in terms of processing is minimal, adding less than 0.5 % to the CPU usage of your application. The additional memory required is around 30 MB to gather information about your system and application which is then visualized in the dashboard. 
 
 We gathered this information by monitoring the sample application [Acme Air][3]. We used MongoDB as our datastore and used JMeter to drive load though the program.  We have performed this testing with Node.js version 6.10.3
+
 ## dash = require('appmetrics-dash').monitor()
 
 This will launch the dashboard and start monitoring your application. When
@@ -37,7 +44,7 @@ The dashboard will be available at /appmetrics-dash
 
 Simple example using the express framework
 
-```
+```js
 // This application uses express as its web server
 // for more info, see: http://expressjs.com
 var express = require('express');
@@ -96,27 +103,31 @@ var server = app.listen(appEnv.port, '0.0.0.0', function() {
 Auto-attach to all `http` servers created after this call, calling `dash.monitor(options)` for every server.
 
 Simple example using attach
+```js
+var dash = require('appmetrics-dash');
+dash.attach();
 
-    var dash = require('appmetrics-dash');
-    dash.attach();
+var http = require('http');
 
-    var http = require('http');
+const port = 3000;
 
-    const port = 3000;
+const requestHandler = (request, response) => {  
+  response.end('Hello')
+}
 
-    const requestHandler = (request, response) => {  
-      response.end('Hello')
-    }
+const server = http.createServer(requestHandler);
 
-    const server = http.createServer(requestHandler);
+server.listen(port, (err) => {  
+  if (err) {
+    return console.log('An error occurred', err)
+  }
+  console.log(`Server is listening on ${port}`)
+});
+```
 
-    server.listen(port, (err) => {  
-      if (err) {
-        return console.log('An error occurred', err)
-      }
-      console.log(`Server is listening on ${port}`)
-    });
+## Contributing
 
+We welcome contributions. Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details about the contributor licence agreement and other information. If you want to do anything more involved than a bug fix or a minor enhancement then we would recommend discussing it in an issue first before doing the work to make sure that it's likely to be accepted. We're also keen to improve test coverage and may not accept new code unless there are accompanying tests.
 
 ### License
 The Node Application Metrics Dashboard is licensed using an Apache v2.0 License.
