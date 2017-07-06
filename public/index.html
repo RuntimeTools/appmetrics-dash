@@ -101,11 +101,11 @@
 
     // Initialise graph and canvas dimensions
     var margin = {
-     top: 50,
-     right: 20,
-     bottom: 50,
-     shortBottom: 30,
-     left: 60
+        top: 50,
+        right: 20,
+        bottom: 50,
+        shortBottom: 30,
+        left: 60
     },
     canvasWidth = $("#cpuDiv1").width() - 8, // -8 for margins and borders
     httpCanvasWidth = $("#httpDiv1").width() - 8,
@@ -121,13 +121,13 @@
     socket.emit('disableprofiling'); //profiling disabled
 
     function getTimeFormat() {
-    var currentTime = new Date()
-    if(currentTime.getMinutes() - monitoringStartTime.getMinutes() >= 3
-    || currentTime.getHours() > monitoringStartTime.getHours()) {
-    return d3.time.format("%H:%M");
-    } else {
-    return d3.time.format("%H:%M:%S");
-    }
+        var currentTime = new Date()
+        if(currentTime.getMinutes() - monitoringStartTime.getMinutes() >= 3
+            || currentTime.getHours() > monitoringStartTime.getHours()) {
+            return d3.time.format("%H:%M");
+        } else {
+            return d3.time.format("%H:%M:%S");
+        }
     }
 </script>
 <script type="text/javascript" src="js/header.js"></script>
@@ -149,20 +149,20 @@
     window.addEventListener('resize', resize);
 
     function resize() {
-    canvasWidth = $("#cpuDiv1").width() - 8,
-    httpCanvasWidth = $("#httpDiv1").width() - 8,
-    graphWidth = canvasWidth - margin.left - margin.right,
-    httpGraphWidth = httpCanvasWidth - margin.left - margin.right;
-    resizeCPUChart();
-    resizeHttpChart();
-    resizeHttpOBChart();
-    resizeGCChart();
-    resizeEventLoopChart();
-    resizeHttpThroughputChart();
-    resizeHttpTop5Chart();
-    resizeMemChart();
-    resizeEnvTable();
-    resizeProbesChart();
+        canvasWidth = $("#cpuDiv1").width() - 8,
+        httpCanvasWidth = $("#httpDiv1").width() - 8,
+        graphWidth = canvasWidth - margin.left - margin.right,
+        httpGraphWidth = httpCanvasWidth - margin.left - margin.right;
+        resizeCPUChart();
+        resizeHttpChart();
+        resizeHttpOBChart();
+        resizeGCChart();
+        resizeEventLoopChart();
+        resizeHttpThroughputChart();
+        resizeHttpTop5Chart();
+        resizeMemChart();
+        resizeEnvTable();
+        resizeProbesChart();
     }
 </script>
 
