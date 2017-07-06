@@ -37,44 +37,47 @@
     <div class="headerDiv"><span class="rightHeader"></span><span class="leftHeader"></span></div>
 
     <div id="tabs" class="container">
-    <ul class="nav nav-tabs">
-    			<li class="active">
-            <a  href="#main" data-toggle="tab">Main</a>
-    			</li>
-    			<li><a href="#profiling" data-toggle="tab">Profiling</a>
-    			</li>
-    		</ul>
 
-    			<div class="tab-content ">
-    			  <div class="tab-pane active" id="main">
-              <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-6" id="httpDiv1"></div>
-                    <div class="col-md-3" id="httpDiv2"></div>
-                    <div class="col-md-3" id="httpDiv3"></div>
-                </div>
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a  href="#main" data-toggle="tab">Main</a>
+            </li>
+            <li>
+                <a href="#profiling" data-toggle="tab">Profiling</a>
+            </li>
+        </ul>
 
-                <div class="row">
-                    <div class="col-md-2" id="cpuDiv1"></div>
-                    <div class="col-md-2" id="memDiv1"></div>
-                    <div class="col-md-2" id="gcDiv"></div>
-                    <div class="col-md-3" id="eventLoopDiv"></div>
-                    <div class="col-md-3" id="envDiv"></div>
+        <div class="tab-content ">
+            <div class="tab-pane active" id="main">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6" id="httpDiv1"></div>
+                        <div class="col-md-3" id="httpDiv2"></div>
+                        <div class="col-md-3" id="httpDiv3"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2" id="cpuDiv1"></div>
+                        <div class="col-md-2" id="memDiv1"></div>
+                        <div class="col-md-2" id="gcDiv"></div>
+                        <div class="col-md-3" id="eventLoopDiv"></div>
+                        <div class="col-md-3" id="envDiv"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6" id="probeEventsDiv"></div>
+                        <div class="col-md-6" id="httpOBDiv"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" id="nodeReportButtonDiv"></div>
+                    </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6" id="probeEventsDiv"></div>
-                    <div class="col-md-6" id="httpOBDiv"></div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12" id="nodeReportButtonDiv"></div>
-                </div>
-              </div>
-    				</div>
-            <div class="tab-pane" id="profiling">
-              <p>Welcome to profiling</p>
             </div>
-    			</div>
-      </div>
+
+            <div class="tab-pane" id="profiling">
+                <p>Welcome to profiling</p>
+            </div>
+        </div>
+    </div>
 
     <div class="modal fade" id="heapdumpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -98,11 +101,11 @@
 
     // Initialise graph and canvas dimensions
     var margin = {
-         top: 50,
-         right: 20,
-         bottom: 50,
-         shortBottom: 30,
-         left: 60
+     top: 50,
+     right: 20,
+     bottom: 50,
+     shortBottom: 30,
+     left: 60
     },
     canvasWidth = $("#cpuDiv1").width() - 8, // -8 for margins and borders
     httpCanvasWidth = $("#httpDiv1").width() - 8,
@@ -118,13 +121,13 @@
     socket.emit('disableprofiling'); //profiling disabled
 
     function getTimeFormat() {
-        var currentTime = new Date()
-        if(currentTime.getMinutes() - monitoringStartTime.getMinutes() >= 3
-            || currentTime.getHours() > monitoringStartTime.getHours()) {
-            return d3.time.format("%H:%M");
-        } else {
-            return d3.time.format("%H:%M:%S");
-        }
+    var currentTime = new Date()
+    if(currentTime.getMinutes() - monitoringStartTime.getMinutes() >= 3
+    || currentTime.getHours() > monitoringStartTime.getHours()) {
+    return d3.time.format("%H:%M");
+    } else {
+    return d3.time.format("%H:%M:%S");
+    }
     }
 </script>
 <script type="text/javascript" src="js/header.js"></script>
@@ -146,20 +149,20 @@
     window.addEventListener('resize', resize);
 
     function resize() {
-        canvasWidth = $("#cpuDiv1").width() - 8,
-        httpCanvasWidth = $("#httpDiv1").width() - 8,
-        graphWidth = canvasWidth - margin.left - margin.right,
-        httpGraphWidth = httpCanvasWidth - margin.left - margin.right;
-        resizeCPUChart();
-        resizeHttpChart();
-        resizeHttpOBChart();
-        resizeGCChart();
-        resizeEventLoopChart();
-        resizeHttpThroughputChart();
-        resizeHttpTop5Chart();
-        resizeMemChart();
-        resizeEnvTable();
-        resizeProbesChart();
+    canvasWidth = $("#cpuDiv1").width() - 8,
+    httpCanvasWidth = $("#httpDiv1").width() - 8,
+    graphWidth = canvasWidth - margin.left - margin.right,
+    httpGraphWidth = httpCanvasWidth - margin.left - margin.right;
+    resizeCPUChart();
+    resizeHttpChart();
+    resizeHttpOBChart();
+    resizeGCChart();
+    resizeEventLoopChart();
+    resizeHttpThroughputChart();
+    resizeHttpTop5Chart();
+    resizeMemChart();
+    resizeEnvTable();
+    resizeProbesChart();
     }
 </script>
 
