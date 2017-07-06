@@ -19,7 +19,7 @@
     }
 
    body,html {
-        background-color: #f5f7fa; 
+        background-color: #f5f7fa;
         width : 100%;
         border-color:#f5f7fa;
         height: 100%;
@@ -69,6 +69,19 @@
         text-decoration: underline;
     }
 
+    li a {
+        font-family: 'IBM Helvetica', Helvetica Neue, HelveticaNeue, Helvetica, sans-serif;
+        font-size: 16px;
+        color: #BBC3C8;
+        text-decoration: none;
+    }
+
+    li a:hover {
+        color: black;
+        text-decoration: underline;
+    }
+
+
     .leftHeader{
         color: #BBC3C8;
         float:left;
@@ -89,10 +102,10 @@
     .col-md-3,
     .col-md-4,
     .col-md-5,
-    .col-md-6 { 
+    .col-md-6 {
         padding-right: 1px;
-        padding-left: 1px; 
-        padding-top: 0px; 
+        padding-left: 1px;
+        padding-top: 0px;
         padding-bottom: 0px
     }
 
@@ -126,7 +139,7 @@
         stroke-width: 2;
         fill: none;
     }
-  
+
     g.xAxis path,
     g.xAxis line,
     g.yAxis path,
