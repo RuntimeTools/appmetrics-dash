@@ -223,10 +223,10 @@
     }
 
     .sidenavButton{
-        color: #BBC3C8;
         float:left;
-        align-content: center;
-        margin-right: 5px;
+        align-content: top;
+        margin-right: 20px;
+        cursor:pointer;
     }
 
     .sidenav {
@@ -242,6 +242,13 @@
         padding-top: 0px;
         white-space: nowrap;
         opacity: 0.85;
+    }
+
+    .sidenavEntry {
+      font-family: 'IBM Helvetica', Helvetica Neue, HelveticaNeue, Helvetica, sans-serif;
+      font-size: 16px;
+      color: #3b4b54;
+      cursor:pointer;
     }
 
     .sidenav a {

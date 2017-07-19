@@ -37,8 +37,6 @@
     <script>
 
     function toggleMenu() {
-      console.log("toggleMenu() clicked");
-      console.log("Width " + document.getElementById("sideMenu").style.width);
       if (document.getElementById("sideMenu").style.width != "250px") {
         document.getElementById("sideMenu").style.width = "250px";
       } else {
@@ -55,8 +53,8 @@
     </div>
 
     <div id="sideMenu" class="sidenav">
-      <a onclick="socket.emit('heapdump')">Trigger Heap Dump</a>
-      <a onclick="socket.emit('nodereport')">Trigger Node Report</a>
+      <a class="sidenavEntry" onclick="socket.emit('heapdump')">Trigger Heap Dump</a>
+      <a class="sidenavEntry" onclick="socket.emit('nodereport')">Trigger Node Report</a>
     </div>
 
     <div class="container-fluid">
