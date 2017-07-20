@@ -19,7 +19,7 @@
     }
 
    body,html {
-        background-color: #f5f7fa; 
+        background-color: #f5f7fa;
         width : 100%;
         border-color:#f5f7fa;
         height: 100%;
@@ -89,10 +89,10 @@
     .col-md-3,
     .col-md-4,
     .col-md-5,
-    .col-md-6 { 
+    .col-md-6 {
         padding-right: 1px;
-        padding-left: 1px; 
-        padding-top: 0px; 
+        padding-left: 1px;
+        padding-top: 0px;
         padding-bottom: 0px
     }
 
@@ -126,7 +126,7 @@
         stroke-width: 2;
         fill: none;
     }
-  
+
     g.xAxis path,
     g.xAxis line,
     g.yAxis path,
@@ -220,4 +220,59 @@
         padding: 20px;
         background-color: #fefefe;
         border: 1px solid #888;
+    }
+
+    .sidenavButton{
+        float:left;
+        align-content: top;
+        margin-right: 20px;
+        cursor:pointer;
+    }
+
+    .sidenav {
+        height: 500;
+        width: 0;
+        position: absolute;
+        z-index: 1;
+        top: 50px;
+        left: 0;
+        background-color: #1D3649;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 0px;
+        white-space: nowrap;
+        opacity: 0.85;
+    }
+
+    .sidenavEntry {
+      font-family: 'IBM Helvetica', Helvetica Neue, HelveticaNeue, Helvetica, sans-serif;
+      font-size: 16px;
+      color: #3b4b54;
+      cursor:pointer;
+    }
+
+    .sidenav a {
+        padding: 8px 8px 8px 16px;
+        text-decoration: none;
+        font-size: 20px;
+        color: #FFFFFF;
+        display: block;
+        transition: 0.3s;
+    }
+
+    .sidenav a:hover, .offcanvas a:focus{
+        color: #f1f1f1;
+    }
+
+    .sidenav .closebutton {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+    }
+
+    @media screen and (max-height: 450px) {
+      .sidenav {padding-top: 15px;}
+      .sidenav a {font-size: 18px;}
     }
