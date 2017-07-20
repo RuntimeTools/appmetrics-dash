@@ -18,9 +18,9 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 
-<link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="css/style2.css" title="Light background">
-<link rel="alternate stylesheet" type="text/css" href="css/style.css" title="Dark background">
+<link rel="stylesheet" href="graphmetrics/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="graphmetrics/css/style2.css" title="Light background">
+<link rel="alternate stylesheet" type="text/css" href="graphmetrics/css/style.css" title="Dark background">
 
 <head>
     <title>Application Metrics Dashboard for Node.js</title>
@@ -29,34 +29,34 @@
 <body>
     <!--<h1>Application Metrics Dashboard for Node.js</h1>-->
     <!-- load the d3.js library -->
-    <script src="/socket.io/socket.io.js"></script>    
-    <script src="d3/d3.v3.min.js"></script>
-    <script src="jquery/jquery-3.1.1.min.js"></script>
-    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="graphmetrics/d3/d3.v3.min.js"></script>
+    <script src="graphmetrics/jquery/jquery-3.1.1.min.js"></script>
+    <script src="graphmetrics/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
     <div class="headerDiv"><span class="rightHeader"></span><span class="leftHeader"></span></div>
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-6" id="httpDiv1"></div>
-            <div class="col-md-3" id="httpDiv2"></div>
-            <div class="col-md-3" id="httpDiv3"></div>
+            <div class="col-md-6 hideable" id="httpDiv1"></div>
+            <div class="col-md-3 hideable" id="httpDiv2"></div>
+            <div class="col-md-3 hideable" id="httpDiv3"></div>
         </div>
 
         <div class="row">
-            <div class="col-md-2" id="cpuDiv1"></div>
-            <div class="col-md-2" id="memDiv1"></div>
-            <div class="col-md-2" id="gcDiv"></div>
-            <div class="col-md-3" id="eventLoopDiv"></div>
-            <div class="col-md-3" id="envDiv"></div>
+            <div class="col-md-2 hideable" id="cpuDiv1"></div>
+            <div class="col-md-2 hideable" id="memDiv1"></div>
+            <div class="col-md-2 hideable" id="gcDiv"></div>
+            <div class="col-md-3 hideable" id="eventLoopDiv"></div>
+            <div class="col-md-3 hideable" id="envDiv"></div>
         </div>
         <div class="row">
-            <div class="col-md-6" id="probeEventsDiv"></div>
-            <div class="col-md-6" id="httpOBDiv"></div>
+            <div class="col-md-6 hideable" id="probeEventsDiv"></div>
+            <div class="col-md-6 hideable" id="httpOBDiv"></div>
         </div>
-        <div class="row"> 
-            <div class="col-md-12" id="nodeReportButtonDiv"></div>
-        </div>      
+        <div class="row">
+            <div class="col-md-12 hideable" id="nodeReportButtonDiv"></div>
+        </div>
     </div>
 
     <div class="modal fade" id="heapdumpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -94,11 +94,42 @@
     canvasHeight = 250,
     tallerGraphHeight = canvasHeight - margin.top - margin.shortBottom,
     graphHeight = canvasHeight - margin.top - margin.bottom;
-     
+
     var myurl = location.host;
     var socket = io.connect(myurl);
     socket.emit('connected');
     socket.emit('disableprofiling'); //profiling disabled
+    socket.on('cpu', function(data) {
+        updateCPUData(data);
+    });
+    socket.on('environment', function(data) {
+        populateEnvTable(data);
+    });
+    socket.on('eventloop', function(data) {
+        updateEventLoopData(data);
+    });
+    socket.on('gc', function(data) {
+        updateGCData(data);
+    });
+    socket.on('http-outbound', function(data) {
+        updateHttpOBData(data);
+    });
+    socket.on('http', function(data) {
+        updateHttpData(data);
+    });
+    socket.on('http-urls', function(data) {
+        updateURLData(data);
+    });
+    socket.on('memory', function(data) {
+        updateMemData(data);
+    });
+    socket.on('probe-events', function(data) {
+        updateProbesData(data);
+    });
+    socket.on('title', function(data) {
+        updateHeader(data);
+    });
+
 
     function getTimeFormat() {
         var currentTime = new Date()
@@ -110,20 +141,20 @@
         }
     }
 </script>
-<script type="text/javascript" src="js/header.js"></script>
-<script type="text/javascript" src="js/nodeReport.js"></script>
-<script type="text/javascript" src="js/envTable.js"></script>
-<script type="text/javascript" src="js/cpuChart.js"></script>
+<script type="text/javascript" src="graphmetrics/js/header.js"></script>
+<script type="text/javascript" src="graphmetrics/js/nodeReport.js"></script>
+<script type="text/javascript" src="graphmetrics/js/envTable.js"></script>
+<script type="text/javascript" src="graphmetrics/js/cpuChart.js"></script>
 
-<script type="text/javascript" src="js/httpRequestsChart.js"></script>
-<script type="text/javascript" src="js/httpThroughPutChart.js"></script>
-<script type="text/javascript" src="js/httpTop5.js"></script>
-<script type="text/javascript" src="js/httpOutboundRequestsChart.js"></script>
+<script type="text/javascript" src="graphmetrics/js/httpRequestsChart.js"></script>
+<script type="text/javascript" src="graphmetrics/js/httpThroughPutChart.js"></script>
+<script type="text/javascript" src="graphmetrics/js/httpTop5.js"></script>
+<script type="text/javascript" src="graphmetrics/js/httpOutboundRequestsChart.js"></script>
 
-<script type="text/javascript" src="js/memChart.js"></script>
-<script type="text/javascript" src="js/gcChart.js"></script>
-<script type="text/javascript" src="js/eventLoopChart.js"></script>
-<script type="text/javascript" src="js/probeEventsChart.js"></script>
+<script type="text/javascript" src="graphmetrics/js/memChart.js"></script>
+<script type="text/javascript" src="graphmetrics/js/gcChart.js"></script>
+<script type="text/javascript" src="graphmetrics/js/eventLoopChart.js"></script>
+<script type="text/javascript" src="graphmetrics/js/probeEventsChart.js"></script>
 
 <script>
     window.addEventListener('resize', resize);
