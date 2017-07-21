@@ -34,7 +34,28 @@
     <script src="graphmetrics/jquery/jquery-3.1.1.min.js"></script>
     <script src="graphmetrics/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
-    <div class="headerDiv"><span class="rightHeader"></span><span class="leftHeader"></span></div>
+    <script>
+
+    function toggleMenu() {
+      if (document.getElementById("sideMenu").style.width != "250px") {
+        document.getElementById("sideMenu").style.width = "250px";
+      } else {
+        document.getElementById("sideMenu").style.width = "0px";
+      }
+    }
+
+    </script>
+
+    <div class="headerDiv">
+      <span class="sidenavButton" onclick="toggleMenu()">&#9776;</span>
+      <span class="leftHeader"></span>
+      <span class="rightHeader"></span>
+    </div>
+
+    <div id="sideMenu" class="sidenav">
+      <a class="sidenavEntry" onclick="socket.emit('heapdump')">Trigger Heap Dump</a>
+      <a class="sidenavEntry" onclick="socket.emit('nodereport')">Trigger Node Report</a>
+    </div>
 
     <div class="container-fluid">
         <div class="row">
@@ -53,9 +74,6 @@
         <div class="row">
             <div class="col-md-6 hideable" id="probeEventsDiv"></div>
             <div class="col-md-6 hideable" id="httpOBDiv"></div>
-        </div>
-        <div class="row">
-            <div class="col-md-12 hideable" id="nodeReportButtonDiv"></div>
         </div>
     </div>
 
