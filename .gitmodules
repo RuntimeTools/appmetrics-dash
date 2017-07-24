@@ -1,3 +1,4 @@
+
 [submodule "public/graphmetrics"]
 	path = public/graphmetrics
-	url = https://github.com/RuntimeTools/graphmetrics
+	url = https://github.com/RuntimeTools/graphmetrics.git
