@@ -122,8 +122,10 @@
         </div>
     </div>
 
+<script type="text/javascript" src="graphmetrics/js/i18n.js"></script>
 <script>
     // Global variables
+    var object = {};
     var monitoringStartTime = new Date();
     var maxTimeWindow = 900000; // 15 minutes
 
@@ -142,6 +144,35 @@
     canvasHeight = 250,
     tallerGraphHeight = canvasHeight - margin.top - margin.shortBottom,
     graphHeight = canvasHeight - margin.top - margin.bottom;
+
+        jQuery.loadScript = function (url) {
+          jQuery.ajax({
+            url: url,
+            dataType: 'script',
+            async: true
+          });
+        }
+
+        //Graphs are now loaded here rather than at the end of this raw script
+        //Need to be part of callback so 'object' (locale strings) visible
+        populateKeyArray(function(object) {
+          console.log("popKey callback");
+          jQuery.loadScript('graphmetrics/js/envTable.js');
+          jQuery.loadScript('graphmetrics/js/cpuChart.js');
+
+          jQuery.loadScript('graphmetrics/js/httpRequestsChart.js');
+          jQuery.loadScript('graphmetrics/js/httpThroughPutChart.js');
+          jQuery.loadScript('graphmetrics/js/httpTop5.js');
+          jQuery.loadScript('graphmetrics/js/httpOutboundRequestsChart.js');
+
+          jQuery.loadScript('graphmetrics/js/memChart.js');
+          jQuery.loadScript('graphmetrics/js/gcChart.js');
+          jQuery.loadScript('graphmetrics/js/eventLoopChart.js');
+          jQuery.loadScript('graphmetrics/js/probeEventsChart.js');
+
+          jQuery.loadScript('graphmetrics/js/flamegraph.js');
+          jQuery.loadScript('profiling.js');
+        });
 
     var myurl = location.host;
     var socket = io.connect(myurl);
@@ -188,6 +219,8 @@
     }
 </script>
 <script type="text/javascript" src="graphmetrics/js/header.js"></script>
+
+<!--
 <script type="text/javascript" src="graphmetrics/js/nodeReport.js"></script>
 <script type="text/javascript" src="graphmetrics/js/envTable.js"></script>
 <script type="text/javascript" src="graphmetrics/js/cpuChart.js"></script>
@@ -203,7 +236,7 @@
 <script type="text/javascript" src="graphmetrics/js/probeEventsChart.js"></script>
 <script type="text/javascript" src="graphmetrics/js/flamegraph.js"></script>
 <script type="text/javascript" src="profiling.js"></script>
-
+-->
 <script>
     let selected_tab = "main-tab"
 
