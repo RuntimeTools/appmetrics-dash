@@ -11,7 +11,8 @@
     "eqeqeq": "off",
     "max-len": "off",
     "comma-dangle": "off",
-    "no-unused-vars": ["error", { "varsIgnorePattern": "clearProfilingData" }],
+    "no-unused-vars": ["error", { "varsIgnorePattern": "clearProfilingData",
+                                  "argsIgnorePattern": "^_" }],
     "spaced-comment": ["error", "always", { "exceptions": ["*"] }]
   },
   "globals": {
