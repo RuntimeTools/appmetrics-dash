@@ -14,7 +14,7 @@
 * the License.
 ******************************************************************************/
 
-"use strict";
+'use strict';
 
 let profiling_enabled = false;
 
@@ -82,21 +82,21 @@ function addOrUpdateTreeNode(tree_root, indexed_nodes, profile_node) {
 
 function clearProfilingData() {
   clearFlameGraph();
-  tree_root = new TreeNode("(root)", "", 0);
+  tree_root = new TreeNode('(root)', '', 0);
   refreshFlameGraph();
 }
 
 // Initialise the graph to something very boring.
-let tree_root = new TreeNode("(root)", "", 0);
+let tree_root = new TreeNode('(root)', '', 0);
 
-socket.on("status", (statusMessage) => {
+socket.on('status', (statusMessage) => {
   let status = JSON.parse(statusMessage);
   profiling_enabled = status['profiling_enabled'];
   let anchor = document.getElementById('toggle-profiling');
   anchor.innerHTML = profiling_enabled ? 'Disable Profiling' : 'Enable Profiling';
 });
 
-socket.on("profiling", (profilingSample) => {
+socket.on('profiling', (profilingSample) => {
 
   // console.log("Building tree...");
   // console.log("Adding sample: " + profiling_row.time);
@@ -107,7 +107,7 @@ socket.on("profiling", (profilingSample) => {
   // Index this so we can find parents faster.
   profiling_row.functions.map((node) => { indexed_nodes[node.self] = node; });
   for (let fn_details of profiling_row.functions) {
-    if (fn_details.name == "(program)") {
+    if (fn_details.name == '(program)') {
       continue;
     }
     // console.log("Inserting node into tree...");
