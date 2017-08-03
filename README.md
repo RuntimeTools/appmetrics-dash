@@ -9,6 +9,7 @@
 appmetrics-dash provides a very easy to use, web based, dashboard to show the performance metrics of your running Node.js application.  
 
 The data available on the dashboard is as follows:
+* CPU Profiling (via a separate tab)
 * HTTP Incoming Requests
 * HTTP Throughput
 * Average Reponse Times (top 5)
@@ -20,7 +21,7 @@ The data available on the dashboard is as follows:
 * Other Requests
 * HTTP Outbound Requests
 
-As well as displaying data, it also provides the ability to generate both [Node Report][2] and Heap Snapshots directly from the dashboard.  The Node Report will display in a new tab in the browser whilst the Heap Snapshot will be written to disk for loading into the Chrome DevTools for analysis.
+As well as displaying data, it also provides the ability to generate both [Node Report][2] and Heap Snapshots directly from the dashboard.  The Node Report will display in a new tab in the browser whilst the Heap Snapshot will be written to disk for loading into the Chrome DevTools for analysis.  These can both be triggered from the burger menu in the top left of the screen
 
 The dashboard uses [Node Application Metrics][1] to monitor the application. 
 
