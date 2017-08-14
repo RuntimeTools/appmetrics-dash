@@ -80,21 +80,21 @@
       <div class="tab-pane active" id="main">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-md-6" hideable id="httpDiv1"></div>
-            <div class="col-md-3" hideable id="httpDiv2"></div>
-            <div class="col-md-3" hideable id="httpDiv3"></div>
+            <div class="col-md-6 hideable" id="httpDiv1"></div>
+            <div class="col-md-3 hideable" id="httpDiv2"></div>
+            <div class="col-md-3 hideable" id="httpDiv3"></div>
           </div>
 
           <div class="row">
-            <div class="col-md-2" hideable id="cpuDiv1"></div>
-            <div class="col-md-2" hideable id="memDiv1"></div>
-            <div class="col-md-2" hideable id="gcDiv"></div>
-            <div class="col-md-3" hideable id="eventLoopDiv"></div>
-            <div class="col-md-3" hideable id="envDiv"></div>
+            <div class="col-md-2 hideable" id="cpuDiv1"></div>
+            <div class="col-md-2 hideable" id="memDiv1"></div>
+            <div class="col-md-2 hideable" id="gcDiv"></div>
+            <div class="col-md-3 hideable" id="eventLoopDiv"></div>
+            <div class="col-md-3 hideable" id="envDiv"></div>
           </div>
           <div class="row">
-            <div class="col-md-6" hideable id="probeEventsDiv"></div>
-            <div class="col-md-6" hideable id="httpOBDiv"></div>
+            <div class="col-md-6 hideable" id="probeEventsDiv"></div>
+            <div class="col-md-6 hideable" id="httpOBDiv"></div>
           </div>
         </div>
       </div>
@@ -123,7 +123,7 @@
   <script type="text/javascript" src="graphmetrics/js/i18n.js"></script>
   <script>
     // Global variables
-    var object = {};
+    var localizedStrings = {};
     var monitoringStartTime = new Date();
     var maxTimeWindow = 900000; // 15 minutes
 
@@ -143,37 +143,35 @@
       tallerGraphHeight = canvasHeight - margin.top - margin.shortBottom,
       graphHeight = canvasHeight - margin.top - margin.bottom;
 
-    jQuery.loadScript = function(url) {
+    function loadScript (url) {
       jQuery.ajax({
         url: url,
         dataType: 'script',
-        async: true
+        async: false
       });
     }
 
     var myurl = location.host;
     var socket = io.connect(myurl);
 
-    //Graphs are now loaded here rather than at the end of this raw script
-    //Need to be part of callback so 'object' (locale strings) visible
-    populateKeyArray(function(object) {
+    populateLocalizedStrings(function() {
       //Graphs are now loaded here rather than at the end of this raw script
       //Need to be part of callback so 'object' (locale strings) visible
-      jQuery.loadScript('graphmetrics/js/flamegraph.js');
-      jQuery.loadScript('graphmetrics/js/envTable.js');
-      jQuery.loadScript('graphmetrics/js/cpuChart.js');
+      loadScript('graphmetrics/js/flamegraph.js');
+      loadScript('graphmetrics/js/envTable.js');
+      loadScript('graphmetrics/js/cpuChart.js');
 
-      jQuery.loadScript('graphmetrics/js/httpRequestsChart.js');
-      jQuery.loadScript('graphmetrics/js/httpThroughPutChart.js');
-      jQuery.loadScript('graphmetrics/js/httpTop5.js');
-      jQuery.loadScript('graphmetrics/js/httpOutboundRequestsChart.js');
+      loadScript('graphmetrics/js/httpRequestsChart.js');
+      loadScript('graphmetrics/js/httpThroughPutChart.js');
+      loadScript('graphmetrics/js/httpTop5.js');
+      loadScript('graphmetrics/js/httpOutboundRequestsChart.js');
 
-      jQuery.loadScript('graphmetrics/js/memChart.js');
-      jQuery.loadScript('graphmetrics/js/gcChart.js');
-      jQuery.loadScript('graphmetrics/js/eventLoopChart.js');
-      jQuery.loadScript('graphmetrics/js/probeEventsChart.js');
+      loadScript('graphmetrics/js/memChart.js');
+      loadScript('graphmetrics/js/gcChart.js');
+      loadScript('graphmetrics/js/eventLoopChart.js');
+      loadScript('graphmetrics/js/probeEventsChart.js');
 
-      jQuery.loadScript('profiling.js');
+      loadScript('profiling.js');
 
       socket.emit('connected');
       socket.on('cpu', function(data) {
@@ -221,22 +219,6 @@
   <script type="text/javascript" src="graphmetrics/js/header.js"></script>
   <script type="text/javascript" src="graphmetrics/js/nodeReport.js"></script>
 
-  <!--
-<script type="text/javascript" src="graphmetrics/js/envTable.js"></script>
-<script type="text/javascript" src="graphmetrics/js/cpuChart.js"></script>
-
-<script type="text/javascript" src="graphmetrics/js/httpRequestsChart.js"></script>
-<script type="text/javascript" src="graphmetrics/js/httpThroughPutChart.js"></script>
-<script type="text/javascript" src="graphmetrics/js/httpTop5.js"></script>
-<script type="text/javascript" src="graphmetrics/js/httpOutboundRequestsChart.js"></script>
-
-<script type="text/javascript" src="graphmetrics/js/memChart.js"></script>
-<script type="text/javascript" src="graphmetrics/js/gcChart.js"></script>
-<script type="text/javascript" src="graphmetrics/js/eventLoopChart.js"></script>
-<script type="text/javascript" src="graphmetrics/js/probeEventsChart.js"></script>
-<script type="text/javascript" src="graphmetrics/js/flamegraph.js"></script>
-<script type="text/javascript" src="profiling.js"></script>
--->
   <script>
     let selected_tab = "main-tab"
 
