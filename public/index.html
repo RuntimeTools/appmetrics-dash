@@ -143,68 +143,8 @@
       tallerGraphHeight = canvasHeight - margin.top - margin.shortBottom,
       graphHeight = canvasHeight - margin.top - margin.bottom;
 
-    function loadScript (url) {
-      jQuery.ajax({
-        url: url,
-        dataType: 'script',
-        async: false
-      });
-    }
-
-    var myurl = location.host;
+    let myurl = location.host;
     var socket = io.connect(myurl);
-
-    populateLocalizedStrings(function() {
-      //Graphs are now loaded here rather than at the end of this raw script
-      //Need to be part of callback so 'object' (locale strings) visible
-      loadScript('graphmetrics/js/flamegraph.js');
-      loadScript('graphmetrics/js/envTable.js');
-      loadScript('graphmetrics/js/cpuChart.js');
-
-      loadScript('graphmetrics/js/httpRequestsChart.js');
-      loadScript('graphmetrics/js/httpThroughPutChart.js');
-      loadScript('graphmetrics/js/httpTop5.js');
-      loadScript('graphmetrics/js/httpOutboundRequestsChart.js');
-
-      loadScript('graphmetrics/js/memChart.js');
-      loadScript('graphmetrics/js/gcChart.js');
-      loadScript('graphmetrics/js/eventLoopChart.js');
-      loadScript('graphmetrics/js/probeEventsChart.js');
-
-      loadScript('profiling.js');
-
-      socket.emit('connected');
-      socket.on('cpu', function(data) {
-        updateCPUData(data);
-      });
-      socket.on('environment', function(data) {
-        populateEnvTable(data);
-      });
-      socket.on('eventloop', function(data) {
-        updateEventLoopData(data);
-      });
-      socket.on('gc', function(data) {
-        updateGCData(data);
-      });
-      socket.on('http-outbound', function(data) {
-        updateHttpOBData(data);
-      });
-      socket.on('http', function(data) {
-        updateHttpData(data);
-      });
-      socket.on('http-urls', function(data) {
-        updateURLData(data);
-      });
-      socket.on('memory', function(data) {
-        updateMemData(data);
-      });
-      socket.on('probe-events', function(data) {
-        updateProbesData(data);
-      });
-      socket.on('title', function(data) {
-        updateHeader(data);
-      });
-    });
 
     function getTimeFormat() {
       var currentTime = new Date()
@@ -215,11 +155,60 @@
         return d3.time.format("%H:%M:%S");
       }
     }
+
+    populateLocalizedStrings();
   </script>
+
   <script type="text/javascript" src="graphmetrics/js/header.js"></script>
   <script type="text/javascript" src="graphmetrics/js/nodeReport.js"></script>
+  <script type="text/javascript" src="graphmetrics/js/envTable.js"></script>
+  <script type="text/javascript" src="graphmetrics/js/cpuChart.js"></script>
+
+  <script type="text/javascript" src="graphmetrics/js/httpRequestsChart.js"></script>
+  <script type="text/javascript" src="graphmetrics/js/httpThroughPutChart.js"></script>
+  <script type="text/javascript" src="graphmetrics/js/httpTop5.js"></script>
+  <script type="text/javascript" src="graphmetrics/js/httpOutboundRequestsChart.js"></script>
+
+  <script type="text/javascript" src="graphmetrics/js/memChart.js"></script>
+  <script type="text/javascript" src="graphmetrics/js/gcChart.js"></script>
+  <script type="text/javascript" src="graphmetrics/js/eventLoopChart.js"></script>
+  <script type="text/javascript" src="graphmetrics/js/probeEventsChart.js"></script>
+  <script type="text/javascript" src="graphmetrics/js/flamegraph.js"></script>
+  <script type="text/javascript" src="profiling.js"></script>
 
   <script>
+    socket.emit('connected');
+    socket.on('cpu', function(data) {
+      updateCPUData(data);
+    });
+    socket.on('environment', function(data) {
+      populateEnvTable(data);
+    });
+    socket.on('eventloop', function(data) {
+      updateEventLoopData(data);
+    });
+    socket.on('gc', function(data) {
+      updateGCData(data);
+    });
+    socket.on('http-outbound', function(data) {
+      updateHttpOBData(data);
+    });
+    socket.on('http', function(data) {
+      updateHttpData(data);
+    });
+    socket.on('http-urls', function(data) {
+      updateURLData(data);
+    });
+    socket.on('memory', function(data) {
+      updateMemData(data);
+    });
+    socket.on('probe-events', function(data) {
+      updateProbesData(data);
+    });
+    socket.on('title', function(data) {
+      updateHeader(data);
+    });
+
     let selected_tab = "main-tab"
 
     window.addEventListener('resize', resize);
