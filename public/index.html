@@ -90,6 +90,7 @@
             <div class="col-md-2 hideable" id="memDiv1"></div>
             <div class="col-md-2 hideable" id="gcDiv"></div>
             <div class="col-md-3 hideable" id="eventLoopDiv"></div>
+            <div class="col-md-3 hideable" id="loopDiv"></div>
             <div class="col-md-3 hideable" id="envDiv"></div>
           </div>
           <div class="row">
@@ -172,6 +173,7 @@
   <script type="text/javascript" src="graphmetrics/js/memChart.js"></script>
   <script type="text/javascript" src="graphmetrics/js/gcChart.js"></script>
   <script type="text/javascript" src="graphmetrics/js/eventLoopChart.js"></script>
+  <script type="text/javascript" src="graphmetrics/js/loopChart.js"></script>
   <script type="text/javascript" src="graphmetrics/js/probeEventsChart.js"></script>
   <script type="text/javascript" src="graphmetrics/js/flamegraph.js"></script>
   <script type="text/javascript" src="profiling.js"></script>
@@ -186,6 +188,9 @@
     });
     socket.on('eventloop', function(data) {
       updateEventLoopData(data);
+    });
+    socket.on('loop', function(data) {
+      updateLoopData(data);
     });
     socket.on('gc', function(data) {
       updateGCData(data);
@@ -231,6 +236,7 @@
         resizeHttpOBChart();
         resizeGCChart();
         resizeEventLoopChart();
+        resizeLoopChart();
         resizeHttpThroughputChart();
         resizeHttpTop5Chart();
         resizeMemChart();
