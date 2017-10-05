@@ -143,8 +143,12 @@
       tallerGraphHeight = canvasHeight - margin.top - margin.shortBottom,
       graphHeight = canvasHeight - margin.top - margin.bottom;
 
-    let myurl = location.host;
-    var socket = io.connect(myurl);
+    let hostname = location.host;
+    let pathname = location.pathname
+    // User may have requested appmetrics-dash/index.html
+    let dashboardRoot = "/" + pathname.split('/')[1];
+
+    var socket = io.connect(hostname);
 
     function getTimeFormat() {
       var currentTime = new Date()
@@ -202,6 +206,7 @@
     socket.on('https', function(data) {
       updateHttpsData(data);
     });
+    setHttpTop5Options({host: hostname, filteredPath: dashboardRoot});
     socket.on('http-urls', function(data) {
       updateURLData(data);
     });
