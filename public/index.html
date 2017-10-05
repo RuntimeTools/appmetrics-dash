@@ -164,10 +164,10 @@
   <script type="text/javascript" src="graphmetrics/js/envTable.js"></script>
   <script type="text/javascript" src="graphmetrics/js/cpuChart.js"></script>
 
-  <script type="text/javascript" src="graphmetrics/js/httpRequestsChart.js"></script>
+  <script type="text/javascript" src="graphmetrics/js/httpHttpsRequestsChart.js"></script>
   <script type="text/javascript" src="graphmetrics/js/httpThroughPutChart.js"></script>
   <script type="text/javascript" src="graphmetrics/js/httpTop5.js"></script>
-  <script type="text/javascript" src="graphmetrics/js/httpOutboundRequestsChart.js"></script>
+  <script type="text/javascript" src="graphmetrics/js/httpHttpsOutboundRequestsChart.js"></script>
 
   <script type="text/javascript" src="graphmetrics/js/memChart.js"></script>
   <script type="text/javascript" src="graphmetrics/js/gcChart.js"></script>
@@ -195,6 +195,12 @@
     });
     socket.on('http', function(data) {
       updateHttpData(data);
+    });
+    socket.on('https-outbound', function(data) {
+      updateHttpsOBData(data);
+    });
+    socket.on('https', function(data) {
+      updateHttpsData(data);
     });
     socket.on('http-urls', function(data) {
       updateURLData(data);
