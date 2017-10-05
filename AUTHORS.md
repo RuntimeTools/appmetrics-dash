@@ -1,13 +1,12 @@
-
 Authors ordered by first contribution:
 
- - Toby Corbin (corbint@uk.ibm.com)  
- - Sian January (sjanuary@uk.ibm.com)
- - Matt Colegate (colegate@uk.ibm.com)
- - Julie Stalley (julie_stalley@uk.ibm.com) 
+ - Toby Corbin (https://github.com/tobespc)  
+ - Sian January (https://github.com/sjanuary)
+ - Matt Colegate (https://github.com/mattcolegate)
+ - Julie Stalley (https://github.com/stalleyj) 
  - Sam Roberts (https://github.com/sam-github)
  - Ryan Graham (https://github.com/rmg)
  - William Taylor (https://github.com/william-taylor) 
- - Howard Hellyer (hhellyer@uk.ibm.com) 
+ - Howard Hellyer (https://github.com/hhellyer) 
  - Julien Arnold (https://github.com/JulienArnold)
  
