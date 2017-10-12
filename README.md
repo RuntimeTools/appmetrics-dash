@@ -6,7 +6,7 @@
 ![Apache 2](https://img.shields.io/badge/license-Apache2-blue.svg?style=flat)
 [![Homepage](https://img.shields.io/badge/homepage-Node%20Application%20Metrics-blue.svg)](https://developer.ibm.com/node/monitoring-post-mortem/application-metrics-node-js/)
 
-[![Node Application Metrics Dashboard](https://developer.ibm.com/node/monitoring-post-mortem/application-metrics-node-js/)] (appmetrics-dash) provides a very easy-to-use web based dashboard to show the performance metrics of your running Node.js application.
+![Node Application Metrics Dashboard](https://developer.ibm.com/node/monitoring-post-mortem/application-metrics-node-js/) (appmetrics-dash) provides a very easy-to-use web based dashboard to show the performance metrics of your running Node.js application.
 
 If you want to add the dashboard to all HTTP servers created by your application then simply add:
 
