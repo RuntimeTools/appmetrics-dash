@@ -1,4 +1,4 @@
-# appmetrics-dash
+# Node Application Metrics Dashboard
 
 [![Build Status](https://travis-ci.org/RuntimeTools/appmetrics-dash.svg?branch=master)](https://travis-ci.org/RuntimeTools/appmetrics-dash)
 [![codebeat badge](https://codebeat.co/badges/52b7334d-70b0-4659-9acb-b080d6413906)](https://codebeat.co/projects/github-com-runtimetools-appmetrics-dash-master)
@@ -6,7 +6,33 @@
 ![Apache 2](https://img.shields.io/badge/license-Apache2-blue.svg?style=flat)
 [![Homepage](https://img.shields.io/badge/homepage-Node%20Application%20Metrics-blue.svg)](https://developer.ibm.com/node/monitoring-post-mortem/application-metrics-node-js/)
 
-appmetrics-dash provides a very easy to use, web based, dashboard to show the performance metrics of your running Node.js application.  
+![Node Application Metrics Dashboard](https://developer.ibm.com/node/monitoring-post-mortem/application-metrics-node-js/) (appmetrics-dash) provides a very easy-to-use web based dashboard to show the performance metrics of your running Node.js application.
+
+If you want to add the dashboard to all HTTP servers created by your application then simply add:
+
+```js
+// Before all other 'require' statements:
+require('appmetrics-dash').attach();
+```
+to the very top of your main JavaScript source file.
+
+If you want to add the dashboard to one specific HTTP server then use:
+
+```js
+var dash = require('appmetrics-dash');
+// Other 'require' statements here
+// Create HTTP server 'myHttpServer' here
+dash.monitor({server: myHttpServer});
+```
+If you are not creating an HTTP server then use:
+
+```js
+// Before all other 'require' statements:
+require('appmetrics-dash').monitor();
+```
+
+This creates a new server for the dashboard on port 3001 by default. The path defaults to ```/appmetrics-dash```.
+E.g. http://localhost:3001/appmetrics-dash
 
 The data available on the dashboard is as follows:
 * CPU Profiling (via a separate tab)
@@ -16,7 +42,7 @@ The data available on the dashboard is as follows:
 * CPU
 * Memory
 * Heap
-* Event loop Latency
+* Event Loop Times
 * Environment
 * Other Requests
 * HTTP Outbound Requests
@@ -37,67 +63,10 @@ Our testing has shown that the performance overhead in terms of processing is mi
 
 We gathered this information by monitoring the sample application [Acme Air][3]. We used MongoDB as our datastore and used JMeter to drive load though the program.  We have performed this testing with Node.js version 6.10.3
 
-## dash = require('appmetrics-dash').monitor()
 
-This will launch the dashboard and start monitoring your application. When
-no options are specified, an http server will be created and listen on port 3001.
-The dashboard will be available at /appmetrics-dash
+## API Documentation
 
-Simple example using the express framework
-
-```js
-// This application uses express as its web server
-// for more info, see: http://expressjs.com
-var express = require('express');
-
-var dash = require('appmetrics-dash').monitor();
-
-// cfenv provides access to your Cloud Foundry environment
-// for more info, see: https://www.npmjs.com/package/cfenv
-var cfenv = require('cfenv');
-
-// create a new express server
-var app = express();
-
-// serve the files out of ./public as our main files
-app.use(express.static(__dirname + '/public'));
-
-// get the app environment from Cloud Foundry
-var appEnv = cfenv.getAppEnv();
-
-// start server on the specified port and binding host
-var server = app.listen(appEnv.port, '0.0.0.0', function() {
-	// print a message when the server starts listening
-  console.log("server starting on " + appEnv.url);
-});
-```
-
-## dash.monitor(options)
-
-* options.url {String} Path to serve dashboard from. Optional, defaults to
-  `'/appmetrics-dash'`.
-* options.console {Object} Some messages are printed to the console using
-  `console.log()` and `console.error()`. Optional, defaults to the global
-  `console` object.
-* options.server {Object} An instance of a node `http` server to serve the
-  dashboard from. Optional, default is to create a server (see `port` and
-  `host`).
-* options.port {String|Number} Port to listen on if creating a server. Optional,
-  unused if `server` option is used.
-* options.host {String} Host to listen on if creating a server. Optional,
-  unused if `server` option is used.
-* options.appmetrics {Object} An instance of `require('appmetrics')` can be
-  injected if the application wants to use appmetrics, since it is a singleton
-  module and only one can be present in an application. Optional, defaults to
-  the appmetrics dependency of this module.
-* options.node-report {Object} An instance of `require('node-report')` can be
-  injected if the application wants to use node-report, since it is a singleton
-  module and only one can be present in an application. Optional, defaults to
-  the node-report dependency of this module.
-* options.title {String} Title for the dashboard.
-* options.docs {String} URL link to accompanying documentation.
-
-## dash.attach(options)
+### attach(options)
 
 * options {Object} Options are the same as for `dash.monitor()`.
 
@@ -125,6 +94,31 @@ server.listen(port, (err) => {
   console.log(`Server is listening on ${port}`)
 });
 ```
+
+### monitor(options)
+
+* options.url {String} Path to serve dashboard from. Optional, defaults to
+  `'/appmetrics-dash'`.
+* options.console {Object} Some messages are printed to the console using
+  `console.log()` and `console.error()`. Optional, defaults to the global
+  `console` object.
+* options.server {Object} An instance of a node `http` server to serve the
+  dashboard from. Optional, default is to create a server (see `port` and
+  `host`).
+* options.port {String|Number} Port to listen on if creating a server. Optional,
+  unused if `server` option is used.
+* options.host {String} Host to listen on if creating a server. Optional,
+  unused if `server` option is used.
+* options.appmetrics {Object} An instance of `require('appmetrics')` can be
+  injected if the application wants to use appmetrics, since it is a singleton
+  module and only one can be present in an application. Optional, defaults to
+  the appmetrics dependency of this module.
+* options.node-report {Object} An instance of `require('node-report')` can be
+  injected if the application wants to use node-report, since it is a singleton
+  module and only one can be present in an application. Optional, defaults to
+  the node-report dependency of this module.
+* options.title {String} Title for the dashboard.
+* options.docs {String} URL link to accompanying documentation.
 
 ## Contributing
 
