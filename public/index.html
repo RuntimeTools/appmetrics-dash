@@ -53,7 +53,7 @@
   </script>
 
   <div class="headerDiv">
-    <span class="sidenavButton" onclick="toggleMenu()">&#9776;</span>
+    <span id="menu" class="sidenavButton" onclick="toggleMenu()">&#9776;</span>
     <span class="leftHeader"></span>
     <span class="rightHeader"></span>
   </div>
@@ -219,7 +219,12 @@
     socket.on('title', function(data) {
       updateHeader(data);
     });
-
+    socket.on('demo', function(data) {
+      if(JSON.parse(data).demo) {
+        document.getElementById('menu').style.display = 'none';
+      }
+    });
+  
     let selected_tab = "main-tab"
 
     window.addEventListener('resize', resize);
