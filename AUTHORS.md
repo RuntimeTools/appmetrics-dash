@@ -10,3 +10,5 @@ Authors ordered by first contribution:
  - Howard Hellyer (https://github.com/hhellyer)
  - Julien Arnold (https://github.com/JulienArnold)
  - James Wallis (https://github.com/jamesemwallis)
+ - Pete Robbins (https://github.com/robbinspg)
+ 
