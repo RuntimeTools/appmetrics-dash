@@ -69,13 +69,13 @@
 
     <ul class="nav nav-tabs">
       <li class="active">
-        <a href="#main" id="main-tab" data-toggle="tab">Main</a>
+        <a href="#main" id="main-tab" data-toggle="tab">Dashboard</a>
       </li>
       <li>
         <a href="#profiling" id="profiing-tab" data-toggle="tab">Profiling</a>
       </li>
       <li>
-        <a href="#overview" id="overview-tab" data-toggle="tab">Overview</a>
+        <a href="#summary" id="summary-tab" data-toggle="tab">Summary</a>
       </li>
     </ul>
 
@@ -110,7 +110,7 @@
         <div id="flameDiv"></div>
       </div>
 
-      <div class="tab-pane" id="overview">
+      <div class="tab-pane" id="summary">
         <div class="row">
           <div class="graph-container col-md-5">
               <div class="col-md-12 hideable" id="envDiv"></div>
@@ -205,9 +205,9 @@
 
     let summary = {cpu:{}, gc:{}, memoryPools:{}};
 
-    let envTable = new TextTable('#envDiv', '#overview', localizedStrings.envTitle);
-    let summaryTable = new TextTable('#summaryDiv', '#overview', localizedStrings.summaryTitle);
-    let httpSummary = new HttpSummary('#httpSummaryDiv', '#overview', localizedStrings.httpSummaryTitle);
+    let envTable = new TextTable('#envDiv', '#summary', localizedStrings.envTitle);
+    let summaryTable = new TextTable('#summaryDiv', '#summary', localizedStrings.summaryTitle);
+    let httpSummary = new HttpSummary('#httpSummaryDiv', '#summary', localizedStrings.httpSummaryTitle);
     httpSummary.setHttpSummaryOptions({host: hostname, filteredPath: dashboardRoot});
 
     socket.emit('connected');
@@ -304,7 +304,7 @@
         resizeHttpThroughputChart();
         resizeMemChart();
         resizeProbesChart();
-      } else if(selected_tab == "overview-tab") {
+      } else if(selected_tab == "summary-tab") {
           envTable.resizeTable();
           summaryTable.resizeTable();
           httpSummary.resizeTable();
