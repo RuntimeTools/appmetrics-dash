@@ -74,27 +74,34 @@
       <li>
         <a href="#profiling" id="profiing-tab" data-toggle="tab">Profiling</a>
       </li>
+      <li>
+        <a href="#summary" id="summary-tab" data-toggle="tab">Summary</a>
+      </li>
     </ul>
 
     <div class="tab-content ">
       <div class="tab-pane active" id="main">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-md-6 hideable" id="httpDiv1"></div>
-            <div class="col-md-3 hideable" id="httpDiv2"></div>
-            <div class="col-md-3 hideable" id="httpDiv3"></div>
+            <div class="col-md-5 hideable" id="cpuDiv1"></div>
+            <div class="col-md-7 hideable" id="httpDiv1"></div>
+          </div>
+          <div class="row">
+            <div class="col-md-5 hideable" id="memDiv1"></div>
+            <div class="col-md-7 hideable" id="httpDiv2"></div>
           </div>
 
           <div class="row">
-            <div class="col-md-2 hideable" id="cpuDiv1"></div>
-            <div class="col-md-2 hideable" id="memDiv1"></div>
-            <div class="col-md-2 hideable" id="gcDiv"></div>
-            <div class="col-md-3 hideable" id="loopDiv"></div>
-            <div class="col-md-3 hideable" id="envDiv"></div>
+            <div class="col-md-5 hideable" id="gcDiv"></div>
+            <div class="col-md-7 hideable" id="httpOBDiv"></div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-5 hideable" id="loopDiv"></div>
+            <div class="col-md-7 hideable" id="probeEventsDiv"></div>
           </div>
           <div class="row">
-            <div class="col-md-6 hideable" id="probeEventsDiv"></div>
-            <div class="col-md-6 hideable" id="httpOBDiv"></div>
+            <div class="col-md-7 hideable" id="httpDiv3"></div>
           </div>
         </div>
       </div>
@@ -102,6 +109,19 @@
       <div class="tab-pane" id="profiling">
         <div id="flameDiv"></div>
       </div>
+
+      <div class="tab-pane" id="summary">
+        <div class="row">
+          <div class="graph-container col-md-5">
+              <div class="col-md-12 hideable" id="envDiv"></div>
+              <div class="col-md-12 hideable" id="summaryDiv"></div>
+          </div>
+          <div class="graph-container col-md-7">
+            <div class="col-md-12 height-2 hideable" id="httpSummaryDiv"></div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -164,13 +184,14 @@
   </script>
 
   <script type="text/javascript" src="graphmetrics/js/header.js"></script>
+  <script type="text/javascript" src="graphmetrics/js/textTable.js"></script>
   <script type="text/javascript" src="graphmetrics/js/nodeReport.js"></script>
-  <script type="text/javascript" src="graphmetrics/js/envTable.js"></script>
   <script type="text/javascript" src="graphmetrics/js/cpuChart.js"></script>
 
   <script type="text/javascript" src="graphmetrics/js/httpHttpsRequestsChart.js"></script>
   <script type="text/javascript" src="graphmetrics/js/httpThroughPutChart.js"></script>
-  <script type="text/javascript" src="graphmetrics/js/httpTop5.js"></script>
+  <script type="text/javascript" src="graphmetrics/js/top5.js"></script>
+  <script type="text/javascript" src="graphmetrics/js/httpSummary.js"></script>
   <script type="text/javascript" src="graphmetrics/js/httpHttpsOutboundRequestsChart.js"></script>
 
   <script type="text/javascript" src="graphmetrics/js/memChart.js"></script>
@@ -181,18 +202,34 @@
   <script type="text/javascript" src="profiling.js"></script>
 
   <script>
+
+    let summary = {cpu:{}, gc:{}, memoryPools:{}};
+
+    let envTable = new TextTable('#envDiv', '#summary', localizedStrings.envTitle);
+    let summaryTable = new TextTable('#summaryDiv', '#summary', "Summary"); // TODO move this to localizedStrings.
+    let httpSummary = new HttpSummary('#httpSummaryDiv', '#summary', localizedStrings.httpSummaryTitle);
+    httpSummary.setHttpSummaryOptions({host: hostname, filteredPath: dashboardRoot});
+
     socket.emit('connected');
     socket.on('cpu', function(data) {
       updateCPUData(data);
+      let json = JSON.parse(data);
+      summary.cpu.processMean = json.processMean;
+      summary.cpu.systemMean = json.systemMean;
+      updateSummaryTable();
     });
     socket.on('environment', function(data) {
-      populateEnvTable(data);
+      envTable.populateTableJSON(data);
     });
     socket.on('loop', function(data) {
       updateLoopData(data);
     });
     socket.on('gc', function(data) {
       updateGCData(data);
+      let json = JSON.parse(data);
+      summary.gc.time = json.timeSummary;
+      summary.gc.usedHeapAfterGCMax = json.usedHeapAfterGCMax;
+      updateSummaryTable();
     });
     socket.on('http-outbound', function(data) {
       updateHttpOBData(data);
@@ -206,9 +243,8 @@
     socket.on('https', function(data) {
       updateHttpsData(data);
     });
-    setHttpTop5Options({host: hostname, filteredPath: dashboardRoot});
     socket.on('http-urls', function(data) {
-      updateURLData(data);
+      httpSummary.updateURLData(data);
     });
     socket.on('memory', function(data) {
       updateMemData(data);
@@ -219,6 +255,29 @@
     socket.on('title', function(data) {
       updateHeader(data);
     });
+
+    function updateSummaryTable() {
+      let summaryData = [];
+      if (summary.cpu.processMean) {
+         let value = new Number(summary.cpu.processMean);
+         let valueStr = value.toLocaleString([],{style: 'percent', minimumSignificantDigits: 4, maximumSignificantDigits: 4});
+         summaryData.push({Parameter: 'Average Process CPU', Value: valueStr});
+      }
+      if (summary.cpu.systemMean) {
+          let value = new Number(summary.cpu.systemMean);
+          let valueStr = value.toLocaleString([],{style: 'percent', minimumSignificantDigits: 4, maximumSignificantDigits: 4});
+          summaryData.push({Parameter: 'Average System CPU', Value: valueStr});
+       }
+      if (summary.gc.time) {
+          let value = new Number(summary.gc.time);
+          let valueStr = value.toLocaleString([],{style: 'percent', minimumSignificantDigits: 4, maximumSignificantDigits: 4});
+          summaryData.push({Parameter: 'Time Spent in GC', Value: `${valueStr}`});
+      }
+      if (summary.gc.usedHeapAfterGCMax) {
+          summaryData.push({Parameter: 'Max Heap Used After GC', Value: `${summary.gc.usedHeapAfterGCMax} bytes`});
+      }
+      summaryTable.populateTable(summaryData);
+    }
 
     let selected_tab = "main-tab"
 
@@ -243,10 +302,12 @@
         resizeGCChart();
         resizeLoopChart();
         resizeHttpThroughputChart();
-        resizeHttpTop5Chart();
         resizeMemChart();
-        resizeEnvTable();
         resizeProbesChart();
+      } else if(selected_tab == "summary-tab") {
+          envTable.resizeTable();
+          summaryTable.resizeTable();
+          httpSummary.resizeTable();
       } else {
         refreshFlameGraph();
       }
