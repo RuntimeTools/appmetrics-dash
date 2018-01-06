@@ -151,12 +151,12 @@
 
     // Initialise graph and canvas dimensions
     var margin = {
-        top: 50,
-        right: 20,
-        bottom: 50,
-        shortBottom: 30,
-        left: 60
-      },
+      top: 50,
+      right: 20,
+      bottom: 50,
+      shortBottom: 30,
+      left: 60
+    },
       canvasWidth = $("#cpuDiv1").width() - 8, // -8 for margins and borders
       httpCanvasWidth = $("#httpDiv1").width() - 8,
       graphWidth = canvasWidth - margin.left - margin.right,
@@ -170,7 +170,7 @@
     // User may have requested appmetrics-dash/index.html
     let dashboardRoot = "/" + pathname.split('/')[1];
 
-    var socket = io.connect(hostname);
+    var socket = io.connect(hostname, { path: '/appmetrics-dash/socket.io' });
 
     function getTimeFormat() {
       var currentTime = new Date()
@@ -205,116 +205,116 @@
 
   <script>
 
-    let summary = {cpu:{}, gc:{}, memoryPools:{}};
+let summary = {cpu:{}, gc:{}, memoryPools:{}};
 
-    let envTable = new TextTable('#envDiv', '#summary', localizedStrings.envTitle);
-    let summaryTable = new TextTable('#summaryDiv', '#summary', localizedStrings.summaryTitle);
-    let httpSummary = new HttpSummary('#httpSummaryDiv', '#summary', localizedStrings.httpSummaryTitle);
-    httpSummary.setHttpSummaryOptions({host: hostname, filteredPath: dashboardRoot});
+let envTable = new TextTable('#envDiv', '#summary', localizedStrings.envTitle);
+let summaryTable = new TextTable('#summaryDiv', '#summary', localizedStrings.summaryTitle);
+let httpSummary = new HttpSummary('#httpSummaryDiv', '#summary', localizedStrings.httpSummaryTitle);
+httpSummary.setHttpSummaryOptions({host: hostname, filteredPath: dashboardRoot});
 
-    socket.emit('connected');
-    socket.on('cpu', function(data) {
-      updateCPUData(data);
-      let json = JSON.parse(data);
-      summary.cpu.processMean = json.processMean;
-      summary.cpu.systemMean = json.systemMean;
-      updateSummaryTable();
-    });
-    socket.on('environment', function(data) {
-      envTable.populateTableJSON(data);
-    });
-    socket.on('loop', function(data) {
-      updateLoopData(data);
-    });
-    socket.on('gc', function(data) {
-      updateGCData(data);
-      let json = JSON.parse(data);
-      summary.gc.time = json.timeSummary;
-      summary.gc.usedHeapAfterGCMax = json.usedHeapAfterGCMax;
-      updateSummaryTable();
-    });
-    socket.on('http-outbound', function(data) {
-      updateHttpOBData(data);
-    });
-    socket.on('http', function(data) {
-      updateHttpData(data);
-    });
-    socket.on('https-outbound', function(data) {
-      updateHttpsOBData(data);
-    });
-    socket.on('https', function(data) {
-      updateHttpsData(data);
-    });
-    socket.on('http-urls', function(data) {
-      httpSummary.updateURLData(data);
-    });
-    socket.on('memory', function(data) {
-      updateMemData(data);
-    });
-    socket.on('probe-events', function(data) {
-      updateProbesData(data);
-    });
-    socket.on('title', function(data) {
-      updateHeader(data);
-    });
+socket.emit('connected');
+socket.on('cpu', function(data) {
+  updateCPUData(data);
+  let json = JSON.parse(data);
+  summary.cpu.processMean = json.processMean;
+  summary.cpu.systemMean = json.systemMean;
+  updateSummaryTable();
+});
+socket.on('environment', function(data) {
+  envTable.populateTableJSON(data);
+});
+socket.on('loop', function(data) {
+  updateLoopData(data);
+});
+socket.on('gc', function(data) {
+  updateGCData(data);
+  let json = JSON.parse(data);
+  summary.gc.time = json.timeSummary;
+  summary.gc.usedHeapAfterGCMax = json.usedHeapAfterGCMax;
+  updateSummaryTable();
+});
+socket.on('http-outbound', function(data) {
+  updateHttpOBData(data);
+});
+socket.on('http', function(data) {
+  updateHttpData(data);
+});
+socket.on('https-outbound', function(data) {
+  updateHttpsOBData(data);
+});
+socket.on('https', function(data) {
+  updateHttpsData(data);
+});
+socket.on('http-urls', function(data) {
+  httpSummary.updateURLData(data);
+});
+socket.on('memory', function(data) {
+  updateMemData(data);
+});
+socket.on('probe-events', function(data) {
+  updateProbesData(data);
+});
+socket.on('title', function(data) {
+  updateHeader(data);
+});
 
-    function updateSummaryTable() {
-      let summaryData = [];
-      if (summary.cpu.processMean) {
-         let value = new Number(summary.cpu.processMean);
-         let valueStr = value.toLocaleString([],{style: 'percent', minimumSignificantDigits: 4, maximumSignificantDigits: 4});
-         summaryData.push({Parameter: 'Average Process CPU', Value: valueStr});
-      }
-      if (summary.cpu.systemMean) {
-          let value = new Number(summary.cpu.systemMean);
-          let valueStr = value.toLocaleString([],{style: 'percent', minimumSignificantDigits: 4, maximumSignificantDigits: 4});
-          summaryData.push({Parameter: 'Average System CPU', Value: valueStr});
-       }
-      if (summary.gc.time) {
-          let value = new Number(summary.gc.time);
-          let valueStr = value.toLocaleString([],{style: 'percent', minimumSignificantDigits: 4, maximumSignificantDigits: 4});
-          summaryData.push({Parameter: 'Time Spent in GC', Value: `${valueStr}`});
-      }
-      if (summary.gc.usedHeapAfterGCMax) {
-          summaryData.push({Parameter: 'Max Heap Used After GC', Value: `${summary.gc.usedHeapAfterGCMax} bytes`});
-      }
-      summaryTable.populateTable(summaryData);
-    }
+function updateSummaryTable() {
+  let summaryData = [];
+  if (summary.cpu.processMean) {
+     let value = new Number(summary.cpu.processMean);
+     let valueStr = value.toLocaleString([],{style: 'percent', minimumSignificantDigits: 4, maximumSignificantDigits: 4});
+     summaryData.push({Parameter: 'Average Process CPU', Value: valueStr});
+  }
+  if (summary.cpu.systemMean) {
+      let value = new Number(summary.cpu.systemMean);
+      let valueStr = value.toLocaleString([],{style: 'percent', minimumSignificantDigits: 4, maximumSignificantDigits: 4});
+      summaryData.push({Parameter: 'Average System CPU', Value: valueStr});
+   }
+  if (summary.gc.time) {
+      let value = new Number(summary.gc.time);
+      let valueStr = value.toLocaleString([],{style: 'percent', minimumSignificantDigits: 4, maximumSignificantDigits: 4});
+      summaryData.push({Parameter: 'Time Spent in GC', Value: `${valueStr}`});
+  }
+  if (summary.gc.usedHeapAfterGCMax) {
+      summaryData.push({Parameter: 'Max Heap Used After GC', Value: `${summary.gc.usedHeapAfterGCMax} bytes`});
+  }
+  summaryTable.populateTable(summaryData);
+}
 
-    let selected_tab = "main-tab"
+let selected_tab = "main-tab"
 
-    window.addEventListener('resize', resize);
+window.addEventListener('resize', resize);
 
-    // Also re-size when we change tabs in case we re-sized
-    // while the new tab wasn't visible.
-    $('.nav-tabs a').on('shown.bs.tab', function(event) {
-      selected_tab = event.target.id;
-      resize();
-    });
+// Also re-size when we change tabs in case we re-sized
+// while the new tab wasn't visible.
+$('.nav-tabs a').on('shown.bs.tab', function(event) {
+  selected_tab = event.target.id;
+  resize();
+});
 
-    function resize() {
-      if (selected_tab == "main-tab") {
-        canvasWidth = $("#cpuDiv1").width() - 8,
-          httpCanvasWidth = $("#httpDiv1").width() - 8,
-          graphWidth = canvasWidth - margin.left - margin.right,
-          httpGraphWidth = httpCanvasWidth - margin.left - margin.right;
-        resizeCPUChart();
-        resizeHttpChart();
-        resizeHttpOBChart();
-        resizeGCChart();
-        resizeLoopChart();
-        resizeHttpThroughputChart();
-        resizeMemChart();
-        resizeProbesChart();
-      } else if(selected_tab == "summary-tab") {
-          envTable.resizeTable();
-          summaryTable.resizeTable();
-          httpSummary.resizeTable();
-      } else {
-        refreshFlameGraph();
-      }
-    }
-  </script>
+function resize() {
+  if (selected_tab == "main-tab") {
+    canvasWidth = $("#cpuDiv1").width() - 8,
+      httpCanvasWidth = $("#httpDiv1").width() - 8,
+      graphWidth = canvasWidth - margin.left - margin.right,
+      httpGraphWidth = httpCanvasWidth - margin.left - margin.right;
+    resizeCPUChart();
+    resizeHttpChart();
+    resizeHttpOBChart();
+    resizeGCChart();
+    resizeLoopChart();
+    resizeHttpThroughputChart();
+    resizeMemChart();
+    resizeProbesChart();
+  } else if(selected_tab == "summary-tab") {
+      envTable.resizeTable();
+      summaryTable.resizeTable();
+      httpSummary.resizeTable();
+  } else {
+    refreshFlameGraph();
+  }
+}
+</script>
 
 </body>
 
