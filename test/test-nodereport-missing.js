@@ -37,6 +37,7 @@ tap.test('missing nodereport handled gracefully', function(t) {
     const url = util.format('ws://%s:%s', a.address, a.port);
     const ws = io.connect(url, {
       transport: ['websocket'],
+      path: '/appmetrics-dash/socket.io',
     });
     ws.on('connect', function() {
       ws.emit('nodereport');
