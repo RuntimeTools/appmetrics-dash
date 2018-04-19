@@ -11,4 +11,5 @@ Authors ordered by first contribution:
  - Julien Arnold (https://github.com/JulienArnold)
  - James Wallis (https://github.com/jamesemwallis)
  - Pete Robbins (https://github.com/robbinspg)
- 
+ - Ayush Gupta (https://github.com/7ayushgupta)
+ - Gytis Raciukaitis (https://github.com/noxxious)

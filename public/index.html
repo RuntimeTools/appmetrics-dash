@@ -170,7 +170,7 @@
     // User may have requested appmetrics-dash/index.html
     let dashboardRoot = "/" + pathname.split('/')[1];
 
-    var socket = io.connect(hostname);
+    var socket = io.connect(hostname, { path: '/appmetrics-dash/socket.io' });
 
     function getTimeFormat() {
       var currentTime = new Date()
