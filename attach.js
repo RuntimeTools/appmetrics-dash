@@ -13,5 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ******************************************************************************/
+// For preloading
 'use strict';
 require('./lib/appmetrics-dash.js').attach();
