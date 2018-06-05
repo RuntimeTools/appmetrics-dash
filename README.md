@@ -16,6 +16,18 @@ require('appmetrics-dash').attach();
 ```
 to the very top of your main JavaScript source file.
 
+Alternatively, to use preloading:
+
+```sh
+$ node --require appmetrics-dash/attach app.js
+```
+
+or in Node.js from versions 8.0.0 and 6.12.0 onwards, use the NODE_OPTIONS environment variable:
+
+```sh
+$ export NODE_OPTIONS="--require appmetrics-dash/attach"
+```
+
 If you want to add the dashboard to one specific HTTP server then use:
 
 ```js
@@ -29,6 +41,18 @@ If you are not creating an HTTP server then use:
 ```js
 // Before all other 'require' statements:
 require('appmetrics-dash').monitor();
+```
+
+or run your program with
+
+```sh
+$ node --require appmetrics-dash/monitor app.js
+```
+
+or via the NODE_OPTIONS environment variable:
+
+```sh
+$ export NODE_OPTIONS="--require appmetrics-dash/monitor"
 ```
 
 This creates a new server for the dashboard on port 3001 by default. The path defaults to ```/appmetrics-dash```.
