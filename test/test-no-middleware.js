@@ -22,7 +22,6 @@ const tap = require('tap');
 
 var dash = require('../');
 
-// const l = console.log
 dash.attach(
   // not setting any middleware
 );

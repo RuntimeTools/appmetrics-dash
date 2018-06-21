@@ -22,7 +22,6 @@ const tap = require('tap');
 
 var dash = require('../');
 
-// const l = console.log
 dash.attach({
   middleware: function(req, res, next) {
     const num1 = +req.query.num1;
