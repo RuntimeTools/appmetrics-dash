@@ -13,3 +13,4 @@ Authors ordered by first contribution:
  - Pete Robbins (https://github.com/robbinspg)
  - Ayush Gupta (https://github.com/7ayushgupta)
  - Gytis Raciukaitis (https://github.com/noxxious)
+ - Vajahath Ahmed (https://github.com/vajahath)
