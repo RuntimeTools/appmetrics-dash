@@ -1,3 +1,4 @@
 node_modules
 node-report*
 heapdump*.heapsnapshot
+.vscode
