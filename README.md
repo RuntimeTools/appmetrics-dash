@@ -143,6 +143,7 @@ server.listen(port, (err) => {
   the node-report dependency of this module.
 * options.title {String} Title for the dashboard.
 * options.docs {String} URL link to accompanying documentation.
+* options.middleware {Object} Pass in middleware function to be used by server.
 
 ## Contributing
 
