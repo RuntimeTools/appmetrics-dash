@@ -154,11 +154,13 @@ Returns the metrics from the specified collection.
     },
     "httpUrls": [
       {"url": "http://localhost:9080/myApplication/endpoint1",
+        "method": "GET",
         "hits": 3,
         "averageResponseTime": 4.0,
         "longestResponseTime": 4
       },
       {"url": "http://localhost:9080/myApplication/endpoint2",
+        "method": "POST",
         "hits": 7,
         "averageResponseTime": 53.678,
         "longestResponseTime": 232
