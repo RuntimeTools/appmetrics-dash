@@ -23,21 +23,47 @@ const util = require('util');
 
 const response = {
   id: 0,
-  startTime: /[0-9999999999999]/,
-  endTime: /[0-9999999999999]/,
-  duration: /[0-9999999999999]/,
+  time: {
+    data: {
+      start: /[0-9999999999999]/,
+      end: /[0-9999999999999]/,
+    },
+    units: {
+      start: 'UNIX time',
+      end: 'UNIX time',
+    }
+  },
   cpu: {
-    systemMean: 0,
-    systemPeak: 0,
-    processMean: 0,
-    processPeak: 0
+    data: {
+      systemMean: 0,
+      systemPeak: 0,
+      processMean: 0,
+      processPeak: 0
+    },
+    units: {
+      systemMean: 'decimal fraction',
+      systemPeak: 'decimal fraction',
+      processMean: 'decimal fraction',
+      processPeak: 'decimal fraction'
+    }
   },
   gc: {
-    gcTime: 0
+    data: {
+      gcTime: 0
+    },
+    units: {
+      gcTime: 'ms'
+    }
   },
   memory: {
-    usedHeapAfterGCPeak: 0,
-    usedNativePeak: 0
+    data: {
+      usedHeapAfterGCPeak: 0,
+      usedNativePeak: 0
+    },
+    units: {
+      usedHeapAfterGCPeak: 'bytes',
+      usedNativePeak: 'bytes'
+    }
   },
   httpUrls: []
 };
