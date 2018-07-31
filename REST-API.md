@@ -165,7 +165,7 @@ Returns the metrics from the specified collection.
       "gcTime": 0
     },
     "units": {
-      "gcTime": "ms"
+      "gcTime": "decimal fraction"
     }
   },
   "memory": {
