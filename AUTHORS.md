@@ -1,6 +1,6 @@
 Authors ordered by first contribution:
 
- - Toby Corbin (https://github.com/tobespc)  
+ - Toby Corbin (https://github.com/tobespc)
  - Sian January (https://github.com/sjanuary)
  - Matt Colegate (https://github.com/mattcolegate)
  - Julie Stalley (https://github.com/stalleyj)
@@ -14,3 +14,4 @@ Authors ordered by first contribution:
  - Ayush Gupta (https://github.com/7ayushgupta)
  - Gytis Raciukaitis (https://github.com/noxxious)
  - Vajahath Ahmed (https://github.com/vajahath)
+ - Jonathan Spruce (https://github.com/jonathan-spruce)

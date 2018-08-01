@@ -135,38 +135,66 @@ Returns the metrics from the specified collection.
   Example:
   ```JSON
   {
-    "id": 0,
-    "startTime": 1517491521423,
-    "endTime": 1517491786220,
-    "duration": 264797,
-    "cpu": {
-      "systemMean": 0.05717756509017522,
-      "systemPeak": 0.3007518796992481,
-      "processMean": 0.003432652505553302,
-      "processPeak": 0.18843252600694052
+  "id": 0,
+  "time": {
+    "data": {
+      "start": 1532697164637,
+      "end": 1532697174416
     },
-    "gc": {
-      "gcTime": 2.269366316909319E-4
+    "units": {
+      "start": "UNIX time (ms)",
+      "end": "UNIX time (ms)"
+    }
+  },
+  "cpu": {
+    "data": {
+      "systemMean": 0.011103506666666665,
+      "systemPeak": 0.0116601,
+      "processMean": 0.0008327583333333333,
+      "processPeak": 0.000832861
     },
-    "memory": {
-      "usedHeapAfterGCPeak": 59146992,
-      "usedNativePeak": 119662312
+    "units": {
+      "systemMean": "decimal fraction",
+      "systemPeak": "decimal fraction",
+      "processMean": "decimal fraction",
+      "processPeak": "decimal fraction"
+    }
+  },
+  "gc": {
+    "data": {
+      "gcTime": 0
     },
-    "httpUrls": [
-      {"url": "http://localhost:9080/myApplication/endpoint1",
+    "units": {
+      "gcTime": "decimal fraction"
+    }
+  },
+  "memory": {
+    "data": {
+      "usedHeapAfterGCPeak": 0,
+      "usedNativePeak": 1769148416
+    },
+    "units": {
+      "usedHeapAfterGCPeak": "bytes",
+      "usedNativePeak": "bytes"
+    }
+  },
+  "httpUrls": {
+    "data": [
+      {
+        "url": "/",
         "method": "GET",
-        "hits": 3,
-        "averageResponseTime": 4.0,
-        "longestResponseTime": 4
-      },
-      {"url": "http://localhost:9080/myApplication/endpoint2",
-        "method": "POST",
-        "hits": 7,
-        "averageResponseTime": 53.678,
-        "longestResponseTime": 232
+        "hits": 1,
+        "averageResponseTime": 5.0827,
+        "longestResponseTime": 5.0827
       }
-    ]
+    ],
+    "units": {
+      "averageResponseTime": "ms",
+      "longestResponseTime": "ms",
+      "hits": "count"
+    }
   }
+}
   ```
 
 * **Error Responses**
