@@ -15,3 +15,4 @@ Authors ordered by first contribution:
  - Gytis Raciukaitis (https://github.com/noxxious)
  - Vajahath Ahmed (https://github.com/vajahath)
  - Jonathan Spruce (https://github.com/jonathan-spruce)
+ - Andreas Opferkuch (https://github.com/s-h-a-d-o-w)
