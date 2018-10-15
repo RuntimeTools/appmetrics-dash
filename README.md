@@ -139,10 +139,12 @@ server.listen(port, (err) => {
   injected if the application wants to use appmetrics, since it is a singleton
   module and only one can be present in an application. Optional, defaults to
   the appmetrics dependency of this module.
-* options.node-report {Object} An instance of `require('node-report')` can be
+* options.nodereport {Object} An instance of `require('node-report')` can be
   injected if the application wants to use node-report, since it is a singleton
   module and only one can be present in an application. Optional, defaults to
   the node-report dependency of this module.
+  The ability to generate reports can be disabled by setting this to `null` or 
+  `undefined`.
 * options.title {String} Title for the dashboard.
 * options.docs {String} URL link to accompanying documentation.
 * options.middleware {Object} Pass in middleware function to be used by server.
