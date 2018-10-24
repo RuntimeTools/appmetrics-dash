@@ -29,7 +29,7 @@
 <body>
   <!--<h1>Application Metrics Dashboard for Node.js</h1>-->
   <!-- load the d3.js library -->
-  <script src="/appmetrics-dash/socket.io/socket.io.js"></script>
+  <script src="socket.io/socket.io.js"></script>
   <script src="graphmetrics/d3/d3.v3.min.js"></script>
   <script src="graphmetrics/jquery/jquery-3.1.1.min.js"></script>
   <script src="graphmetrics/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
@@ -165,12 +165,10 @@
       tallerGraphHeight = canvasHeight - margin.top - margin.shortBottom,
       graphHeight = canvasHeight - margin.top - margin.bottom;
 
-    let hostname = location.host;
-    let pathname = location.pathname
     // User may have requested appmetrics-dash/index.html
-    let dashboardRoot = "/" + pathname.split('/')[1];
+    let dashboardRoot = location.pathname.split('index.html')[0] || '/';
 
-    var socket = io.connect(hostname, { path: '/appmetrics-dash/socket.io' });
+    var socket = io.connect(location.host, { path: dashboardRoot + 'socket.io' });
 
     function getTimeFormat() {
       var currentTime = new Date()
@@ -206,7 +204,7 @@
   <script>
 
     let summary = {cpu:{}, gc:{}, memoryPools:{}};
-
+    let hostname = location.host.split(':')[0];
     let envTable = new TextTable('#envDiv', '#summary', localizedStrings.envTitle);
     let summaryTable = new TextTable('#summaryDiv', '#summary', localizedStrings.summaryTitle);
     let httpSummary = new HttpSummary('#httpSummaryDiv', '#summary', localizedStrings.httpSummaryTitle);
