@@ -16,3 +16,4 @@ Authors ordered by first contribution:
  - Vajahath Ahmed (https://github.com/vajahath)
  - Jonathan Spruce (https://github.com/jonathan-spruce)
  - Andreas Opferkuch (https://github.com/s-h-a-d-o-w)
+ - Alex Potsides (https://github.com/achingbrain)
