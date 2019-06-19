@@ -24,7 +24,7 @@ Alternatively, to use preloading:
 $ node --require appmetrics-dash/attach app.js
 ```
 
-or in Node.js from versions 8.0.0 and 6.12.0 onwards, use the NODE_OPTIONS environment variable:
+or use the NODE_OPTIONS environment variable:
 
 ```sh
 $ export NODE_OPTIONS="--require appmetrics-dash/attach"
