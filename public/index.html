@@ -19,28 +19,23 @@
 <meta charset="utf-8">
 
 <link rel="stylesheet" href="graphmetrics/bootstrap-3.3.7-dist/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="graphmetrics/css/style2.css" title="Light background">
-<link rel="alternate stylesheet" type="text/css" href="graphmetrics/css/style.css" title="Dark background">
+<link rel="stylesheet" type="text/css" href="graphmetrics/css/themes.css" title="Themes">
 
 <head>
   <title>Application Metrics Dashboard for Node.js</title>
 </head>
 
 <body>
+  <div>
   <!--<h1>Application Metrics Dashboard for Node.js</h1>-->
   <!-- load the d3.js library -->
   <script src="socket.io/socket.io.js"></script>
   <script src="graphmetrics/d3/d3.v3.min.js"></script>
   <script src="graphmetrics/jquery/jquery-3.1.1.min.js"></script>
   <script src="graphmetrics/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-
   <script>
     function toggleMenu() {
-      if (document.getElementById("sideMenu").style.width != "250px") {
-        document.getElementById("sideMenu").style.width = "250px";
-      } else {
-        document.getElementById("sideMenu").style.width = "0px";
-      }
+      $('#sideMenu').toggleClass( "expanded" );
     }
 
     function toggleProfiling() {
@@ -49,6 +44,13 @@
       } else {
         socket.emit('enableprofiling');
       }
+    }
+
+    const queryStringValues = new URLSearchParams(window.location.search)
+    if (queryStringValues.get('theme')==='dark') {
+        $('body').addClass( "darkmode" )
+    } else {
+        $('body').addClass( "lightmode" )
     }
   </script>
 
@@ -59,10 +61,10 @@
   </div>
 
   <div id="sideMenu" class="sidenav">
-    <a class="sidenavEntry" onclick="socket.emit('heapdump')">Trigger Heap Dump</a>
-    <a class="sidenavEntry" onclick="socket.emit('nodereport')">Trigger Node Report</a>
-    <a class="sidenavEntry" id="toggle-profiling" onclick="toggleProfiling()"></a>
-    <a class="sidenavEntry" id="clear-profiling" onclick="clearProfilingData()">Clear Profiling Data</a>
+    <a class="sidenavEntry" onclick="socket.emit('heapdump'); toggleMenu()">Trigger Heap Dump</a>
+    <a class="sidenavEntry" onclick="socket.emit('nodereport'); toggleMenu()">Trigger Node Report</a>
+    <a class="sidenavEntry" id="toggle-profiling" onclick="toggleProfiling(); toggleMenu()"></a>
+    <a class="sidenavEntry" id="clear-profiling" onclick="clearProfilingData(); toggleMenu()">Clear Profiling Data</a>
   </div>
 
   <div id="tabs" class="container">
@@ -109,7 +111,6 @@
       <div class="tab-pane" id="profiling">
         <div id="flameDiv"></div>
       </div>
-
       <div class="tab-pane" id="summary">
         <div class="container-fluid">
           <div class="row">
@@ -313,7 +314,7 @@
       }
     }
   </script>
-
+</div>
 </body>
 
 </html>
