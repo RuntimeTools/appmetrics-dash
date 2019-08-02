@@ -1,6 +1,6 @@
 {
   "name": "appmetrics-dash",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "description": "Embedded monitoring dashboard for Node.js applications.",
   "main": "index.js",
   "dependencies": {
