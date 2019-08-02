@@ -102,7 +102,7 @@ socket.on('profiling', (profilingSample) => {
   // console.log("Adding sample: " + profiling_row.time);
   // console.dir(profiling_row);
 
-  let profiling_row = JSON.parse(profilingSample);  // parses the data into a JSON array
+  let profiling_row = JSON.parse(profilingSample); // parses the data into a JSON array
   let indexed_nodes = {};
   // Index this so we can find parents faster.
   profiling_row.functions.map((node) => { indexed_nodes[node.self] = node; });
