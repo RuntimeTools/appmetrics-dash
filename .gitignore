@@ -3,3 +3,4 @@ node-report*
 .vscode
 heapdump*.heapsnapshot
 resourceRegistry.log
+coverage
