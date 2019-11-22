@@ -10,6 +10,8 @@
 
 [Node Application Metrics Dashboard](https://developer.ibm.com/node/monitoring-post-mortem/application-metrics-node-js/) (appmetrics-dash) provides a very easy-to-use web based dashboard to show the performance metrics of your running Node.js application.
 
+<img src="public/appmetrics.gif" alt="appmetrics-dash in action"/>
+
 If you want to add the dashboard to all HTTP servers created by your application then simply add:
 
 ```js
