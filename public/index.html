@@ -115,7 +115,8 @@
         <div class="container-fluid">
           <div class="row">
             <div class="graph-container col-md-7">
-              <div class="col-md-12 height-fill hideable" id="httpSummaryDiv"></div>
+              <div class="col-md-12 hideable" id="httpSummaryDiv"></div>
+              <div class="col-md-12 hideable" id="mysqlSummaryDiv"></div>
             </div>
             <div class="graph-container col-md-5">
               <div class="col-md-12 hideable" id="envDiv"></div>
@@ -193,6 +194,7 @@
   <script type="text/javascript" src="graphmetrics/js/httpThroughPutChart.js"></script>
   <script type="text/javascript" src="graphmetrics/js/top5.js"></script>
   <script type="text/javascript" src="graphmetrics/js/httpSummary.js"></script>
+  <script type="text/javascript" src="graphmetrics/js/mysqlSummary.js"></script>
   <script type="text/javascript" src="graphmetrics/js/httpHttpsOutboundRequestsChart.js"></script>
 
   <script type="text/javascript" src="graphmetrics/js/memChart.js"></script>
@@ -209,6 +211,7 @@
     let envTable = new TextTable('#envDiv', '#summary', localizedStrings.envTitle);
     let summaryTable = new TextTable('#summaryDiv', '#summary', localizedStrings.summaryTitle);
     let httpSummary = new HttpSummary('#httpSummaryDiv', '#summary', localizedStrings.httpSummaryTitle);
+    let mysqlSummary = new MysqlSummary('#mysqlSummaryDiv', '#summary', localizedStrings.mysqlSummaryTitle);
     httpSummary.setHttpSummaryOptions({host: hostname, filteredPath: dashboardRoot});
 
     socket.emit('connected');
@@ -243,6 +246,9 @@
     });
     socket.on('https', function(data) {
       updateHttpsData(data);
+    });
+    socket.on('mysql', function(data) {
+        mysqlSummary.updateData(data);
     });
     socket.on('http-urls', function(data) {
       httpSummary.updateURLData(data);
@@ -309,6 +315,7 @@
           envTable.resizeTable();
           summaryTable.resizeTable();
           httpSummary.resizeTable();
+          mysqlSummary.resizeTable();
       } else {
         refreshFlameGraph();
       }
