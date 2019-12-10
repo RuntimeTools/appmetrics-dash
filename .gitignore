@@ -1,4 +1,6 @@
 node_modules
 node-report*
-heapdump*.heapsnapshot
 .vscode
+heapdump*.heapsnapshot
+resourceRegistry.log
+coverage
