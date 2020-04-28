@@ -1,13 +1,35 @@
+dist: trusty
 language: node_js
+before_install:
+  - git submodule update --init --recursive
 node_js:
-  - "node"
-  - "lts/*"
-env:
-  - CXX=g++-4.8
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.8
+  - "10"
+  - "12"
+  - "13"
+  - "14"
+os:
+  - osx
+  - linux
+
+matrix:
+  include:
+    - os: windows
+      node_js: "14"
+    - os: windows
+      node_js: "10"
+    - os: windows
+      node_js: "12"
+    - os: windows
+      node_js: "13"
+  allow_failures:
+    - os: windows
+      node_js: "14"
+    - os: windows
+      node_js: "10"
+    - os: windows
+      node_js: "12"
+    - os: windows
+      node_js: "13"
+  fast_finish: true
+
 script: npm run-script travis
